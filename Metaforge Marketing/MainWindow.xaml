@@ -3,10 +3,75 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:add_vm="clr-namespace:Metaforge_Marketing.ViewModels.Add"
+        xmlns:add_views="clr-namespace:Metaforge_Marketing.Views.Add"
+        xmlns:costing_vm="clr-namespace:Metaforge_Marketing.ViewModels.Costing"
         xmlns:local="clr-namespace:Metaforge_Marketing"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="{Binding WindowTitle}" Height="450" Width="800">
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type add_vm:AddBuyerViewModel}">
+            <add_views:AddBuyerView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type add_vm:AddCustomerViewModel}">
+            <add_views:AddCustomerView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type add_vm:AddRemarkViewModel}">
+            <add_views:AddRemarkView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type add_vm:AddRFQViewModel}">
+            <add_views:AddRFQView/>
+        </DataTemplate>
+    </Window.Resources>
+    
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="7.5*"/>
+        </Grid.RowDefinitions>
+
+        <DockPanel LastChildFill="False">
+            <ToolBar Band="1" BandIndex="1" FontSize="25" FontWeight="Bold">
+                <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
+                    <MenuItem Header="Add">
+                        <MenuItem Header="Customer" Command="{Binding AddCustomerCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Buyer" Command="{Binding AddBuyerCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="RFQ" Command="{Binding AddRFQCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Remark" Command="{Binding AddRemarkCommand}" CommandParameter="{Binding}"/>
+                    </MenuItem>
+                </Menu>
+                <Separator/>
+
+                <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
+                    <MenuItem Header="Prepare">
+                        <MenuItem Header="MF Costing" Command="{Binding AddMFCostingCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Customer Costing" Command="{Binding AddCustomerCostingCommand}" CommandParameter="{Binding}"/>
+                    </MenuItem>
+                </Menu>
+                <Separator/>
+
+                <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
+                    <MenuItem Header="Send">
+                        <MenuItem Header="General Mail" Command="{Binding SendGeneralMailCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Quotations" Command="{Binding SendQuotationMailCommand}" CommandParameter="{Binding}"/>
+                    </MenuItem>
+                </Menu>
+                <Separator/>
+
+                <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
+                    <MenuItem Header="Reports">
+                        <MenuItem Header="Customer History" Command="{Binding CustomerHistoryCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Costing Comparison" Command="{Binding CostingComparisonCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="RFQ Details" Command="{Binding RFQDetailsCommand}"/>
+                        <MenuItem Header="Monthwise Data"/>
+                    </MenuItem>
+                </Menu>
+                <Separator/>
+            </ToolBar>
+        </DockPanel>
+
+        <ContentControl Grid.Row="1" Content="{Binding CurrentPageViewModel}"/>
     </Grid>
 </Window>
