@@ -8,7 +8,7 @@
         xmlns:costing_vm="clr-namespace:Metaforge_Marketing.ViewModels.Costing"
         xmlns:local="clr-namespace:Metaforge_Marketing"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="450" Width="800">
+        Title="{Binding WindowTitle}" Height="720" Width="1280">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type add_vm:AddBuyerViewModel}">

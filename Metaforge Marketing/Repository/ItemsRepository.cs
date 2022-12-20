@@ -1,7 +1,11 @@
 ﻿
 
+using Metaforge_Marketing.Models;
+using Metaforge_Marketing.Models.Enums;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Collections.Generic;
+using System.Windows;
 
 namespace Metaforge_Marketing.Repository
 {
@@ -24,6 +28,67 @@ namespace Metaforge_Marketing.Repository
                 return Convert.ToInt32(cmd.ExecuteScalar());
             }
         }
+
+
+        /// <summary>
+        /// Fetches a list of Items, along with its RFQ and the customer
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="offsetIndex"></param>
+        /// <param name="entriesPerPage"></param>
+        /// <returns></returns>
+        public static IEnumerable<Item> FetchItems(SqlConnection connection, int offsetIndex, int entriesPerPage)
+        {
+            List<Item> items = new List<Item>();
+            using(SqlCommand cmd = new SqlCommand("FetchItems",connection))
+            {
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add("@offsetIndex", System.Data.SqlDbType.Int).Value = offsetIndex;
+                cmd.Parameters.Add("@entriesPerPage", System.Data.SqlDbType.Int).Value =entriesPerPage;
+
+                try
+                {
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Item item = new Item
+                        {
+                            RFQ = new RFQ(),
+                            Customer = new Customer(),
+
+                            Id = Convert.ToInt32(reader["ItemId"]),
+                            ItemName = reader["ItemName"].ToString(),
+                            Status = Convert.ToInt32(reader["Status"]),
+                            ItemCode = reader["ItemCode"].ToString(),
+                            Qty = Convert.ToInt32(reader["Qty"]),
+                            OrderType = (OrderTypeEnum)(Convert.ToInt16(reader["OrderType"])),
+                            Priority = (PriorityEnum)(Convert.ToInt16(reader["Priority"]))
+                        };
+                        item.Customer.CustomerName = reader["CustomerName"].ToString();
+                        item.Customer.City = reader["City"].ToString();
+                        item.RFQ.Id = Convert.ToInt32(reader["RFQId"]);
+                        item.RFQ.ProjectName = reader["ProjectName"].ToString();
+
+                        items.Add(item);
+                    }
+                    reader.Close();
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+
+            }
+            return items;
+        }
+
         #endregion Select Queries
+
+        #region Insert Queries
+        public static void InsertToDB(SqlConnection connection, Item item)
+        {
+
+        }
+        #endregion Insert Queries
     }
 }

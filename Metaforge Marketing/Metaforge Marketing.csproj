@@ -206,8 +206,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="HelperClasses\Commands\PaginationCommands.cs" />
+    <Compile Include="HelperClasses\Commands\SaveCommand.cs" />
+    <Compile Include="HelperClasses\SQLWrapper.cs" />
+    <Compile Include="Models\Buyer.cs" />
     <Compile Include="Models\Communication.cs" />
     <Compile Include="Models\ConversionCosting.cs" />
+    <Compile Include="Models\Enums\ItemStatusEnum.cs" />
+    <Compile Include="Models\Enums\OrderTypeEnum.cs" />
+    <Compile Include="Models\Enums\PriorityEnum.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Machine.cs" />
@@ -218,6 +225,7 @@
     <Compile Include="PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Repository\CustomersRepository.cs" />
     <Compile Include="Repository\ItemsRepository.cs" />
     <Compile Include="Repository\RFQsRepository.cs" />
     <Compile Include="ViewModels\Add\AddBuyerViewModel.cs" />
@@ -233,6 +241,7 @@
     <Compile Include="ViewModels\Send\SendQuotationMailViewModel.cs" />
     <Compile Include="ViewModels\Shared\PopupCloseMarker.cs" />
     <Compile Include="ViewModels\Shared\PopupWindowViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SelectCustomerViewModel.cs" />
     <Compile Include="ViewModels\Shared\SelectItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\SelectRFQViewModel.cs" />
     <Compile Include="ViewModels\Shared\SharedViewModelBase.cs" />
@@ -249,8 +258,17 @@
     <Compile Include="Views\Add\AddRFQView.xaml.cs">
       <DependentUpon>AddRFQView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Costing\CustomerCostingView.xaml.cs">
+      <DependentUpon>CustomerCostingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Costing\MFCostingView.xaml.cs">
+      <DependentUpon>MFCostingView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Reports\CustomerHistoryView.xaml.cs">
       <DependentUpon>CustomerHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\SelectCustomerView.xaml.cs">
+      <DependentUpon>SelectCustomerView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -285,7 +303,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Costing\CustomerCostingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Costing\MFCostingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Reports\CustomerHistoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shared\SelectCustomerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -318,10 +348,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="HelperClasses\Commands\" />
     <Folder Include="HelperClasses\Converters\" />
     <Folder Include="HelperClasses\Interfaces\" />
-    <Folder Include="Views\Costing\" />
+    <Folder Include="Models\Converters\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Database\MarketingDatabase.mdf">

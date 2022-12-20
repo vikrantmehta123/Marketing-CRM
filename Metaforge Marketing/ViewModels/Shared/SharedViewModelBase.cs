@@ -18,12 +18,13 @@ namespace Metaforge_Marketing.ViewModels.Shared
         #endregion INPC Static
 
         #region Fields
-        private Item _selectedItem;
-        private RFQ _selectedRFQ;
+        private static Item _selectedItem;
+        private static RFQ _selectedRFQ;
+        private static Customer _selectedCustomer;
         #endregion Fields
 
         #region Properties
-        public Item SelectedItem
+        public static Item SelectedItem
         {
             get { return _selectedItem; }
             set
@@ -36,7 +37,7 @@ namespace Metaforge_Marketing.ViewModels.Shared
             }
         }
 
-        public RFQ SelectedRFQ
+        public static RFQ SelectedRFQ
         {
             get { return _selectedRFQ; }
             set
@@ -45,6 +46,19 @@ namespace Metaforge_Marketing.ViewModels.Shared
                 {
                     _selectedRFQ = value;
                     NotifyStaticPropertyChanged(nameof(SelectedRFQ));
+                }
+            }
+        }
+
+        public static Customer SelectedCustomer
+        {
+            get { return _selectedCustomer; }
+            set
+            {
+                if (_selectedCustomer!= value)
+                {
+                    _selectedCustomer = value;
+                    NotifyStaticPropertyChanged(nameof(SelectedCustomer));
                 }
             }
         }

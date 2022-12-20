@@ -3,10 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:shared_vm="clr-namespace:Metaforge_Marketing.ViewModels.Shared"
+        xmlns:shared_views="clr-namespace:Metaforge_Marketing.Views.Shared"
         xmlns:local="clr-namespace:Metaforge_Marketing"
         mc:Ignorable="d"
         Title="PopupWindow" Height="450" Width="800">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type shared_vm:SelectCustomerViewModel}">
+            <shared_views:SelectCustomerView/>
+        </DataTemplate>
+    </Window.Resources>
+    
     <Grid>
-        
+        <ContentControl Content="{Binding CurrentPageViewModel}"/>
     </Grid>
 </Window>

@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="Metaforge_Marketing.Views.Shared.SelectCustomerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Metaforge_Marketing.Views.Shared"
+             mc:Ignorable="d" 
+             Background="White"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="1" Content="Select A Customer" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
+
+        <!--#region Search/ Filter section-->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Top">
+            <StackPanel>
+                <Label Content="Search this Page:" FontWeight="DemiBold"/>
+                <TextBox Text="{Binding PaginationCommands.PageSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" ToolTip="Enter Customer Name:"/>
+            </StackPanel>
+            
+            
+            <StackPanel>
+                <Label Content="Search Database:" FontWeight="DemiBold"/>
+                <TextBox MinWidth="150" Text="{Binding PaginationCommands.DBSearchText}" VerticalContentAlignment="Center"/>
+                <Button Content="Search" ToolTip="Searches the entire database" Command="{Binding PaginationCommands.SearchDatabaseCommand}"/>
+            </StackPanel>
+
+            <DockPanel LastChildFill="False" VerticalAlignment="Bottom">
+                <TextBlock Text="Showing "/>
+                <TextBlock Text="{Binding Path=PaginationCommands.EntriesPerPage}"/>
+                <TextBlock Text=" Entries Per Page"/>
+            </DockPanel>
+
+        </StackPanel>
+
+
+        <!--#endregion Search/ Filter Section-->
+
+        <!--#region Display the items-->
+        <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding Path=PaginationCommands.Collection}"
+                  SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Customer Name" DisplayMemberBinding="{Binding Path=CustomerName}"/>
+                    <GridViewColumn Header="Customer Code" DisplayMemberBinding="{Binding Path=CustCode}"/>
+                    <GridViewColumn Header="City" DisplayMemberBinding="{Binding Path=City}"/>
+                    <GridViewColumn Header="Address" DisplayMemberBinding="{Binding Path=Address}"/>
+                    <GridViewColumn Header="Pincode" DisplayMemberBinding="{Binding Path=Pincode}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <!--#endregion-->
+
+        <!--#region Pagination Buttons/ Details-->
+        <StackPanel Grid.Row="3" Grid.Column="0">
+
+            <DockPanel LastChildFill="False">
+                <Button Content="First" Command="{Binding Path=PaginationCommands.FirstPageCommand}"/>
+                <Button Content="Prev" Command="{Binding Path=PaginationCommands.PrevPageCommand}"/>
+
+                <TextBlock Text="Page "/>
+                <TextBlock Text="{Binding Path=PaginationCommands.CurrentPage}"/>
+                <TextBlock Text=" of "/>
+                <TextBlock Text="{Binding PaginationCommands.TotalPages}"/>
+
+                <Button Content="Next" Command="{Binding Path=PaginationCommands.NextPageCommand}"/>
+                <Button Content="Last" Command="{Binding Path=PaginationCommands.LastPageCommand}"/>
+            </DockPanel>
+
+
+            <Button Content="Done" Grid.Column="1" Grid.Row="3" Command="{Binding SelectionDoneCommand}"  
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        </StackPanel>
+        <!--#endregion-->
+
+
+
+    </Grid>
+</UserControl>

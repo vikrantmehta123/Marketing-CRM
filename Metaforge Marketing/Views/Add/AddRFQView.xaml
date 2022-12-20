@@ -27,13 +27,11 @@
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                <Button Content="Select Customer" Command="{Binding SelectCustomerCommand}"/>
+
                 <DockPanel>
                     <Label Content="Customer Name:" FontWeight="DemiBold"/>
-                    <Label Content="{Binding Path=SelectedCustomer.Name}"/>
-                </DockPanel>
-                <DockPanel>
-                    <Label Content="Buyer Name:" FontWeight="DemiBold"/>
-                    <Label Content="{Binding Path=SelectedCustomer.Buyer.Name}"/>
+                    <Label Content="{Binding Path=SelectedCustomer.CustomerName}"/>
                 </DockPanel>
             </StackPanel>
         </StackPanel>
@@ -41,41 +39,62 @@
         <StackPanel Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Center">
 
             <DockPanel Margin="0, 10, 0, 0">
-                <Label Content="Date of Enquiry"/>
-                <DatePicker SelectedDate="{Binding Path=NewRFQ.DateOfEnquiry}"/>
+                <Label Content="Date of Enquiry" FontWeight="DemiBold"/>
+                <DatePicker SelectedDate="{Binding Path=RFQToAdd.EnquiryDate}"/>
             </DockPanel>
 
             <DockPanel Margin="0, 10, 0, 0">
-                <Label Content="Project Name"/>
-                <TextBox VerticalContentAlignment="Center" Text="{Binding Path=NewRFQ.ProjectName}"/>
+                <Label Content="Project Name" FontWeight="DemiBold"/>
+                <TextBox VerticalContentAlignment="Center" Text="{Binding Path=RFQToAdd.ProjectName}"/>
             </DockPanel>
 
             <DockPanel Margin="0, 10, 0, 0">
-                <Label Content="Item Name"/>
-                <TextBox VerticalContentAlignment="Center" Text="{Binding Path=NewItem.ItemName}"/>
-            </DockPanel>
-            <DockPanel Margin="0, 10, 0, 0">
-                <Label Content="Item Number"/>
-                <TextBox VerticalContentAlignment="Center" Text="{Binding Path=NewItem.ItemNo}"/>
+                <Label Content="Referred By:" FontWeight="DemiBold"/>
+                <TextBox VerticalContentAlignment="Center" Text="{Binding Path=RFQToAdd.ReferredBy}"/>
             </DockPanel>
 
             <DockPanel Margin="0, 10, 0, 0">
-                <Label Content="QTY/ Month"/>
-                <TextBox VerticalContentAlignment="Center" Text="{Binding Path=NewItem.QuantityPerMonth}"  />
+                <StackPanel >
+                    <Label Content="Item Name" FontWeight="DemiBold"/>
+                    <TextBox VerticalContentAlignment="Center" Text="{Binding Path=RFQItem.ItemName}"/>
+                </StackPanel>
+                <StackPanel>
+                    <Label Content="Item Code" FontWeight="DemiBold"/>
+                    <TextBox VerticalContentAlignment="Center" Text="{Binding Path=RFQItem.ItemCode}"/>
+                </StackPanel>
             </DockPanel>
 
             <DockPanel Margin="0, 10, 0, 0">
-                <Label Content="One Time Order"/>
-                <TextBox VerticalContentAlignment="Center" Text="{Binding Path=NewItem.OneTimeOrder}"/>
+                <StackPanel Grid.Column="0">
+                    <Label Content="Gross Weight" FontWeight="DemiBold"/>
+                    <TextBox Text="{Binding RFQItem.GrossWeight}" MinWidth="30"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" >
+                    <Label Content="Net Weight" FontWeight="DemiBold"/>
+                    <TextBox Text="{Binding RFQItem.NetWeight}" MinWidth="30" />
+                </StackPanel>
             </DockPanel>
 
-            <Label Margin="0, 10, 0, 0" Content="Priority" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" MinWidth="120" SelectedItem="{Binding Path=NewItem.Priority}"/>
+            <DockPanel Margin="0, 10, 0, 0">
+                <Label Content="Qty:" FontWeight="DemiBold"/>
+                <TextBox VerticalContentAlignment="Center" Text="{Binding Path=RFQItem.Qty}"  />
+            </DockPanel>
+
+            <DockPanel Margin="0, 10, 0, 0">
+                <Label Content="Order Type" FontWeight="DemiBold"/>
+                <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding RFQItem.OrderTypes}"/>
+            </DockPanel>
+
+            <DockPanel Margin="0, 10, 0, 0">
+                <Label  Content="Priority" FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding RFQItem.Priorities}" VerticalAlignment="Top" MinWidth="120" SelectedItem="{Binding Path=RFQItem.Priority}"/>
+            </DockPanel>
 
             <DockPanel HorizontalAlignment="Right">
-                <Button Content="Save" HorizontalAlignment="Right" />
+                <Button Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right" />
                 <Button Content="Add Another Item" Command="{Binding Path=AddAnotherItemCommand}"/>
-                <Button Content="Clear"/>
+                <Button Content="Clear" Command="{Binding ClearCommand}"/>
             </DockPanel>
 
         </StackPanel>
