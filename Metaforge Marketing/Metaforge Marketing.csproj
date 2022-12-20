@@ -211,7 +211,9 @@
     <Compile Include="HelperClasses\SQLWrapper.cs" />
     <Compile Include="Models\Buyer.cs" />
     <Compile Include="Models\Communication.cs" />
-    <Compile Include="Models\ConversionCosting.cs" />
+    <Compile Include="Models\Costing.cs" />
+    <Compile Include="Models\Enums\CostingCategoryEnum.cs" />
+    <Compile Include="Models\Enums\CostingFormatEnum.cs" />
     <Compile Include="Models\Enums\ItemStatusEnum.cs" />
     <Compile Include="Models\Enums\OrderTypeEnum.cs" />
     <Compile Include="Models\Enums\PriorityEnum.cs" />
@@ -270,6 +272,9 @@
     <Compile Include="Views\Shared\SelectCustomerView.xaml.cs">
       <DependentUpon>SelectCustomerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Shared\SelectItemView.xaml.cs">
+      <DependentUpon>SelectItemView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -316,6 +321,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Shared\SelectCustomerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shared\SelectItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

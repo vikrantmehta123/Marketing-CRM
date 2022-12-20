@@ -7,17 +7,22 @@
              mc:Ignorable="d" 
              Background="White"
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="3.5*"/>
-            <ColumnDefinition Width="6.5*"/>
+            <ColumnDefinition Width="4.5*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.25*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="0.25*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--#region Dashboard: Show customer/buyer/item data-->
@@ -38,11 +43,11 @@
             <StackPanel Orientation="Vertical">
                 <DockPanel >
                     <Label Content="Item Name:" FontWeight="DemiBold"/>
-                    <Label Content="{Binding Path=SelectedRFQItem.ItemName}"/>
+                    <Label Content="{Binding Path=SelectedItem.ItemName}"/>
                 </DockPanel>
                 <DockPanel >
                     <Label Content="Item No:" FontWeight="DemiBold"/>
-                    <Label Content="{Binding Path=SelectedRFQItem.ItemNo}"/>
+                    <Label Content="{Binding Path=SelectedItem.ItemNo}"/>
                 </DockPanel>
             </StackPanel>
 
@@ -51,7 +56,7 @@
             <StackPanel>
                 <DockPanel>
                     <Label Content="Priority:" FontWeight="DemiBold"/>
-                    <Label Content="{Binding Path=SelectedRFQItem.Priority}"/>
+                    <Label Content="{Binding Path=SelectedItem.Priority}"/>
                 </DockPanel>
             </StackPanel>
 
@@ -59,88 +64,115 @@
         </StackPanel>
         <!--#endregion-->
 
+        
+        
+        <DockPanel Grid.Row="1" Grid.Column="1" LastChildFill="False" VerticalAlignment="Center">
+            
+            <Button Content="Select Item" Command="{Binding SelectItemCommand}" VerticalAlignment="Center"/>
 
-        <!--#region Raw Material Specification Form-->
-        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Top">
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+            
+            <StackPanel>
+                <Label Content="Choose Costing Format" FontWeight="DemiBold"/>
+                <ComboBox ItemsSource="{Binding Costing.CostingFormats}" SelectedItem="{Binding Costing.CostingFormat, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+            
+            <StackPanel>
+                <Label Content="Choose Costing Category" FontWeight="DemiBold"/>
+                <ComboBox ItemsSource="{Binding Costing.CostingCategories}" SelectedItem="{Binding Costing.CostingCategory, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+            
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+            
+        </DockPanel>
+        
+        
+        <DockPanel Grid.Column="1" Grid.Row="2">
+            <!--#region Raw Material Specification Form-->
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="250">
 
-            <Label Content="RM Specifications" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <StackPanel >
+                    <Label Content="RM Specifications" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
 
-            <DockPanel>
-                <Label Content="Material As Per Drawing" FontWeight="DemiBold"/>
-                <TextBox Text="{Binding Path=MFRMSpecs.RMAsPerDrawing}" VerticalContentAlignment="Center" />
-            </DockPanel>
+                    <DockPanel>
+                        <Label Content="Material As Per Drawing" FontWeight="DemiBold"/>
+                        <TextBox Text="{Binding Path=MFRMCosting.RMAsPerDrawing}" VerticalContentAlignment="Center" />
+                    </DockPanel>
 
-            <DockPanel>
-                <Label Content="Material Considered" FontWeight="DemiBold"/>
-                <TextBox Text="{Binding Path=MFRMSpecs.RMConsidered, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" />
-            </DockPanel>
+                    <DockPanel>
+                        <Label Content="Material Considered" FontWeight="DemiBold"/>
+                        <TextBox Text="{Binding Path=MFRMCosting.RMConsidered, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" />
+                    </DockPanel>
 
-            <DockPanel>
-                <Label Content="Gross Weight" FontWeight="DemiBold"/>
-                <TextBox Text="{Binding Path=MFRMSpecs.GrossWeight}" VerticalContentAlignment="Center" />
-            </DockPanel>
+                    <DockPanel>
+                        <Label Content="Raw Material Rate" FontWeight="DemiBold"/>
+                        <TextBox Text="{Binding Path=MFRMCosting.RMRate}" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                </StackPanel>
 
-            <DockPanel>
-                <Label Content="Net Weight" FontWeight="DemiBold"/>
-                <TextBox Text="{Binding Path=MFRMSpecs.NetWeight}" VerticalContentAlignment="Center" />
-            </DockPanel>
+                <StackPanel>
+                    <DockPanel>
+                        <Label Content="Scrap Recovery" FontWeight="DemiBold"/>
+                        <TextBox Text="{Binding Path=MFRMCosting.ScrapRecovery}" VerticalContentAlignment="Center"/>
+                    </DockPanel>
 
-            <DockPanel>
-                <Label Content="Raw Material Rate" FontWeight="DemiBold"/>
-                <TextBox Text="{Binding Path=MFRMSpecs.RMRate, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" VerticalContentAlignment="Center" />
-            </DockPanel>
+                    <DockPanel>
+                        <Label Content="Scrap Rate" FontWeight="DemiBold"/>
+                        <TextBox Text="{Binding Path=MFRMCosting.ScrapRate, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" VerticalContentAlignment="Center" />
+                    </DockPanel>
 
-            <DockPanel>
-                <Label Content="Wire" FontWeight="DemiBold"/>
-                <TextBox Text="{Binding Path=MFRMSpecs.Wire}" VerticalContentAlignment="Center" />
-            </DockPanel>
+                    <DockPanel>
+                        <Label Content="Cutting Allowance" FontWeight="DemiBold"/>
+                        <TextBox Text="{Binding Path=MFRMCosting.CuttingAllowance}" VerticalContentAlignment="Center" />
+                    </DockPanel>
 
-            <DockPanel>
-                <Label Content="Scrap Recovery" FontWeight="DemiBold"/>
-                <TextBox Text="{Binding Path=MFRMSpecs.ScrapRecovery}" VerticalContentAlignment="Center"/>
-            </DockPanel>
+                    <DockPanel>
+                        <Label Content="Item Length" FontWeight="DemiBold"/>
+                        <TextBox Text="{Binding Path=MFRMCosting.ItemLength}" VerticalContentAlignment="Center" />
+                    </DockPanel>
+                </StackPanel>
 
-            <DockPanel>
-                <Label Content="Scrap Rate" FontWeight="DemiBold"/>
-                <TextBox Text="{Binding Path=MFRMSpecs.ScrapRate, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" VerticalContentAlignment="Center" />
-            </DockPanel>
+            </StackPanel>
+            <!--#endregion Raw Material Specification form-->
 
-            <DockPanel>
-                <Label Content="Cutting Allowance" FontWeight="DemiBold"/>
-                <TextBox Text="{Binding Path=MFRMSpecs.CuttingAllowance}" VerticalContentAlignment="Center" />
-            </DockPanel>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Background="Black"/>
 
-            <DockPanel>
-                <Label Content="Item Length" FontWeight="DemiBold"/>
-                <TextBox Text="{Binding Path=MFRMSpecs.ItemLength}" VerticalContentAlignment="Center" />
-            </DockPanel>
-
-        </StackPanel>
-        <!--#endregion Raw Material Specification form-->
+            <!--#region Conversion Costing Form-->
+            <StackPanel VerticalAlignment="Top" >
+                <Label Content="Conversion Cost Details" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
 
-        <!--#region Conversion Costing Form-->
-        <StackPanel Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top">
-            <Label Content="Conversion Cost Details" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <DataGrid x:Name="CCWithoutDetails" ItemsSource="{Binding Path=MFCC}" AutoGenerateColumns="False" 
+                          CanUserAddRows="True" CanUserResizeColumns="True"  HorizontalAlignment="Center">
+                    <DataGrid.Columns>
+                        <DataGridComboBoxColumn Header="Operation Name" SelectedItemBinding="{Binding Path=OperationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding Path=CostPerPiece, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
+                        <DataGridCheckBoxColumn Header="Is Offloaded" Binding="{Binding Path=IsOffloaded}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
 
-            <DataGrid ItemsSource="{Binding Path=MetaForgeOperationCosting}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserResizeColumns="True">
-                <DataGrid.Columns>
-                    <DataGridComboBoxColumn Header="Operation Name" SelectedItemBinding="{Binding Path=OperationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <DataGridTextColumn Header="Machine Category" Binding="{Binding Path=MachineCategory}"/>
-                    <DataGridTextColumn Header="Machine Name" Binding="{Binding Path=MachineName}"/>
-                    <DataGridTextColumn Header="Mc/Hr" Binding="{Binding Path=MachineCostPerHour, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N0}"/>
-                    <DataGridTextColumn Header="Cycle Time" Binding="{Binding Path=CycleTime, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N0}"/>
-                    <DataGridTextColumn Header="Efficiency" Binding="{Binding Path=Efficiency, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
-                    <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding Path=CostPerPiece, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
-                    <DataGridCheckBoxColumn Header="Is Offloaded" Binding="{Binding Path=IsOffloaded}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
-        <!--#endregion Conversion Costing Form-->
+                <DataGrid x:Name="CCWithDetails" ItemsSource="{Binding Path=MFCC}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserResizeColumns="True" 
+                           HorizontalAlignment="Center">
+                    <DataGrid.Columns>
+                        <DataGridComboBoxColumn Header="Operation Name" SelectedItemBinding="{Binding Path=OperationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <DataGridTextColumn Header="Machine Category" Binding="{Binding Path=MachineCategory}"/>
+                        <DataGridTextColumn Header="Machine Name" Binding="{Binding Path=MachineName}"/>
+                        <DataGridTextColumn Header="Mc/Hr" Binding="{Binding Path=MachineCostPerHour, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N0}"/>
+                        <DataGridTextColumn Header="Cycle Time" Binding="{Binding Path=CycleTime, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N0}"/>
+                        <DataGridTextColumn Header="Efficiency" Binding="{Binding Path=Efficiency, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
+                        <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding Path=CostPerPiece, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
+                        <DataGridCheckBoxColumn Header="Is Offloaded" Binding="{Binding Path=IsOffloaded}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+            <!--#endregion Conversion Costing Form-->
+        </DockPanel>
 
-        <DockPanel Grid.Column="2" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Top">
-            <Button Content="Clear" Command="{Binding Path=ClearCommand}"/>
-            <Button Content="Save" Command="{Binding Path=SaveCommand}" />
+        <DockPanel Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Button Content="Clear" Command="{Binding ClearCommand}"/>
+            <Button Content="Save" Command="{Binding SaveCommand}" />
         </DockPanel>
     </Grid>
 </UserControl>

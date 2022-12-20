@@ -6,6 +6,7 @@
         xmlns:add_vm="clr-namespace:Metaforge_Marketing.ViewModels.Add"
         xmlns:add_views="clr-namespace:Metaforge_Marketing.Views.Add"
         xmlns:costing_vm="clr-namespace:Metaforge_Marketing.ViewModels.Costing"
+        xmlns:costing_views="clr-namespace:Metaforge_Marketing.Views.Costing"
         xmlns:local="clr-namespace:Metaforge_Marketing"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="720" Width="1280">
@@ -23,6 +24,13 @@
         <DataTemplate DataType="{x:Type add_vm:AddRFQViewModel}">
             <add_views:AddRFQView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type costing_vm:MFCostingViewModel}">
+            <costing_views:MFCostingView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type costing_vm:CustomerCostingViewModel}">
+            <costing_views:CustomerCostingView/>
+        </DataTemplate>
+        
     </Window.Resources>
     
 

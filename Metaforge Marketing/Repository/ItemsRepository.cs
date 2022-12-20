@@ -6,6 +6,9 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Controls.Primitives;
+using System.Windows.Controls;
 
 namespace Metaforge_Marketing.Repository
 {
@@ -78,6 +81,55 @@ namespace Metaforge_Marketing.Repository
                     MessageBox.Show(e.Message);
                 }
 
+            }
+            return items;
+        }
+
+        /// <summary>
+        /// Given a search text of the item's Name, fetches the results that are like the name
+        /// Used in pagination
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="searchText"></param>
+        /// <returns>List of Items that are match to the Name given</returns>
+        public static IEnumerable<Item> FetchItems(SqlConnection connection, string searchText)
+        {
+            List<Item> items = new List<Item>();
+            using(SqlCommand cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = "SELECT Items.ItemName, Items.ItemCode, Items.Id AS ItemId, Items.Status, Items.Priority, Items.Qty, Items.OrderType, " +
+                    "RFQs.Id AS RFQId, RFQs.ProjectName, Customers.CustomerName, Customers.City " +
+                    "FROM Items " +
+                    "LEFT JOIN RFQs ON RFQs.Id = Items.RFQId " +
+                    "LEFT JOIN Customers ON Customers.Id = RFQs.CustId " +
+                    "WHERE Items.ItemName LIKE @itemId";
+
+                cmd.Parameters.Add("@itemId", System.Data.SqlDbType.VarChar).Value = $"%{searchText}%";
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Item item = new Item
+                    {
+                        RFQ = new RFQ(),
+                        Customer = new Customer(),
+
+                        Id = Convert.ToInt32(reader["ItemId"]),
+                        ItemName = reader["ItemName"].ToString(),
+                        Status = Convert.ToInt32(reader["Status"]),
+                        ItemCode = reader["ItemCode"].ToString(),
+                        Qty = Convert.ToInt32(reader["Qty"]),
+                        OrderType = (OrderTypeEnum)(Convert.ToInt16(reader["OrderType"])),
+                        Priority = (PriorityEnum)(Convert.ToInt16(reader["Priority"]))
+                    };
+                    item.Customer.CustomerName = reader["CustomerName"].ToString();
+                    item.Customer.City = reader["City"].ToString();
+                    item.RFQ.Id = Convert.ToInt32(reader["RFQId"]);
+                    item.RFQ.ProjectName = reader["ProjectName"].ToString();
+
+                    items.Add(item);
+                }
+                reader.Close();
             }
             return items;
         }

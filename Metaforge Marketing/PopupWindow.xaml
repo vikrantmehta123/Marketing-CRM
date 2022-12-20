@@ -12,6 +12,9 @@
         <DataTemplate DataType="{x:Type shared_vm:SelectCustomerViewModel}">
             <shared_views:SelectCustomerView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type shared_vm:SelectItemViewModel}">
+            <shared_views:SelectItemView/>
+        </DataTemplate>
     </Window.Resources>
     
     <Grid>
