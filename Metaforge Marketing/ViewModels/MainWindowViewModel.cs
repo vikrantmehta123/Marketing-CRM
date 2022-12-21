@@ -10,7 +10,7 @@ namespace Metaforge_Marketing.ViewModels
 
         #region Fields
         private ICommand _addCustomerCommand, _addBuyerCommand, _addRFQCommand, _addRemarkCommand;
-        private ICommand _addMFCostingCommand, _addCustomerCostingCommand;
+        private ICommand _addMFCostingCommand;
         private ICommand _customerHistoryCommand, _costingComparisonCommand, _rfqDetailsCommand;
         private ICommand _sendGeneralMailCommand, _sendQuotationMailCommand;
         #endregion Fields
@@ -69,20 +69,9 @@ namespace Metaforge_Marketing.ViewModels
             {
                 if (_addMFCostingCommand == null)
                 {
-                    _addMFCostingCommand = new Command(p => ChangeViewModel(new Costing.MFCostingViewModel()));
+                    _addMFCostingCommand = new Command(p => ChangeViewModel(new Costing.CostingViewModel()));
                 }
                 return _addMFCostingCommand;
-            }
-        }
-        public ICommand AddCustomerCostingCommand
-        {
-            get
-            {
-                if (_addCustomerCostingCommand == null)
-                {
-                    _addCustomerCostingCommand = new Command(p => ChangeViewModel(new Costing.CustomerCostingViewModel()));
-                }
-                return _addCustomerCostingCommand;
             }
         }
         public ICommand RFQDetailsCommand

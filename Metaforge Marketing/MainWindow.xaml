@@ -24,13 +24,10 @@
         <DataTemplate DataType="{x:Type add_vm:AddRFQViewModel}">
             <add_views:AddRFQView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type costing_vm:MFCostingViewModel}">
-            <costing_views:MFCostingView/>
+        <DataTemplate DataType="{x:Type costing_vm:CostingViewModel}">
+            <costing_views:CostingView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type costing_vm:CustomerCostingViewModel}">
-            <costing_views:CustomerCostingView/>
-        </DataTemplate>
-        
+
     </Window.Resources>
     
 
@@ -54,8 +51,7 @@
 
                 <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
                     <MenuItem Header="Prepare">
-                        <MenuItem Header="MF Costing" Command="{Binding AddMFCostingCommand}" CommandParameter="{Binding}"/>
-                        <MenuItem Header="Customer Costing" Command="{Binding AddCustomerCostingCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Costing" Command="{Binding AddMFCostingCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
                 <Separator/>

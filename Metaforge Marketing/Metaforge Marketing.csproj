@@ -218,24 +218,29 @@
     <Compile Include="Models\Enums\OrderTypeEnum.cs" />
     <Compile Include="Models\Enums\PriorityEnum.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Enums\RMCategoryEnum.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Machine.cs" />
+    <Compile Include="Models\ModelsBase.cs" />
     <Compile Include="Models\Operation.cs" />
     <Compile Include="Models\Remark.cs" />
     <Compile Include="Models\RFQ.cs" />
+    <Compile Include="Models\RM.cs" />
     <Compile Include="Models\RMCosting.cs" />
     <Compile Include="PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Repository\CostingRepository.cs" />
     <Compile Include="Repository\CustomersRepository.cs" />
     <Compile Include="Repository\ItemsRepository.cs" />
+    <Compile Include="Repository\OperationsRepository.cs" />
     <Compile Include="Repository\RFQsRepository.cs" />
+    <Compile Include="Repository\RMRepository.cs" />
     <Compile Include="ViewModels\Add\AddBuyerViewModel.cs" />
     <Compile Include="ViewModels\Add\AddCustomerViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRemarkViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRFQViewModel.cs" />
-    <Compile Include="ViewModels\Costing\CustomerCostingViewModel.cs" />
-    <Compile Include="ViewModels\Costing\MFCostingViewModel.cs" />
+    <Compile Include="ViewModels\Costing\CostingViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Reports\CostingComparisonViewModel.cs" />
     <Compile Include="ViewModels\Reports\CustomerHistoryViewModel.cs" />
@@ -260,11 +265,8 @@
     <Compile Include="Views\Add\AddRFQView.xaml.cs">
       <DependentUpon>AddRFQView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Costing\CustomerCostingView.xaml.cs">
-      <DependentUpon>CustomerCostingView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Costing\MFCostingView.xaml.cs">
-      <DependentUpon>MFCostingView.xaml</DependentUpon>
+    <Compile Include="Views\Costing\CostingView.xaml.cs">
+      <DependentUpon>CostingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Reports\CustomerHistoryView.xaml.cs">
       <DependentUpon>CustomerHistoryView.xaml</DependentUpon>
@@ -308,11 +310,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Costing\CustomerCostingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Costing\MFCostingView.xaml">
+    <Page Include="Views\Costing\CostingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

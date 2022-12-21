@@ -44,7 +44,7 @@
 
         <!--#region Display the items-->
         <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding Path=PaginationCommands.Collection}"
-                  SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single">
+                  SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Item Name" DisplayMemberBinding="{Binding Path=ItemName}"/>
