@@ -13,6 +13,7 @@ namespace Metaforge_Marketing.Models
         private string _projectName, _referredBy;
         private Customer _customer;
         private List<Item> _items;
+        private Admin _rfqBroughtBy;
         #endregion Fields
 
         #region Properties
@@ -21,7 +22,7 @@ namespace Metaforge_Marketing.Models
         public string ProjectName { get { return _projectName;} set { _projectName = value; } }
         public string ReferredBy { get { return _referredBy;} set { _referredBy = value; } }
         public Customer Customer { get { return _customer;} set { _customer = value; } }
-
+        public Admin RFQBroughtBy { get { return _rfqBroughtBy; } set { _rfqBroughtBy = value; } }
         public List<Item> Items { get { return _items; } set { _items = value; } }
         #endregion Properties
 

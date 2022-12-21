@@ -209,6 +209,7 @@
     <Compile Include="HelperClasses\Commands\PaginationCommands.cs" />
     <Compile Include="HelperClasses\Commands\SaveCommand.cs" />
     <Compile Include="HelperClasses\SQLWrapper.cs" />
+    <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Buyer.cs" />
     <Compile Include="Models\Communication.cs" />
     <Compile Include="Models\Costing.cs" />
@@ -230,10 +231,12 @@
     <Compile Include="PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Repository\AdminsRepository.cs" />
     <Compile Include="Repository\CostingRepository.cs" />
     <Compile Include="Repository\CustomersRepository.cs" />
     <Compile Include="Repository\ItemsRepository.cs" />
     <Compile Include="Repository\OperationsRepository.cs" />
+    <Compile Include="Repository\RemarksRepository.cs" />
     <Compile Include="Repository\RFQsRepository.cs" />
     <Compile Include="Repository\RMRepository.cs" />
     <Compile Include="ViewModels\Add\AddBuyerViewModel.cs" />

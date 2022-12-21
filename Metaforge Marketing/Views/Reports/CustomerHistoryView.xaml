@@ -7,7 +7,64 @@
              mc:Ignorable="d" 
              Background="White"
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    </UserControl.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+        <Label Content="Customer History" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+
+        <!--#region Dashboard-->
+        <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Left">
+            <StackPanel>
+                <Button Content="Select Customer" Command="{Binding SelectCustomerCommand}"/>
+            </StackPanel>
             
+            <StackPanel Orientation="Horizontal" Visibility="{Binding IsCustomerSelected, Converter={StaticResource boolToVisibilityConverter}}">
+                <StackPanel>
+                    <DockPanel>
+                        <Label Content="Name:" FontWeight="DemiBold"/>
+                        <Label Content="{Binding SelectedCustomer.CustomerName}"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <Label Content="City:" FontWeight="DemiBold"/>
+                        <Label Content="{Binding SelectedCustomer.City}"/>
+                    </DockPanel>
+                </StackPanel>
+
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+
+                <StackPanel>
+                    <DockPanel>
+                        <Label Content="Buyer Count:" FontWeight="DemiBold"/>
+                        <Label Content="{Binding SelectedCustomer.BuyerCount}"/>
+                    </DockPanel>
+                </StackPanel>
+
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+
+            </StackPanel>
+        </StackPanel>
+        <!--#endregion-->
+        
+        <!--#region Remarks List-->
+        <DataGrid ItemsSource="{Binding Remarks}" AutoGenerateColumns="False" Grid.Row="2" Background="White" CanUserAddRows="False" CanUserDeleteRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Date" Binding="{Binding EventDate, StringFormat={}{0:dd-MM-yyyy}}"/>
+                <DataGridTextColumn Header="Remark" Binding="{Binding Text}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <!--#endregion-->
+        
+        
     </Grid>
 </UserControl>

@@ -57,6 +57,38 @@ namespace Metaforge_Marketing.HelperClasses
 
         #region Fetch Wrappers
 
+        public static IEnumerable<T> FetchWrapper<S>(Func<SqlConnection, S, IEnumerable<T>> fetchFunction, S obj)
+        {
+            IEnumerable<T> result;
+            using(SqlConnection conn = new SqlConnection(conn_string))
+            {
+                conn.Open();
+                result = fetchFunction(conn, obj);
+                conn.Close();
+            }
+            return result;
+        }
+
+
+        /// <summary>
+        /// Provides a wrapper for a fetch function where one needs to fetch all the records
+        /// i.e. Provides wrapper for SELECT * query
+        /// Mostly used to fill combobox options
+        /// </summary>
+        /// <param name="fetchFunction"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> FetchWrapper(Func<SqlConnection, IEnumerable<T>> fetchFunction)
+        {
+            IEnumerable<T> result;
+            using (SqlConnection conn = new SqlConnection(conn_string))
+            {
+                conn.Open();
+                result = fetchFunction(conn);
+                conn.Close();
+            }
+            return result;
+        }
+
         /// <summary>
         /// Provides a wrapper for the paginated fetch function.
         /// Used in pagination- when want to fetch fixed number of entries from a fixed offset index
@@ -78,5 +110,31 @@ namespace Metaforge_Marketing.HelperClasses
         }
 
         #endregion Fetch Wrappers
+
+        #region Count Wrappers
+        public static int CountWrapper(Func<SqlConnection, int> countFunction)
+        {
+            int count = 0;
+            using(SqlConnection conn = new SqlConnection(conn_string))
+            {
+                conn.Open();
+                count = countFunction(conn);    
+                conn.Close();
+            }
+            return count;
+        }
+
+        public static int CountWrapper<S>(Func<SqlConnection, S,  int> countFunction, S obj)
+        {
+            int count = 0;
+            using (SqlConnection conn = new SqlConnection(conn_string))
+            {
+                conn.Open();
+                count = countFunction(conn, obj);
+                conn.Close();
+            }
+            return count;
+        }
+        #endregion Count Wrappers
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Metaforge_Marketing.Models
 {
-    public class Item
+    public class Item : ModelsBase
     {
 
         public static IEnumerable<OrderTypeEnum> OrderTypes { get; } = Enum.GetValues(typeof(OrderTypeEnum)).Cast<OrderTypeEnum>();
@@ -17,10 +17,13 @@ namespace Metaforge_Marketing.Models
         private int _id, _status, _qty;
         private string _itemName, _itemCode;
         private float _grossWeight, _netWeight;
+        private bool _isRegretted, _isRejectedByCustomer, _isMFCostingPrepared, _isCustomerCostingPrepared, _isQuotationSent, _isPOReceived;
+        private Admin _quotationHandledBy;
         private RFQ _rfq;
         private Customer _customer;
         private PriorityEnum _priority;
         private OrderTypeEnum _orderType;
+        private ItemStatusEnum _itemStatus;
         #endregion Fields
 
         #region Properties
@@ -33,11 +36,18 @@ namespace Metaforge_Marketing.Models
         public string ItemCode { get { return _itemCode; } set { _itemCode = value; } }
         public float GrossWeight { get { return _grossWeight; } set { _grossWeight = value; } }
         public float NetWeight { get { return _netWeight; } set { _netWeight = value; } }
-
         public Customer Customer { get { return _customer; } set { _customer = value; } }
         public RFQ RFQ { get { return _rfq; } set { _rfq = value;}}
         #endregion Properties
 
+        #region Boolean Indicator Properties
+        public bool IsRegretted { get { return _isRegretted;}  }
+        public bool IsMFCostingPrepared { get { return _isMFCostingPrepared; } }
+        public bool IsCustomerCostingPrepared { get { return _isCustomerCostingPrepared; } }
+        public bool IsRejected { get { return _isRejectedByCustomer; } set { _isRejectedByCustomer = value; } }
+        public bool IsQuotationSent { get { return _isQuotationSent; } set { _isQuotationSent = value; } }
+        public bool IsPOReceived { get { return _isPOReceived; } set { _isPOReceived = value; } }
 
+        #endregion Boolean Indicator Properties
     }
 }

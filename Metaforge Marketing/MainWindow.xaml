@@ -7,6 +7,8 @@
         xmlns:add_views="clr-namespace:Metaforge_Marketing.Views.Add"
         xmlns:costing_vm="clr-namespace:Metaforge_Marketing.ViewModels.Costing"
         xmlns:costing_views="clr-namespace:Metaforge_Marketing.Views.Costing"
+        xmlns:reports_vm="clr-namespace:Metaforge_Marketing.ViewModels.Reports"
+        xmlns:reports_views="clr-namespace:Metaforge_Marketing.Views.Reports"
         xmlns:local="clr-namespace:Metaforge_Marketing"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="720" Width="1280">
@@ -27,6 +29,9 @@
         <DataTemplate DataType="{x:Type costing_vm:CostingViewModel}">
             <costing_views:CostingView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type reports_vm:CustomerHistoryViewModel}">
+            <reports_views:CustomerHistoryView/>
+        </DataTemplate>
 
     </Window.Resources>
     
@@ -39,19 +44,10 @@
 
         <DockPanel LastChildFill="False">
             <ToolBar Band="1" BandIndex="1" FontSize="25" FontWeight="Bold">
-                <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
-                    <MenuItem Header="Add">
-                        <MenuItem Header="Customer" Command="{Binding AddCustomerCommand}" CommandParameter="{Binding}"/>
-                        <MenuItem Header="Buyer" Command="{Binding AddBuyerCommand}" CommandParameter="{Binding}"/>
-                        <MenuItem Header="RFQ" Command="{Binding AddRFQCommand}" CommandParameter="{Binding}"/>
-                        <MenuItem Header="Remark" Command="{Binding AddRemarkCommand}" CommandParameter="{Binding}"/>
-                    </MenuItem>
-                </Menu>
-                <Separator/>
 
                 <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
-                    <MenuItem Header="Prepare">
-                        <MenuItem Header="Costing" Command="{Binding AddMFCostingCommand}" CommandParameter="{Binding}"/>
+                    <MenuItem Header="RFQ">
+                        <MenuItem Header="Costing" Command="{Binding PrepareCostingCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
                 <Separator/>
@@ -60,6 +56,16 @@
                     <MenuItem Header="Send">
                         <MenuItem Header="General Mail" Command="{Binding SendGeneralMailCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Quotations" Command="{Binding SendQuotationMailCommand}" CommandParameter="{Binding}"/>
+                    </MenuItem>
+                </Menu>
+                <Separator/>
+
+                <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
+                    <MenuItem Header="Add">
+                        <MenuItem Header="Customer" Command="{Binding AddCustomerCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Buyer" Command="{Binding AddBuyerCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="RFQ" Command="{Binding AddRFQCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Remark" Command="{Binding AddRemarkCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
                 <Separator/>

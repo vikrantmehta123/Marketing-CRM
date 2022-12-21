@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Metaforge_Marketing.Views.Add"
              mc:Ignorable="d" 
              Background="White"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="720" d:DesignWidth="1280">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.75*"/>
@@ -34,9 +34,18 @@
                     <Label Content="{Binding Path=SelectedCustomer.CustomerName}"/>
                 </DockPanel>
             </StackPanel>
+
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+
         </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Center">
+
+            <DockPanel LastChildFill="False">
+                <Label Content="Choose Admin" FontWeight="DemiBold"/>
+                <ComboBox ItemsSource="{Binding Admins}" SelectedItem="{Binding RFQToAdd.RFQBroughtBy}" MinWidth="100"/>
+                <Button Content="+" MinWidth="15"/>
+            </DockPanel>
 
             <DockPanel Margin="0, 10, 0, 0">
                 <Label Content="Date of Enquiry" FontWeight="DemiBold"/>

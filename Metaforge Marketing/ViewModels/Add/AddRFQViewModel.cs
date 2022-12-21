@@ -1,8 +1,9 @@
 ﻿
-
+using Metaforge_Marketing.Repository;
 using Metaforge_Marketing.HelperClasses;
 using Metaforge_Marketing.Models;
 using Metaforge_Marketing.ViewModels.Shared;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -12,12 +13,24 @@ namespace Metaforge_Marketing.ViewModels.Add
     {
         #region Fields
         private ICommand _selectCustomerCommand, _addAnotherItemCommand, _clearCommand, _saveCommand;
+        private ObservableCollection<Admin> _admins;
         #endregion Fields
 
 
         #region Properties
         public RFQ RFQToAdd { get; set; } = new RFQ { Customer = new Customer()};
         public Item RFQItem { get; set; } = new Item();
+        public ObservableCollection<Admin> Admins
+        {
+            get
+            {
+                if (_admins== null)
+                {
+                    _admins = new ObservableCollection<Admin>(SQLWrapper<Admin>.FetchWrapper(AdminsRepository.FetchAdmins));
+                }
+                return _admins;
+            }
+        }
 
         #endregion Properties
 
