@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:shared_vm="clr-namespace:Metaforge_Marketing.ViewModels.Shared"
         xmlns:shared_views="clr-namespace:Metaforge_Marketing.Views.Shared"
+        xmlns:rfq_vm ="clr-namespace:Metaforge_Marketing.ViewModels.RFQs"
+        xmlns:rfq_views="clr-namespace:Metaforge_Marketing.Views.RFQs"
         xmlns:local="clr-namespace:Metaforge_Marketing"
         mc:Ignorable="d"
         Title="PopupWindow" Height="450" Width="800">
@@ -15,6 +17,10 @@
         <DataTemplate DataType="{x:Type shared_vm:SelectItemViewModel}">
             <shared_views:SelectItemView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type rfq_vm:DetailedRFQViewModel}">
+            <rfq_views:DetailedRFQView/>
+        </DataTemplate>
+        
     </Window.Resources>
     
     <Grid>

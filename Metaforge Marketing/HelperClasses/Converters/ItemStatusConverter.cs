@@ -16,15 +16,15 @@ namespace Metaforge_Marketing.HelperClasses.Converters
                 case 1:
                     return "Regretted";
                 case 2:
-                    return "Rejected By Customer";
-                case 3:
                     return "MF Costing Prepared";
-                case 4:
+                case 3:
                     return "Customer Costing Prepared";
-                case 5:
+                case 4:
                     return "Quotation Sent";
-                case 6:
+                case 5:
                     return "PO Received";
+                case 6:
+                    return "Rejected By Customer";
 
                 default: return "Pending";
             }

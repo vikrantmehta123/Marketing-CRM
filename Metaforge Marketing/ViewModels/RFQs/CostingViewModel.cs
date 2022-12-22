@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
-namespace Metaforge_Marketing.ViewModels.Costing
+namespace Metaforge_Marketing.ViewModels.RFQs
 {
     public class CostingViewModel : SharedViewModelBase
     {

@@ -37,6 +37,7 @@ namespace Metaforge_Marketing.Repository
         {
             List<Remark> list = new List<Remark>();
             SqlCommand cmd = new SqlCommand("FetchRemarks", conn);
+            cmd.Parameters.Add("@custId", System.Data.SqlDbType.Int).Value = cust.Id;
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {

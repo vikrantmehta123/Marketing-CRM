@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:add_vm="clr-namespace:Metaforge_Marketing.ViewModels.Add"
         xmlns:add_views="clr-namespace:Metaforge_Marketing.Views.Add"
-        xmlns:costing_vm="clr-namespace:Metaforge_Marketing.ViewModels.Costing"
-        xmlns:costing_views="clr-namespace:Metaforge_Marketing.Views.Costing"
+        xmlns:rfq_vm="clr-namespace:Metaforge_Marketing.ViewModels.RFQs"
+        xmlns:rfq_views="clr-namespace:Metaforge_Marketing.Views.RFQs"
         xmlns:reports_vm="clr-namespace:Metaforge_Marketing.ViewModels.Reports"
         xmlns:reports_views="clr-namespace:Metaforge_Marketing.Views.Reports"
         xmlns:local="clr-namespace:Metaforge_Marketing"
@@ -26,11 +26,18 @@
         <DataTemplate DataType="{x:Type add_vm:AddRFQViewModel}">
             <add_views:AddRFQView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type costing_vm:CostingViewModel}">
-            <costing_views:CostingView/>
+        <DataTemplate DataType="{x:Type rfq_vm:CostingViewModel}">
+            <rfq_views:CostingView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type rfq_vm:PendingRFQViewModel}">
+            <rfq_views:PendingRFQView/>
+        </DataTemplate>
+        
         <DataTemplate DataType="{x:Type reports_vm:CustomerHistoryViewModel}">
             <reports_views:CustomerHistoryView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type reports_vm:PerformanceReportViewModel}">
+            <reports_views:PerformanceReportView/>
         </DataTemplate>
 
     </Window.Resources>
@@ -48,6 +55,7 @@
                 <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
                     <MenuItem Header="RFQ">
                         <MenuItem Header="Costing" Command="{Binding PrepareCostingCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Pending RFQs" Command="{Binding PendingRFQsCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
                 <Separator/>
@@ -74,7 +82,7 @@
                     <MenuItem Header="Reports">
                         <MenuItem Header="Customer History" Command="{Binding CustomerHistoryCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Costing Comparison" Command="{Binding CostingComparisonCommand}" CommandParameter="{Binding}"/>
-                        <MenuItem Header="RFQ Details" Command="{Binding RFQDetailsCommand}"/>
+                        <MenuItem Header="Performance Reports" Command="{Binding PerformanceReportCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Monthwise Data"/>
                     </MenuItem>
                 </Menu>

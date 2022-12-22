@@ -208,6 +208,9 @@
     </ApplicationDefinition>
     <Compile Include="HelperClasses\Commands\PaginationCommands.cs" />
     <Compile Include="HelperClasses\Commands\SaveCommand.cs" />
+    <Compile Include="HelperClasses\Converters\ItemStatusConverter.cs" />
+    <Compile Include="HelperClasses\Converters\OrderTypeConverter.cs" />
+    <Compile Include="HelperClasses\QuotationCreater.cs" />
     <Compile Include="HelperClasses\SQLWrapper.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Buyer.cs" />
@@ -243,10 +246,13 @@
     <Compile Include="ViewModels\Add\AddCustomerViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRemarkViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRFQViewModel.cs" />
-    <Compile Include="ViewModels\Costing\CostingViewModel.cs" />
+    <Compile Include="ViewModels\RFQs\CostingViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Reports\CostingComparisonViewModel.cs" />
     <Compile Include="ViewModels\Reports\CustomerHistoryViewModel.cs" />
+    <Compile Include="ViewModels\Reports\PerformanceReportViewModel.cs" />
+    <Compile Include="ViewModels\RFQs\DetailedRFQViewModel.cs" />
+    <Compile Include="ViewModels\RFQs\PendingRFQViewModel.cs" />
     <Compile Include="ViewModels\Send\SendGeneralMailViewModel.cs" />
     <Compile Include="ViewModels\Send\SendQuotationMailViewModel.cs" />
     <Compile Include="ViewModels\Shared\PopupCloseMarker.cs" />
@@ -268,11 +274,20 @@
     <Compile Include="Views\Add\AddRFQView.xaml.cs">
       <DependentUpon>AddRFQView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Costing\CostingView.xaml.cs">
+    <Compile Include="Views\RFQs\CostingView.xaml.cs">
       <DependentUpon>CostingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Reports\CustomerHistoryView.xaml.cs">
       <DependentUpon>CustomerHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\PerformanceReportView.xaml.cs">
+      <DependentUpon>PerformanceReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RFQs\DetailedRFQView.xaml.cs">
+      <DependentUpon>DetailedRFQView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RFQs\PendingRFQView.xaml.cs">
+      <DependentUpon>PendingRFQView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shared\SelectCustomerView.xaml.cs">
       <DependentUpon>SelectCustomerView.xaml</DependentUpon>
@@ -313,11 +328,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Costing\CostingView.xaml">
+    <Page Include="Views\RFQs\CostingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Reports\CustomerHistoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\PerformanceReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RFQs\DetailedRFQView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RFQs\PendingRFQView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -358,9 +385,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="HelperClasses\Converters\" />
     <Folder Include="HelperClasses\Interfaces\" />
-    <Folder Include="Models\Converters\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Database\MarketingDatabase.mdf">

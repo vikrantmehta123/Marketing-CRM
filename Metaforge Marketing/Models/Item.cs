@@ -14,7 +14,7 @@ namespace Metaforge_Marketing.Models
 
         #region Fields
 
-        private int _id, _status, _qty;
+        private int _id, _qty;
         private string _itemName, _itemCode;
         private float _grossWeight, _netWeight;
         private bool _isRegretted, _isRejectedByCustomer, _isMFCostingPrepared, _isCustomerCostingPrepared, _isQuotationSent, _isPOReceived;
@@ -28,7 +28,7 @@ namespace Metaforge_Marketing.Models
 
         #region Properties
         public int Id { get { return _id; } set { _id = value; } }
-        public int Status { get { return _status; } set { _status = value; } }
+        public ItemStatusEnum Status { get { return _itemStatus; } set { _itemStatus = value; } }
         public PriorityEnum Priority { get { return _priority; } set { _priority = value; } }
         public OrderTypeEnum OrderType { get { return _orderType; }  set { _orderType = value; } }
         public int Qty { get { return _qty; } set { _qty = value; } }
@@ -41,13 +41,41 @@ namespace Metaforge_Marketing.Models
         #endregion Properties
 
         #region Boolean Indicator Properties
-        public bool IsRegretted { get { return _isRegretted;}  }
-        public bool IsMFCostingPrepared { get { return _isMFCostingPrepared; } }
-        public bool IsCustomerCostingPrepared { get { return _isCustomerCostingPrepared; } }
+        public bool IsRegretted { get { return _isRegretted;} private set { _isRegretted = value; } }
+        public bool IsMFCostingPrepared { get { return _isMFCostingPrepared; } private set { _isMFCostingPrepared = value; } }
+        public bool IsCustomerCostingPrepared { get { return _isCustomerCostingPrepared; } private set { _isCustomerCostingPrepared = value; } }
         public bool IsRejected { get { return _isRejectedByCustomer; } set { _isRejectedByCustomer = value; } }
         public bool IsQuotationSent { get { return _isQuotationSent; } set { _isQuotationSent = value; } }
         public bool IsPOReceived { get { return _isPOReceived; } set { _isPOReceived = value; } }
 
         #endregion Boolean Indicator Properties
+
+        public void InitIndicatorVariables()
+        {
+            if(Status == ItemStatusEnum.Regretted) { IsRegretted = true;  }
+            if(Status == ItemStatusEnum.MF_Costing_Prepared) { IsMFCostingPrepared = true; }
+            if (Status == ItemStatusEnum.Customer_Costing_Prepared)
+            {
+                IsMFCostingPrepared = true;
+                IsCustomerCostingPrepared=true;
+            }
+            if (Status == ItemStatusEnum.QuotationSent) 
+            {
+                IsMFCostingPrepared = true;
+                IsCustomerCostingPrepared= true;
+                IsQuotationSent = true; 
+            }
+            if(Status == ItemStatusEnum.POReceived)
+            {
+                IsMFCostingPrepared = true;
+                IsCustomerCostingPrepared = true;
+                IsQuotationSent = true;
+                IsPOReceived = true;
+            }
+            if(Status == ItemStatusEnum.RejectedByCustomer)
+            {
+                IsRejected = true;
+            }
+        }
     }
 }

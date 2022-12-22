@@ -1,13 +1,13 @@
 ﻿using System.Windows.Controls;
 
 
-namespace Metaforge_Marketing.Views.Costing
+namespace Metaforge_Marketing.Views.RFQs
 {
     public partial class CostingView : UserControl
     {
         public CostingView()
         {
-            DataContext = new ViewModels.Costing.CostingViewModel();
+            DataContext = new ViewModels.RFQs.CostingViewModel();
             InitializeComponent();
         }
     }

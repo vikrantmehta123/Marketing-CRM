@@ -31,7 +31,6 @@ namespace Metaforge_Marketing.HelperClasses.Commands
         private Func<SqlConnection, string, IEnumerable<T>> _searchFunction;
         private Predicate<object> _filterFunction;
         private ObservableCollection<T> _collection;
-        private ICollectionView _filteredCollection;
         private ICommand _searchDatabaseCommand, _nextPageCommand, _lastPageCommand, _firstPageCommand, _prevPageCommand;
         #endregion Fields
 
@@ -102,11 +101,14 @@ namespace Metaforge_Marketing.HelperClasses.Commands
             view.Filter = _filterFunction;
         }
 
-        public PaginationCommands(IEnumerable<T> collection, int count) : this()
+        public PaginationCommands(IEnumerable<T> collection, int count, Predicate<object> filterFunction) : this()
         {
+            _filterFunction = filterFunction;
             CurrentPage = 1;
-            Collection = new ObservableCollection<T>(collection);
-            TotalPages = ComputeTotalPages(count, EntriesPerPage);
+            _collection = new ObservableCollection<T>(collection);
+            TotalPages = ComputeTotalPages(count, EntriesPerPage); 
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(_collection);
+            view.Filter = _filterFunction;
         }
 
 

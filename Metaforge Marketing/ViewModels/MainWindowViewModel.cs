@@ -10,8 +10,8 @@ namespace Metaforge_Marketing.ViewModels
 
         #region Fields
         private ICommand _addCustomerCommand, _addBuyerCommand, _addRFQCommand, _addRemarkCommand;
-        private ICommand _prepareCostingCommand;
-        private ICommand _customerHistoryCommand, _costingComparisonCommand, _rfqDetailsCommand;
+        private ICommand _prepareCostingCommand, _pendingRFQsCommand;
+        private ICommand _customerHistoryCommand, _costingComparisonCommand, _performanceReportCommand;
         private ICommand _sendGeneralMailCommand, _sendQuotationMailCommand;
         #endregion Fields
 
@@ -72,23 +72,21 @@ namespace Metaforge_Marketing.ViewModels
             {
                 if (_prepareCostingCommand == null)
                 {
-                    _prepareCostingCommand = new Command(p => ChangeViewModel(new Costing.CostingViewModel()));
+                    _prepareCostingCommand = new Command(p => ChangeViewModel(new RFQs.CostingViewModel()));
                 }
                 return _prepareCostingCommand;
             }
         }
-        public ICommand RFQDetailsCommand
+        public ICommand PendingRFQsCommand
         {
             get
             {
-                if (_rfqDetailsCommand == null)
+                if (_pendingRFQsCommand == null)
                 {
-                    
-                }
-                return _rfqDetailsCommand;
+                    _pendingRFQsCommand = new Command(p => ChangeViewModel(new ViewModels.RFQs.PendingRFQViewModel()));
+                }return _pendingRFQsCommand;
             }
         }
-
         public ICommand CostingComparisonCommand
         {
             get
@@ -101,6 +99,17 @@ namespace Metaforge_Marketing.ViewModels
             }
         }
 
+        public ICommand PerformanceReportCommand
+        {
+            get
+            {
+                if (_performanceReportCommand == null)
+                {
+                    _performanceReportCommand = new Command(p => ChangeViewModel(new Reports.PerformanceReportViewModel()));
+                }
+                return (_performanceReportCommand);
+            }
+        }
         public ICommand CustomerHistoryCommand
         {
             get

@@ -10,12 +10,73 @@ namespace Metaforge_Marketing.Repository
 {
     public class RFQsRepository
     {
-        public static IEnumerable<RFQ> FetchRFQs(SqlConnection connection, int rfqStatus, int offsetIndex, int entriesPerPage)
+        /// <summary>
+        /// TODO: Check with Rahul Fua about the correctness of joins
+        /// TODO: Change CustId column to BuyerId
+        /// Used for pagination
+        /// Fetches the RFQs by their status- fetches RFQs and not the individual items
+        /// Will look for inidividual items, and check if there are any items of the given status. 
+        /// If there are > 0 such items, the function will add those RFQs to the list
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="itemStatus"></param>
+        /// <param name="offsetIndex"></param>
+        /// <param name="entriesPerPage"></param>
+        /// <returns>A list of RFQs that have at least one item of that status</returns>
+        public static IEnumerable<RFQ> FetchRFQs(SqlConnection connection, int itemStatus, int offsetIndex, int entriesPerPage)
         {
             List<RFQ> rfqs = new List<RFQ>();
+            using(SqlCommand cmd = new SqlCommand("FetchRFQs", connection))
+            {
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.Add("@offsetIndex", System.Data.SqlDbType.Int).Value = offsetIndex;
+                cmd.Parameters.Add("@entriesPerPage", System.Data.SqlDbType.Int).Value = entriesPerPage;
+                cmd.Parameters.Add("@status", System.Data.SqlDbType.Int).Value = itemStatus;
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    RFQ rfq = new RFQ
+                    {
+                        Id = Convert.ToInt32(reader["RFQId"]),
+                        ProjectName = reader["ProjectName"].ToString(),
+                        EnquiryDate = Convert.ToDateTime(reader["EnquiryDate"]),
+
+                        Customer = new Customer
+                        {
+                            CustomerName = reader["CustomerName"].ToString()
+                        }
+                    };
+                    rfqs.Add(rfq);
+                }
+                reader.Close();
+            }
             return rfqs;
         }
 
+
+        /// <summary>
+        /// Given the status of an Item, fetches the count of the RFQs where there is at least one item of that status
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="itemStatus"></param>
+        /// <returns></returns>
+        public static int CountRFQs(SqlConnection conn, int itemStatus)
+        {
+            using(SqlCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = 
+                    "SELECT COUNT(t.RFQId) FROM (" +
+		            "SELECT RFQId " + 
+		            "FROM Items " +
+		            "WHERE Status = @status " +
+                    "GROUP BY RFQId " +
+		            "HAVING COUNT(*) > 0" +
+		            ") t ";
+                cmd.Parameters.Add("@status", System.Data.SqlDbType.Int).Value = itemStatus;
+                return Convert.ToInt32(cmd.ExecuteScalar());
+            }
+        }
 
         /// <summary>
         /// Given an instance of the RFQ Class, inserts it into the database

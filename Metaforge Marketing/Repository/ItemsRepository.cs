@@ -33,6 +33,35 @@ namespace Metaforge_Marketing.Repository
         }
 
 
+        public static IEnumerable<Item> FetchItems(SqlConnection conn, RFQ rfq)
+        {
+            List<Item> items = new List<Item>();
+            using(SqlCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "SELECT * FROM Items WHERE RFQId = @rfqId";
+                cmd.Parameters.Add("@rfqId", System.Data.SqlDbType.Int).Value = rfq.Id;
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Item item = new Item
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        ItemName = reader["ItemName"].ToString(),
+                        Status = (ItemStatusEnum)Convert.ToInt32(reader["Status"]),
+                        ItemCode = reader["ItemCode"].ToString(),
+                        Qty = Convert.ToInt32(reader["Qty"]),
+                        OrderType = (OrderTypeEnum)(Convert.ToInt16(reader["OrderType"])),
+                        Priority = (PriorityEnum)(Convert.ToInt16(reader["Priority"]))
+                    };
+                    item.InitIndicatorVariables();
+                    items.Add(item);
+                }
+                reader.Close();
+            }
+            return items;
+        }
+
+
         /// <summary>
         /// Fetches a list of Items, along with its RFQ and the customer
         /// </summary>
@@ -61,7 +90,7 @@ namespace Metaforge_Marketing.Repository
 
                             Id = Convert.ToInt32(reader["ItemId"]),
                             ItemName = reader["ItemName"].ToString(),
-                            Status = Convert.ToInt32(reader["Status"]),
+                            Status = (ItemStatusEnum)Convert.ToInt32(reader["Status"]),
                             ItemCode = reader["ItemCode"].ToString(),
                             Qty = Convert.ToInt32(reader["Qty"]),
                             OrderType = (OrderTypeEnum)(Convert.ToInt16(reader["OrderType"])),
@@ -116,7 +145,7 @@ namespace Metaforge_Marketing.Repository
 
                         Id = Convert.ToInt32(reader["ItemId"]),
                         ItemName = reader["ItemName"].ToString(),
-                        Status = Convert.ToInt32(reader["Status"]),
+                        Status = (ItemStatusEnum)Convert.ToInt32(reader["Status"]),
                         ItemCode = reader["ItemCode"].ToString(),
                         Qty = Convert.ToInt32(reader["Qty"]),
                         OrderType = (OrderTypeEnum)(Convert.ToInt16(reader["OrderType"])),
