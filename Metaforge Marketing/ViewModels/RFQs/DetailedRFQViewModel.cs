@@ -35,14 +35,9 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         }
         #endregion Properties
 
-        public override void ClearSelection()
-        {
-            throw new NotImplementedException();
-        }
+        public override void ClearSelection() { SelectedItem = null; }
 
-        public override bool IsSelectionDone()
-        {
-            throw new NotImplementedException();
-        }
+        public override bool IsSelectionDone() { return SelectedItem != null; }
+
     }
 }

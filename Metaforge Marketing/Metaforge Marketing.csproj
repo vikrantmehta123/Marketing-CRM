@@ -210,7 +210,9 @@
     <Compile Include="HelperClasses\Commands\SaveCommand.cs" />
     <Compile Include="HelperClasses\Converters\ItemStatusConverter.cs" />
     <Compile Include="HelperClasses\Converters\OrderTypeConverter.cs" />
-    <Compile Include="HelperClasses\QuotationCreater.cs" />
+    <Compile Include="HelperClasses\Email.cs" />
+    <Compile Include="HelperClasses\HTMLQuotationCreater.cs" />
+    <Compile Include="HelperClasses\PDFQuotationCreater.cs" />
     <Compile Include="HelperClasses\SQLWrapper.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Buyer.cs" />
@@ -231,6 +233,7 @@
     <Compile Include="Models\RFQ.cs" />
     <Compile Include="Models\RM.cs" />
     <Compile Include="Models\RMCosting.cs" />
+    <Compile Include="Models\SharedModelsBase.cs" />
     <Compile Include="PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
@@ -259,7 +262,6 @@
     <Compile Include="ViewModels\Shared\PopupWindowViewModel.cs" />
     <Compile Include="ViewModels\Shared\SelectCustomerViewModel.cs" />
     <Compile Include="ViewModels\Shared\SelectItemViewModel.cs" />
-    <Compile Include="ViewModels\Shared\SelectRFQViewModel.cs" />
     <Compile Include="ViewModels\Shared\SharedViewModelBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\Add\AddBuyerView.xaml.cs">

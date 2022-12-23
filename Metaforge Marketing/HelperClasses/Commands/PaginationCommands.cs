@@ -38,7 +38,6 @@ namespace Metaforge_Marketing.HelperClasses.Commands
         public int EntriesPerPage { get { return _entriesPerPage; } }
         public int CurrentPage { get { return _currentPage; } private set { _currentPage = value; } }
         public int TotalPages { get { return _totalPages; } private set { _totalPages = value; } }
-
         public string DBSearchText { get; set; }
         public string PageSearchText
         {
@@ -57,11 +56,53 @@ namespace Metaforge_Marketing.HelperClasses.Commands
                 _collection = value;
             }
         }
+        #endregion Properties
 
-        public ICommand NextPageCommand { get; private set; }
-        public ICommand PrevPageCommand { get; private set; }
-        public ICommand LastPageCommand { get; private set; }
-        public ICommand FirstPageCommand { get; private set; }
+        #region Commands
+        public ICommand NextPageCommand 
+        {
+            get
+            {
+                if (_nextPageCommand == null)
+                {
+                    _nextPageCommand = new Command(p => NextPage(), p => CanGoNext());
+                }
+                return _nextPageCommand;
+            }
+        }
+        public ICommand PrevPageCommand 
+        { 
+            get
+            {
+                if (_prevPageCommand== null)
+                {
+                    _prevPageCommand = new Command(p => PrevPage(), p=> CanGoPrev());
+                }
+                return _prevPageCommand;
+            }
+        }
+        public ICommand LastPageCommand 
+        {
+            get
+            {
+                if (_lastPageCommand == null)
+                {
+                    _lastPageCommand = new Command(p => LastPage(), p => CanGoLast());
+                }
+                return _lastPageCommand;
+            }
+        }
+        public ICommand FirstPageCommand 
+        {
+            get
+            {
+                if (_firstPageCommand == null)
+                {
+                    _firstPageCommand = new Command(p => FirstPage(), p => CanGoFirst());
+                }
+                return _firstPageCommand;
+            }
+        }
 
         public ICommand SearchDatabaseCommand
         {
@@ -79,7 +120,7 @@ namespace Metaforge_Marketing.HelperClasses.Commands
                 return _searchDatabaseCommand;
             }
         }
-        #endregion Properties
+        #endregion Commands
 
         #region Constructors
         public PaginationCommands()
@@ -154,14 +195,24 @@ namespace Metaforge_Marketing.HelperClasses.Commands
             if (CurrentPage < TotalPages) { return true; }
             return false;
         }
-
+        private bool CanGoLast()
+        {
+            if (CurrentPage == TotalPages) { return false; }
+            return true;
+        }
+        private bool CanGoFirst()
+        {
+            if (CurrentPage == 1) { return false; }
+            return true;
+        }
         #endregion Command Functions
 
-
+        #region Methods
         private int ComputeTotalPages(int Count, int EntriesPerPage)
         {
             if (Count % EntriesPerPage == 0) { return (int)Count / EntriesPerPage; }
             else { return ((int)Count / EntriesPerPage) + 1; }
         }
+        #endregion Methods
     }
 }
