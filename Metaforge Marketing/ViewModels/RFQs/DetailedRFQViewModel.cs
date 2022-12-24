@@ -1,20 +1,48 @@
 ﻿using Metaforge_Marketing.HelperClasses;
 using Metaforge_Marketing.Models;
+using Metaforge_Marketing.ViewModels.Add;
 using Metaforge_Marketing.ViewModels.Shared;
 using System;
 using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace Metaforge_Marketing.ViewModels.RFQs
 {
     internal class DetailedRFQViewModel : PopupCloseMarker
     {
         #region Fields
-        private ICommand _selectionDoneCommand;
+        private ICommand _selectionDoneCommand, _updateStatusCommand, _addCostingCommand;
         private ObservableCollection<Item> _items;
         #endregion Fields
 
         #region Properties
+
+        public ICommand UpdateStatusCommand
+        {
+            get
+            {
+                if (_updateStatusCommand== null)
+                {
+                    _updateStatusCommand = new Command(p => 
+                    {
+                        new PopupWindowViewModel().Show(new UpdateItemStatusViewModel(SelectedItem));
+                        
+                    });
+                }
+                return _updateStatusCommand;
+            }
+        }
+
+        public ICommand AddCostingCommand
+        {
+            get
+            {
+                return _addCostingCommand;
+            }
+        }
         public override ICommand SelectionDoneCommand
         {
             get

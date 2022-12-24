@@ -9,6 +9,8 @@
         xmlns:rfq_views="clr-namespace:Metaforge_Marketing.Views.RFQs"
         xmlns:reports_vm="clr-namespace:Metaforge_Marketing.ViewModels.Reports"
         xmlns:reports_views="clr-namespace:Metaforge_Marketing.Views.Reports"
+        xmlns:SendMail_vm="clr-namespace:Metaforge_Marketing.ViewModels.Send"
+        xmlns:SendMail_views="clr-namespace:Metaforge_Marketing.Views.Mails"
         xmlns:local="clr-namespace:Metaforge_Marketing"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="720" Width="1280">
@@ -26,6 +28,14 @@
         <DataTemplate DataType="{x:Type add_vm:AddRFQViewModel}">
             <add_views:AddRFQView/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type SendMail_vm:SendGeneralMailViewModel}">
+            <SendMail_views:GeneralMailView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type SendMail_vm:SendQuotationViewModel}">
+            <SendMail_views:SendQuotationView/>
+        </DataTemplate>
+        
         <DataTemplate DataType="{x:Type rfq_vm:CostingViewModel}">
             <rfq_views:CostingView/>
         </DataTemplate>

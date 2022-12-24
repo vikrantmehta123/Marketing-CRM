@@ -1,5 +1,6 @@
 ﻿
 using Metaforge_Marketing.HelperClasses;
+using Metaforge_Marketing.ViewModels.RFQs;
 using System.Windows.Input;
 
 namespace Metaforge_Marketing.ViewModels
@@ -14,6 +15,10 @@ namespace Metaforge_Marketing.ViewModels
         private ICommand _customerHistoryCommand, _costingComparisonCommand, _performanceReportCommand;
         private ICommand _sendGeneralMailCommand, _sendQuotationMailCommand;
         #endregion Fields
+
+        public MainWindowViewModel()
+        {
+            CurrentPageViewModel = new PendingRFQViewModel();        }
 
         #region Commands
 
@@ -140,7 +145,7 @@ namespace Metaforge_Marketing.ViewModels
             {
                 if (_sendQuotationMailCommand == null)
                 {
-                    _sendQuotationMailCommand = new Command(p => ChangeViewModel(new Send.SendQuotationMailViewModel()));
+                    _sendQuotationMailCommand = new Command(p => ChangeViewModel(new Send.SendQuotationViewModel()));
                 }
                 return _sendQuotationMailCommand;
             }

@@ -20,6 +20,9 @@
         <DataTemplate DataType="{x:Type rfq_vm:DetailedRFQViewModel}">
             <rfq_views:DetailedRFQView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type rfq_vm:UpdateItemStatusViewModel}">
+            <rfq_views:UpdateItemStatusView/>
+        </DataTemplate>
         
     </Window.Resources>
     

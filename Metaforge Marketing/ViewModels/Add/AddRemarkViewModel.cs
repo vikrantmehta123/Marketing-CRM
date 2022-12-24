@@ -29,7 +29,7 @@ namespace Metaforge_Marketing.ViewModels.Add
             }
         }
 
-        public IComand SaveCommand
+        public ICommand SaveCommand
         {
             get
             {

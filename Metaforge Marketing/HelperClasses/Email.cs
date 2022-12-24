@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Metaforge_Marketing.HelperClasses
 {
-    internal class Email
+    public class Email
     {
         #region Fields
         private string Username = Environment.GetEnvironmentVariable("My_email");

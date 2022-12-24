@@ -1,0 +1,103 @@
+﻿<UserControl x:Class="Metaforge_Marketing.Views.RFQs.UpdateItemStatusView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Metaforge_Marketing.Views.RFQs"
+             mc:Ignorable="d" 
+             Background="White"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <StackPanel>
+                <DockPanel>
+                    <Label Content="Item Name:" FontWeight="DemiBold"/>
+                    <Label Content="{Binding SelectedItem.ItemName}"/>
+                </DockPanel>
+                <DockPanel>
+                    <Label Content="Item Code:" FontWeight="DemiBold"/>
+                    <Label Content="{Binding SelectedItem.ItemCode}"/>
+                </DockPanel>
+                <DockPanel>
+                    <Label Content="Priority" FontWeight="DemiBold"/>
+                    <Label Content="{Binding SelectedItem.Priority}"/>
+                </DockPanel>
+            </StackPanel>
+            
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Separator/>
+            <StackPanel>
+                <DockPanel>
+                    <Label Content="Mark as Regretted" FontWeight="DemiBold"/>
+                    <CheckBox VerticalContentAlignment="Center"/>
+                    <DatePicker/>
+                    <Label Content="Note:" FontWeight="DemiBold"/>
+                    <TextBox MinWidth="100"/>
+                </DockPanel>
+                <DockPanel>
+                    <Label Content="Mark as Rejected By Customer" FontWeight="DemiBold"/>
+                    <CheckBox VerticalContentAlignment="Center"/>
+                    <DatePicker/>
+                    <Label Content="Note:" FontWeight="DemiBold"/>
+                    <TextBox MinWidth="100"/>
+                </DockPanel>
+                <DockPanel>
+                    <Label Content="Mark as Quotation Sent" FontWeight="DemiBold"/>
+                    <CheckBox VerticalContentAlignment="Center"/>
+                    <DatePicker/>
+                    <Label Content="Note:" FontWeight="DemiBold"/>
+                    <TextBox MinWidth="100"/>
+                </DockPanel>
+                <DockPanel LastChildFill="False">
+                    <Label Content="Mark as PO Received" FontWeight="DemiBold"/>
+                    <Button Content="Add PO Details" Command="{Binding AddPODetails}"/>
+                </DockPanel>
+
+                <Separator/>
+
+                <StackPanel Visibility="{Binding IsAddingPODetails, Converter={StaticResource boolToVisibilityConverter}}">
+                    <DockPanel LastChildFill="False">
+                        <Label Content="PO Number" FontWeight="DemiBold"/>
+                        <TextBox  MinWidth="150"/>
+                    </DockPanel>
+                    <DockPanel LastChildFill="False">
+                        <Label Content="PO Qty" FontWeight="DemiBold"/>
+                        <TextBox MinWidth="150"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <Label Content="Note:" FontWeight="DemiBold"/>
+                        <TextBox/>
+                    </DockPanel>
+                </StackPanel>
+                <Separator/>
+            </StackPanel>
+            
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            
+        </StackPanel>
+
+        <StackPanel Grid.Row="3">
+            <DockPanel LastChildFill="False">
+                <Button Content="Save" Command="{Binding SaveCommand}"/>
+                <Button Content="Clear" Command="{Binding ClearCommand}"/>
+            </DockPanel>
+        </StackPanel>
+        
+    </Grid>
+</UserControl>

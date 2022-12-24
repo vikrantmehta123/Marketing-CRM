@@ -20,7 +20,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
             <StackPanel>
                 <DockPanel>
                     <Label Content="Project Name:" FontWeight="DemiBold"/>
@@ -63,55 +63,32 @@
                     <GridViewColumn Header="Order Type" DisplayMemberBinding="{Binding Path=OrderType,Converter={StaticResource OrderTypeConverter}}"/>
                     <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Path=Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ItemStatusConverter}}"/>
 
-                    <GridViewColumn Header="Regretted?">
+                    <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding Path=IsRegretted, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
+                                <Button IsEnabled="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" 
+                                        Content="Update Status" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.UpdateStatusCommand}" 
+                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="MF Costing">
+
+                    <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <CheckBox IsChecked="{Binding Path=IsMFCostingPrepared, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
+                                <Button IsEnabled="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" 
+                                        Content="Add Costing" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.AddCostingCommand}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Customer Costing">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding Path=IsCustomerCostingPrepared, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Quotation Sent">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding Path=IsQuotationSent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="PO Received?">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding Path=IsPOReceived, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Rejected By Customer">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding Path=IsRejected, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="True"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                    
                 </GridView>
             </ListView.View>
         </ListView>
 
         <StackPanel Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center">
             <DockPanel>
-                <Button Content="Save Changes"/>
+                <Button Content="Save"/>
                 <Button Content="Clear Changes"/>
             </DockPanel>
         </StackPanel>

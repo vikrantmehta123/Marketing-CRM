@@ -238,6 +238,7 @@
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Repository\AdminsRepository.cs" />
+    <Compile Include="Repository\BuyersRepository.cs" />
     <Compile Include="Repository\CostingRepository.cs" />
     <Compile Include="Repository\CustomersRepository.cs" />
     <Compile Include="Repository\ItemsRepository.cs" />
@@ -256,8 +257,9 @@
     <Compile Include="ViewModels\Reports\PerformanceReportViewModel.cs" />
     <Compile Include="ViewModels\RFQs\DetailedRFQViewModel.cs" />
     <Compile Include="ViewModels\RFQs\PendingRFQViewModel.cs" />
+    <Compile Include="ViewModels\RFQs\UpdateItemStatusViewModel.cs" />
     <Compile Include="ViewModels\Send\SendGeneralMailViewModel.cs" />
-    <Compile Include="ViewModels\Send\SendQuotationMailViewModel.cs" />
+    <Compile Include="ViewModels\Send\SendQuotationViewModel.cs" />
     <Compile Include="ViewModels\Shared\PopupCloseMarker.cs" />
     <Compile Include="ViewModels\Shared\PopupWindowViewModel.cs" />
     <Compile Include="ViewModels\Shared\SelectCustomerViewModel.cs" />
@@ -276,6 +278,12 @@
     <Compile Include="Views\Add\AddRFQView.xaml.cs">
       <DependentUpon>AddRFQView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Mails\GeneralMailView.xaml.cs">
+      <DependentUpon>GeneralMailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Mails\SendQuotationView.xaml.cs">
+      <DependentUpon>SendQuotationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RFQs\CostingView.xaml.cs">
       <DependentUpon>CostingView.xaml</DependentUpon>
     </Compile>
@@ -290,6 +298,9 @@
     </Compile>
     <Compile Include="Views\RFQs\PendingRFQView.xaml.cs">
       <DependentUpon>PendingRFQView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RFQs\UpdateItemStatusView.xaml.cs">
+      <DependentUpon>UpdateItemStatusView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shared\SelectCustomerView.xaml.cs">
       <DependentUpon>SelectCustomerView.xaml</DependentUpon>
@@ -330,6 +341,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Mails\GeneralMailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Mails\SendQuotationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RFQs\CostingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -347,6 +366,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RFQs\PendingRFQView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RFQs\UpdateItemStatusView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
