@@ -165,11 +165,5 @@ namespace Metaforge_Marketing.Repository
 
         #endregion Select Queries
 
-        #region Insert Queries
-        public static void InsertToDB(SqlConnection connection, Item item)
-        {
-
-        }
-        #endregion Insert Queries
     }
 }

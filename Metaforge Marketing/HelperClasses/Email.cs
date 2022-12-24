@@ -69,7 +69,7 @@ namespace Metaforge_Marketing.HelperClasses
         /// Reads the blueprint file
         /// </summary>
         /// <param name="blueprint"></param>
-        /// <returns>Text of the file</returns>
+        /// <returns>Note of the file</returns>
         private string GetBlueprintText(string blueprint)
         {
             string PathToBlueprintFolder = @"D:\Metaforge\Metaforge\Mail Blueprints";

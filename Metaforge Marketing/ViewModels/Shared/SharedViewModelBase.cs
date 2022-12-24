@@ -63,5 +63,14 @@ namespace Metaforge_Marketing.ViewModels.Shared
             }
         }
         #endregion Properties
+
+        #region Methods
+        public void ClearAllSelections()
+        {
+            SelectedCustomer = null;
+            SelectedItem = null;
+            SelectedRFQ = null;
+        }
+        #endregion Methods
     }
 }

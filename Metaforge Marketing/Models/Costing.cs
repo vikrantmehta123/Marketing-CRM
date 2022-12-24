@@ -1,4 +1,6 @@
 ﻿using Metaforge_Marketing.Models.Enums;
+using Metaforge_Marketing.Repository;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +16,10 @@ namespace Metaforge_Marketing.Models
         #region Fields
         private int _id;
         private float _rmCostPerPiece, _ccPerPiece, _totalCostPerPiece;
+        private bool _isRMCostingPresent, _isConvCostingPresent;
         private Item _item;
+        private Admin _costingPreparedBy;
+        private Remark _remark;
         private RMCosting _rmCosting;
         private List<Operation> _operations;
         private CostingCategoryEnum _costingCategory;
@@ -23,9 +28,20 @@ namespace Metaforge_Marketing.Models
 
         #region Properties
         public int Id { get { return _id; } set { _id = value; } }
-
         public Item Item { get { return _item;} set { _item = value; } }
-        public RMCosting RMCosting { get { return _rmCosting; } set { _rmCosting = value; } }
+        public Admin CostingPreparedBy { get { return _costingPreparedBy; } set { _costingPreparedBy = value; } }
+        public Remark Remark { get { return _remark; } set { _remark = value; } }
+        public RMCosting RMCosting 
+        { 
+            get 
+            {   
+                return _rmCosting; 
+            } 
+            set 
+            { 
+                _rmCosting = value; 
+            } 
+        }
         public List<Operation> Operations { get { return _operations; } set { _operations = value;} }
         public CostingCategoryEnum Category { get { return _costingCategory; } set { _costingCategory = value; } }
         public CostingFormatEnum Format { 
@@ -52,12 +68,12 @@ namespace Metaforge_Marketing.Models
         public Costing()
         {
             _operations = new List<Operation>();
-            _rmCosting = new RMCosting();
         }
 
         #region Methods
         public bool IsDataValid()
         {
+            if (RMCosting== null) { return false; }
             if (Item == null) { return false; }
             if (!RMCosting.IsDataValid()) { return false; }
             if (Operations.Count == 0) { return false; }

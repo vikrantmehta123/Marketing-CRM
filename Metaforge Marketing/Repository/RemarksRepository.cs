@@ -21,7 +21,7 @@ namespace Metaforge_Marketing.Repository
             SqlCommand cmd = new SqlCommand("InsertRemark", conn);
             cmd.Parameters.Add("@custId", System.Data.SqlDbType.Int).Value = remark.Customer.Id ;
             cmd.Parameters.Add("@date", System.Data.SqlDbType.Date).Value = remark.EventDate.Date;
-            cmd.Parameters.Add("@remark", System.Data.SqlDbType.VarChar).Value = remark.Text;
+            cmd.Parameters.Add("@remark", System.Data.SqlDbType.VarChar).Value = remark.Note;
 
             cmd.ExecuteNonQuery();
         }
@@ -42,7 +42,7 @@ namespace Metaforge_Marketing.Repository
             while (reader.Read())
             {
                 Remark remark = new Remark();
-                remark.Text = reader["Remark"].ToString();
+                remark.Note = reader["Remark"].ToString();
                 remark.EventDate = Convert.ToDateTime(reader["RemarkDate"]);
                 remark.Id = Convert.ToInt32(reader["Id"]);
                 list.Add(remark);

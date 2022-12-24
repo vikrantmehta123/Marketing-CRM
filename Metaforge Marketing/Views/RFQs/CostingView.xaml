@@ -32,7 +32,7 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
                 <DockPanel>
                     <Label Content="Customer Name:" FontWeight="DemiBold"/>
-                    <Label Content="{Binding Path=SelectedRFQ.CustName}"/>
+                    <Label Content="{Binding Path=SelectedRFQ.Customer.CustomerName}"/>
                 </DockPanel>
                 <DockPanel >
                     <Label Content="Item Name:" FontWeight="DemiBold"/>

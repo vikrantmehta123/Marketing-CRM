@@ -94,6 +94,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
 
         public CostingViewModel()
         {
+            ClearAllSelections();
             _costing = new Models.Costing();
             _costing.PropertyChanged += FormatChangedHandler;
             StaticPropertyChanged += FormatChangedHandler;
@@ -128,10 +129,13 @@ namespace Metaforge_Marketing.ViewModels.RFQs
             {
                 OnPropertyChanged(nameof(ShowDetailedCostingForm));
                 OnPropertyChanged(nameof(ShowShortFormatForm));
+                OnPropertyChanged(nameof(Costing.RMCosting));
             }
             if (e.PropertyName == nameof(SelectedItem))
             {
                 Costing.Item = SelectedItem;
+                OnPropertyChanged(nameof(Costing.Item));
+                OnPropertyChanged(nameof(Costing.RMCosting.RMRate));
             }
         }
 
