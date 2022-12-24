@@ -88,11 +88,12 @@ namespace Metaforge_Marketing.Repository
         {
             using (SqlCommand cmd = connection.CreateCommand())
             {
-                cmd.CommandText = "INSERT INTO RFQs (EnquiryDate, ProjectName, ReferredBy, CustId) " +
-                    "VALUES (@enquiryDate, @projectName, @referredBy, @custId) SELECT SCOPE_IDENTITY()";
+                cmd.CommandText = "INSERT INTO RFQs (EnquiryDate, ProjectName, ReferredBy, AdminId, BuyerId) " +
+                    "VALUES (@enquiryDate, @projectName, @referredBy, @adminId, @buyerId) SELECT SCOPE_IDENTITY()";
                 cmd.Parameters.Add("@enquiryDate", System.Data.SqlDbType.Date).Value = rfq.EnquiryDate.Date;
                 cmd.Parameters.Add("@projectName", System.Data.SqlDbType.VarChar).Value = rfq.ProjectName;
-                cmd.Parameters.Add("@custId", System.Data.SqlDbType.Int).Value = rfq.Customer.Id;
+                cmd.Parameters.Add("@buyerId", System.Data.SqlDbType.Int).Value = rfq.Buyer.Id;
+                cmd.Parameters.Add("@adminId", System.Data.SqlDbType.Int).Value = rfq.RFQBroughtBy.Id;
                 if (!String.IsNullOrEmpty(rfq.ReferredBy)) { cmd.Parameters.Add("@referredBy", System.Data.SqlDbType.VarChar).Value = rfq.ReferredBy; }
                 else { cmd.Parameters.Add("@referredBy", System.Data.SqlDbType.VarChar).Value = DBNull.Value; }
 

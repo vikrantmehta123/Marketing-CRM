@@ -44,7 +44,6 @@
             <DockPanel LastChildFill="False">
                 <Label Content="Choose Admin" FontWeight="DemiBold"/>
                 <ComboBox ItemsSource="{Binding Admins}" SelectedItem="{Binding RFQToAdd.RFQBroughtBy}" MinWidth="100"/>
-                <Button Content="+" MinWidth="15"/>
             </DockPanel>
 
             <DockPanel Margin="0, 10, 0, 0">

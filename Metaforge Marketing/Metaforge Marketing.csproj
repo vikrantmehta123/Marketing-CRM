@@ -207,7 +207,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="HelperClasses\Commands\PaginationCommands.cs" />
-    <Compile Include="HelperClasses\Commands\SaveCommand.cs" />
     <Compile Include="HelperClasses\Converters\ItemStatusConverter.cs" />
     <Compile Include="HelperClasses\Converters\OrderTypeConverter.cs" />
     <Compile Include="HelperClasses\Email.cs" />
@@ -220,6 +219,7 @@
     <Compile Include="Models\Costing.cs" />
     <Compile Include="Models\Enums\CostingCategoryEnum.cs" />
     <Compile Include="Models\Enums\CostingFormatEnum.cs" />
+    <Compile Include="Models\Enums\CustomerCategoryEnum.cs" />
     <Compile Include="Models\Enums\ItemStatusEnum.cs" />
     <Compile Include="Models\Enums\OrderTypeEnum.cs" />
     <Compile Include="Models\Enums\PriorityEnum.cs" />

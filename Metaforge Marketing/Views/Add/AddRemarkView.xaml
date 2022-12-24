@@ -16,12 +16,20 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--#region Dashboard-->
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <StackPanel>
+                <Button Content="Select Customer" Command="{Binding SelectCustomerCommand}"/>
+            </StackPanel>
+
+
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
             <StackPanel Orientation="Vertical">
                 <DockPanel>
                     <TextBlock Text="Customer Name: " FontWeight="DemiBold"/>
@@ -38,22 +46,28 @@
                     <TextBlock Text="{Binding Path=SelectedCustomer.Category}"/>
                 </DockPanel>
             </StackPanel>
+
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+        
         </StackPanel>
         <!--#endregion-->
 
         <!--#region Add Remark Form-->
-        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1">
+        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="2" Grid.RowSpan="2">
             <Label Content="Add A Remark" FontWeight="Bold" HorizontalAlignment="Center" FontSize="25"/>
-            <Label Margin="0, 25, 0, 0" HorizontalAlignment="Left" Content="Remark"/>
-            <TextBox HorizontalAlignment="Left" MinWidth="200" MinHeight="50" Text="{Binding Path=NewRemark.Remark}"/>
-            <Label Margin="0, 25, 0, 0" Content="Date of Event"/>
-            <DatePicker HorizontalAlignment="Left" SelectedDateFormat="Short" SelectedDate="{Binding Path=NewRemark.EventDate}"/>
+
+            <Label Margin="0, 25, 0, 0" Content="Date of Event" FontWeight="DemiBold"/>
+            <DatePicker HorizontalAlignment="Left" SelectedDateFormat="Short" SelectedDate="{Binding Path=RemarkToAdd.EventDate}"/>
+            
+            <Label Margin="0, 25, 0, 0" HorizontalAlignment="Left" Content="Remark" FontWeight="DemiBold"/>
+            <TextBox HorizontalAlignment="Left" MinWidth="200" MinHeight="100" Text="{Binding Path=RemarkToAdd.Remark}"/>
+
+            <DockPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <Button Content="Save" Command="{Binding Path=SaveCommand}"/>
+                <Button Content="Clear" Command="{Binding Path=ClearCommand}"/>
+            </DockPanel>
         </StackPanel>
 
-        <DockPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right">
-            <Button Content="Save" Command="{Binding Path=SubmitRemarkCommand}"/>
-            <Button Content="Clear" Command="{Binding Path=ClearCommand}"/>
-        </DockPanel>
         <!--#endregion-->
     </Grid>
 </UserControl>

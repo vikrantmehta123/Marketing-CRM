@@ -15,12 +15,21 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--#region DashBoard-->
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <StackPanel>
+                <DockPanel>
+                    <Button Content="Select Customer" Command="{Binding SelectCustomerCommand}"/>
+                </DockPanel>
+            </StackPanel>
+
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
             <StackPanel Orientation="Vertical">
                 <DockPanel>
                     <TextBlock Text="Customer Name: " FontWeight="DemiBold"/>
@@ -37,11 +46,13 @@
                     <TextBlock Text="{Binding Path=SelectedCustomer.Category}"/>
                 </DockPanel>
             </StackPanel>
+            
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
         </StackPanel>
         <!--#endregion Dashboard-->
 
         <!--#region Add Buyer Form-->
-        <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center">
+        <StackPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Center">
             <TextBlock VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center"
                    Text="Add A Buyer" FontSize="20" FontWeight="Bold"/>
             <Label Content="Name" Margin="0, 10, 0, 0" FontWeight="DemiBold"/>
