@@ -59,6 +59,12 @@ namespace Metaforge_Marketing.Models
             }
         }
 
+        public ConversionCosting ConvCosting
+        {
+            get { return _convCosting; }
+            set { _convCosting = value; }
+        }
+
         #endregion Properties
 
 
@@ -87,6 +93,15 @@ namespace Metaforge_Marketing.Models
             return -1;
         }
 
+        public float AddProfit()
+        {
+            return (float)((RMCosting.CostPerPiece + ConvCosting.TotalCostPerPiece) * 0.15);
+        }
+
+        public float ComputeTotalCost()
+        {
+            return RMCosting.CostPerPiece + ConvCosting.TotalCostPerPiece + AddProfit();
+        }
         #endregion Methods
     }
 }

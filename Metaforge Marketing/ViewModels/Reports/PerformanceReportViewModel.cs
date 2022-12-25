@@ -4,6 +4,7 @@ using Metaforge_Marketing.Models;
 using Metaforge_Marketing.Repository;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -33,21 +34,14 @@ namespace Metaforge_Marketing.ViewModels.Reports
 
         public PerformanceReportViewModel()
         {
-            Admin.StaticPropertyChanged += DateChangedHandler;
-        }
-
-        #region Methods
-        private void DateChangedHandler(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(Admin.StartDate) || e.PropertyName == nameof(Admin.EndDate))
+            DateTime start = new DateTime(2022, 11, 1);
+            DateTime end = DateTime.Today;
+            using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
             {
-                OnPropertyChanged(nameof(Admin.RFQCount));
-                OnPropertyChanged(nameof(Admin.ConvertedQuotationsCount));
-                OnPropertyChanged(nameof(Admin.ConversionRate));
-                OnPropertyChanged(nameof(Admin.AvgResponseTime));
-                OnPropertyChanged(nameof(Admin.PreparedCostingsCount));
+                conn.Open();
+                _admins = new ObservableCollection<Admin>(AdminsRepository.FetchPerformanceReview(conn, start, end));
+                conn.Close();
             }
         }
-        #endregion Methods
     }
 }

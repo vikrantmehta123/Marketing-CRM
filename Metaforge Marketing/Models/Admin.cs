@@ -33,79 +33,40 @@ namespace Metaforge_Marketing.Models
         #region Properties For Performance Review
         public int RFQCount
         {
-            get 
-            { 
-                using (SqlConnection conn = new SqlConnection(conn_string))
-                {
-                    conn.Open();
-                    _rfqCount = AdminsRepository.CountRFQs(conn, this, StartDate, EndDate);
-                    conn.Close();
-                }
-                return _rfqCount; 
-            }
+            get { return _rfqCount; }
+            set { _rfqCount = value; }
         }
-        public int PreparedCostingsCount
-        {
-            get
-            {
-                using (SqlConnection conn = new SqlConnection(conn_string))
-                {
-                    conn.Open();
-                    _preparedCostingsCount = AdminsRepository.CountPreparedQuotations(conn, this, StartDate, EndDate);
-                    conn.Close();
-                }
-                return _preparedCostingsCount;
-            }
-
+        public int PreparedCostingsCount 
+        { 
+            get { return _preparedCostingsCount; }
+            set { _preparedCostingsCount = value; }
         }
-        public int ConvertedQuotationsCount
-        {
-            get
-            {
-                using (SqlConnection conn = new SqlConnection(conn_string))
-                {
-                    conn.Open();
-                    _convertedQuotationsCount = AdminsRepository.CountConvertedQuotations(conn, this, StartDate, EndDate);
-                    conn.Close();
-                }
-                return _convertedQuotationsCount;
-            }
+        public int ConvertedQuotationsCount 
+        { 
+            get { return _convertedQuotationsCount; }
+            set { _convertedQuotationsCount = value; }
         }
         public float ConversionRate
         {
             get
             {
-                _conversionRate = _convertedQuotationsCount / _preparedCostingsCount* 100;
+                if (_preparedCostingsCount > 0)
+                {
+                    _conversionRate = _convertedQuotationsCount / _preparedCostingsCount * 100;
+                }
                 return _conversionRate;
             }
         }
-        public float AvgResponseTime
-        {
-            get
-            {
-                return _avgResponseTime;
-            }
+        public float AvgResponseTime 
+        { 
+            get { return _avgResponseTime; }
+            set { _avgResponseTime = value; }
         }
+
 
         #endregion Properties For Performance Review
 
-        public Admin()
-        {
-            StaticPropertyChanged += DateChangedHandler;
-        }
-
         #region Methods
-        private void DateChangedHandler(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName== nameof(StartDate) || e.PropertyName == nameof(EndDate))
-            {
-                OnPropertyChanged(nameof(RFQCount));
-                OnPropertyChanged(nameof(ConvertedQuotationsCount));
-                OnPropertyChanged(nameof(ConversionRate));
-                OnPropertyChanged(nameof(AvgResponseTime));
-                OnPropertyChanged(nameof(PreparedCostingsCount));
-            }
-        }
         public override string ToString() { return Name; }
         #endregion Methods
     }
