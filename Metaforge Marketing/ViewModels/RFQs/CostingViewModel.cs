@@ -1,5 +1,6 @@
 ﻿using Metaforge_Marketing.HelperClasses;
 using Metaforge_Marketing.Models;
+using Metaforge_Marketing.Repository;
 using Metaforge_Marketing.ViewModels.Shared;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
@@ -12,7 +13,8 @@ namespace Metaforge_Marketing.ViewModels.RFQs
     public class CostingViewModel : SharedViewModelBase
     {
         #region Fields
-        private Models.Costing _costing;
+        private Costing _costing;
+        private RMCosting _rmCosting;
         private ICommand _saveCommand, _clearCommand, _selectItemCommand;
         #endregion Fields
 
@@ -20,6 +22,27 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         #region Properties
         public RM RMMaster { get; set; } = new RM();
 
+        // TODO: Move the below property to the Costing class, and change bindings
+        public RMCosting RMCosting
+        {
+            get
+            {
+                if (SelectedItem != null && Costing.Category != Models.Enums.CostingCategoryEnum.None)
+                {
+                    using(SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
+                    {
+                        conn.Open();
+                        _rmCosting =  CostingRepository.FetchRMCosting(conn, SelectedItem, Costing.Category);
+                        conn.Close();
+                    }
+                }
+                return _rmCosting;
+            }
+            set
+            {
+                _rmCosting = value;
+            }
+        }
 
         public bool ShowDetailedCostingForm
         {
@@ -39,7 +62,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
             }
         }
 
-        public Models.Costing Costing
+        public Costing Costing
         {
             get
             {
@@ -95,7 +118,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         public CostingViewModel()
         {
             ClearAllSelections();
-            _costing = new Models.Costing();
+            _costing = new Costing();
             _costing.PropertyChanged += FormatChangedHandler;
             StaticPropertyChanged += FormatChangedHandler;
         }
@@ -118,8 +141,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
 
         private void Clear()
         {
-            MessageBox.Show(Costing.RMCosting.RMConsidered.Id + "");
-            Costing = new Models.Costing();
+            Costing = new Costing();
             OnPropertyChanged(nameof(Costing));
         }
 
@@ -129,13 +151,16 @@ namespace Metaforge_Marketing.ViewModels.RFQs
             {
                 OnPropertyChanged(nameof(ShowDetailedCostingForm));
                 OnPropertyChanged(nameof(ShowShortFormatForm));
-                OnPropertyChanged(nameof(Costing.RMCosting));
             }
             if (e.PropertyName == nameof(SelectedItem))
             {
                 Costing.Item = SelectedItem;
                 OnPropertyChanged(nameof(Costing.Item));
-                OnPropertyChanged(nameof(Costing.RMCosting.RMRate));
+                OnPropertyChanged(nameof(RMCosting));
+            }
+            if (e.PropertyName == nameof(Costing.Category))
+            {
+                OnPropertyChanged(nameof(RMCosting));
             }
         }
 

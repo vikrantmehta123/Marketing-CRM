@@ -8,6 +8,7 @@ namespace Metaforge_Marketing.Models
 {
     public class Operation
     {
+        #region Static Fields
         private static List<Operation> _allOperations;
         public static List<Operation> AllOperations
         {
@@ -25,16 +26,20 @@ namespace Metaforge_Marketing.Models
                 return _allOperations;
             }
         }
+        #endregion Static Fields
 
         #region Fields
         private string _operationName;
-        private int _id;
+        private int _id, _stepNo;
         private float _efficiency, _mchr, _cycleTime, _costPerPiece;
         private bool _isOutsourced;
+        private Item _item;
+        private Admin _admin;
         #endregion Fields
 
         #region Properties
         public int Id { get { return _id;} set { _id = value;} }
+        public int StepNo { get { return _stepNo; } set { _stepNo = value;} }
         public string OperationName { get { return _operationName; } set { _operationName = value; } }
         public float Efficiency { get { return _efficiency;} set { _efficiency = value; } }
         public float MCHr { get { return _mchr; } set { _mchr= value; } }

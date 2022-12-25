@@ -9,13 +9,19 @@ namespace Metaforge_Marketing.Models
         private int _id;
         private string _rmAsPerDrawing;
         private float _rmRate, _scrapRate, _scrapRecovery, _cuttingAllowance, _itemLength, _costPerPiece;
+        private bool _isRMManuallySet, _isRMCostingPresent, _isRMCostingDetailsPresent;
         private RM _rmConsidered = new RM();
-        private bool _isRMManuallySet;
+        private Admin _costingPreparedBy;
         #endregion Fields
 
         #region Properties
         public int Id { get { return _id; } set { _id = value; } }
         public string RMAsPerDrawing { get { return _rmAsPerDrawing; } set { _rmAsPerDrawing = value;} }
+        public Admin CostingPreparedBy
+        {
+            get { return _costingPreparedBy; }
+            set { _costingPreparedBy = value; }
+        }
         public RM RMConsidered { 
             get { return _rmConsidered;} 
             set { 

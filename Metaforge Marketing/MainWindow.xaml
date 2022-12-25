@@ -80,6 +80,7 @@
 
                 <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
                     <MenuItem Header="Add">
+                        <MenuItem Header="Admin" Command="{Binding AddAdminCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Customer" Command="{Binding AddCustomerCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Buyer" Command="{Binding AddBuyerCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="RFQ" Command="{Binding AddRFQCommand}" CommandParameter="{Binding}"/>

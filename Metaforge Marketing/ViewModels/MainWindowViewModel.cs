@@ -1,5 +1,6 @@
 ﻿
 using Metaforge_Marketing.HelperClasses;
+using Metaforge_Marketing.ViewModels.Add;
 using Metaforge_Marketing.ViewModels.RFQs;
 using System.Windows.Input;
 
@@ -10,7 +11,7 @@ namespace Metaforge_Marketing.ViewModels
         public string WindowTitle { get; } = "Home Page:";
 
         #region Fields
-        private ICommand _addCustomerCommand, _addBuyerCommand, _addRFQCommand, _addRemarkCommand;
+        private ICommand _addAdminCommand,_addCustomerCommand, _addBuyerCommand, _addRFQCommand, _addRemarkCommand;
         private ICommand _prepareCostingCommand, _pendingRFQsCommand;
         private ICommand _customerHistoryCommand, _costingComparisonCommand, _performanceReportCommand;
         private ICommand _sendGeneralMailCommand, _sendQuotationMailCommand;
@@ -23,6 +24,17 @@ namespace Metaforge_Marketing.ViewModels
         #region Commands
 
         #region Add Commands
+        public ICommand AddAdminCommand
+        {
+            get
+            {   
+                if (_addAdminCommand == null)
+                {
+                    _addAdminCommand = new Command(p => ChangeViewModel(new AddAdminViewModel()));
+                }
+                return _addAdminCommand;
+            }
+        }
         public ICommand AddCustomerCommand
         {
             get
@@ -71,6 +83,7 @@ namespace Metaforge_Marketing.ViewModels
         }
         #endregion
 
+        #region RFQ Commands
         public ICommand PrepareCostingCommand
         {
             get
@@ -92,6 +105,9 @@ namespace Metaforge_Marketing.ViewModels
                 }return _pendingRFQsCommand;
             }
         }
+        #endregion RFQ Commands
+
+        #region Reports Commands
         public ICommand CostingComparisonCommand
         {
             get
@@ -127,6 +143,9 @@ namespace Metaforge_Marketing.ViewModels
             }
         }
 
+        #endregion Reports Commands
+
+        #region Mailing Commands
         public ICommand SendGeneralMailCommand
         {
             get
@@ -150,6 +169,7 @@ namespace Metaforge_Marketing.ViewModels
                 return _sendQuotationMailCommand;
             }
         }
+        #endregion Mailing Commands
 
         #endregion Commands
     }

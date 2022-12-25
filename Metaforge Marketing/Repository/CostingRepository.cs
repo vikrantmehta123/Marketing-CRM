@@ -3,6 +3,7 @@ using Metaforge_Marketing.Models;
 using Metaforge_Marketing.Models.Enums;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Windows;
 
@@ -55,6 +56,7 @@ namespace Metaforge_Marketing.Repository
             };
             // Add Parameters for the RM Costing Query
             RMCostingCommand.Parameters.Add("@rmRate", SqlDbType.Float).Value = costing.RMCosting.RMRate;
+            RMCostingCommand.Parameters.Add("@rmAsPerDrawing", SqlDbType.Float).Value = costing.RMCosting.RMAsPerDrawing;
             RMCostingCommand.Parameters.Add("@rmCostPerPiece", SqlDbType.Float).Value = costing.RMCosting.CostPerPiece;
             RMCostingCommand.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)costing.Category);
             RMCostingCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = costing.Item.Id;
@@ -131,29 +133,75 @@ namespace Metaforge_Marketing.Repository
             UpdateItemStatusCommand.Parameters.Clear();
         }
 
-        public static RMCosting FetchRMCosting(SqlConnection conn, Costing costing)
+        /// <summary>
+        /// Given an Item and the Costing Category(Metaforge, Customer, Customer Approved)
+        /// Fetches the record in the database if any, returns empty instance if there are no records
+        /// Used when preparing costing
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="selectedItem"></param>
+        /// <param name="category"></param>
+        /// <returns>Instance of RMCosting class</returns>
+        public static RMCosting FetchRMCosting(SqlConnection conn, Item selectedItem, CostingCategoryEnum category)
         {
             RMCosting rmCosting = new RMCosting();
             SqlCommand cmd = new SqlCommand("FetchRMCosting", conn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = costing.Item.Id;
-            cmd.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)costing.Category);
-
+            cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = selectedItem.Id;
+            cmd.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)category);
             SqlDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
-                costing.IsRMCostingPresent = true;
                 while (reader.Read())
                 {
                     rmCosting.Id = Convert.ToInt32(reader["Id"]);
-                    rmCosting.RMRate = (float)(Convert.ToDouble(reader["RMRate"]));
-                    rmCosting.CostPerPiece = (float)(Convert.ToDouble(reader["RMCostPerPiece"]));
-                    costing.CostingPreparedBy = new Admin { Id = Convert.ToInt32(reader["AdminId"]) };
-                    rmCosting.RMConsidered = new RM { Id = Convert.ToInt32(reader["RMMasterId"]) };
+                    rmCosting.CostPerPiece = (float)Convert.ToDecimal(reader["RMCostPerPiece"]);
+                    rmCosting.CostingPreparedBy = new Admin { 
+                        Id = Convert.ToInt32(reader["AdminId"]) ,
+                        Name = reader["Name"].ToString()
+                    };
+
+                    rmCosting.RMConsidered = new RM { 
+                        Id = Convert.ToInt32(reader["RMMasterId"]), 
+                        Grade = reader["Grade"].ToString() ,
+                        Category = (RMCategoryEnum)Convert.ToInt16(reader["Category"])
+                    };
+                    // TODO: Figure out why the RMRate if set before the RMConsidered property was giving error
+                    rmCosting.RMRate = (float)Convert.ToDecimal(reader["RMRate"]);
+                    rmCosting.RMAsPerDrawing = reader["RMAsPerDrawing"].ToString();
                 }
                 reader.Close();
             }
             return rmCosting;
+        }
+
+        public static IEnumerable<Operation> FetchConversionCosting(SqlConnection conn, Item selectedItem, CostingCategoryEnum category)
+        {
+            List<Operation> results = new List<Operation>();
+            SqlCommand cmd = new SqlCommand("FetchConversionCostings", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = selectedItem.Id;
+            cmd.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)category);
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while(reader.Read())
+                {
+                    Operation op = new Operation
+                    { 
+                        CostPerPiece = (float)Convert.ToDecimal(reader["CCPerPiece"]), 
+                        Id = Convert.ToInt32(reader["Id"]), 
+                        IsOutsourced = Convert.ToBoolean(reader["IsOutsourced"]),
+                        StepNo = Convert.ToInt32(reader["StepNo"])
+                    };
+                    results.Add(op);
+                }
+                reader.Close();
+            }
+
+            return results;
         }
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 
 namespace Metaforge_Marketing.Models
 {
@@ -16,11 +17,11 @@ namespace Metaforge_Marketing.Models
         #region Fields
         private int _id;
         private float _rmCostPerPiece, _ccPerPiece, _totalCostPerPiece;
-        private bool _isRMCostingPresent, _isConvCostingPresent;
         private Item _item;
         private Admin _costingPreparedBy;
         private Remark _remark;
         private RMCosting _rmCosting;
+        private ConversionCosting _convCosting;
         private List<Operation> _operations;
         private CostingCategoryEnum _costingCategory;
         private CostingFormatEnum _format;
@@ -31,19 +32,15 @@ namespace Metaforge_Marketing.Models
         public Item Item { get { return _item;} set { _item = value; } }
         public Admin CostingPreparedBy { get { return _costingPreparedBy; } set { _costingPreparedBy = value; } }
         public Remark Remark { get { return _remark; } set { _remark = value; } }
-        public RMCosting RMCosting 
-        { 
-            get 
-            {   
-                return _rmCosting; 
-            } 
-            set 
-            { 
-                _rmCosting = value; 
-            } 
-        }
+        public RMCosting RMCosting  { get { return _rmCosting; } set { _rmCosting = value; } }
         public List<Operation> Operations { get { return _operations; } set { _operations = value;} }
-        public CostingCategoryEnum Category { get { return _costingCategory; } set { _costingCategory = value; } }
+        public CostingCategoryEnum Category { 
+            get { return _costingCategory; } 
+            set { 
+                _costingCategory = value;
+                OnPropertyChanged(nameof(Category));
+            }
+        }
         public CostingFormatEnum Format { 
             get { return _format; } 
             set { 

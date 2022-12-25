@@ -218,6 +218,7 @@
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Buyer.cs" />
     <Compile Include="Models\Communication.cs" />
+    <Compile Include="Models\ConversionCosting.cs" />
     <Compile Include="Models\Costing.cs" />
     <Compile Include="Models\Enums\CostingCategoryEnum.cs" />
     <Compile Include="Models\Enums\CostingFormatEnum.cs" />
@@ -248,6 +249,7 @@
     <Compile Include="Repository\RemarksRepository.cs" />
     <Compile Include="Repository\RFQsRepository.cs" />
     <Compile Include="Repository\RMRepository.cs" />
+    <Compile Include="ViewModels\Add\AddAdminViewModel.cs" />
     <Compile Include="ViewModels\Add\AddBuyerViewModel.cs" />
     <Compile Include="ViewModels\Add\AddCustomerViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRemarkViewModel.cs" />
@@ -268,6 +270,9 @@
     <Compile Include="ViewModels\Shared\SelectItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\SharedViewModelBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\Add\AddAdminView.xaml.cs">
+      <DependentUpon>AddAdminView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Add\AddBuyerView.xaml.cs">
       <DependentUpon>AddBuyerView.xaml</DependentUpon>
     </Compile>
@@ -324,6 +329,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PopupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Add\AddAdminView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -434,6 +443,35 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Word">
+      <Guid>{00020905-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>8</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.5.0.1\build\net46\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.5.0.1\build\net46\Microsoft.Data.SqlClient.SNI.targets')" />

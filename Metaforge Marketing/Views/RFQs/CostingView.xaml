@@ -97,17 +97,18 @@
 
                     <DockPanel>
                         <Label Content="Material As Per Drawing" FontWeight="DemiBold"/>
-                        <TextBox Text="{Binding Path=Costing.RMCosting.RMAsPerDrawing}" VerticalContentAlignment="Center" />
+                        <TextBox Text="{Binding Path=RMCosting.RMAsPerDrawing}" VerticalContentAlignment="Center" />
                     </DockPanel>
 
                     <DockPanel>
                         <Label Content="Material Considered" FontWeight="DemiBold"/>
-                        <ComboBox ItemsSource="{Binding RMMaster.RMMaster}" SelectedItem="{Binding Costing.RMCosting.RMConsidered, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ComboBox ItemsSource="{Binding RMMaster.RMMaster}" SelectedItem="{Binding RMCosting.RMConsidered, UpdateSourceTrigger=PropertyChanged}" 
+                                  IsReadOnly="True" IsEditable="True" Text="{Binding RMCosting.RMConsidered}"/>
                     </DockPanel>
 
                     <DockPanel>
                         <Label Content="Raw Material Rate" FontWeight="DemiBold"/>
-                        <TextBox Text="{Binding Path=Costing.RMCosting.RMRate}" VerticalContentAlignment="Center" />
+                        <TextBox Text="{Binding Path=RMCosting.RMRate}" VerticalContentAlignment="Center" />
                     </DockPanel>
                 </StackPanel>
 
