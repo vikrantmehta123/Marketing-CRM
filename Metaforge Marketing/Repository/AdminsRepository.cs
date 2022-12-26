@@ -54,11 +54,12 @@ namespace Metaforge_Marketing.Repository
         public static IEnumerable<Admin> FetchPerformanceReview(SqlConnection conn, DateTime startDate, DateTime endDate)
         {
             List<Admin> list = new List<Admin>();
-            SqlCommand cmd = new SqlCommand("FetchPerformanceReport", conn);
+            SqlCommand cmd = new SqlCommand("FetchAmountOfBusinessReceived", conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
             SqlDataReader reader= cmd.ExecuteReader();
             while (reader.Read())
             {
-                Admin admin = new Admin
+                Admin admin = new Admin 
                 {
                     Id = Convert.ToInt32(reader["Id"]),
                     Name = reader["Name"].ToString(),
@@ -73,7 +74,6 @@ namespace Metaforge_Marketing.Repository
 
                 if (reader["AvgResponseTime"] != DBNull.Value) { admin.AvgResponseTime = (float)Convert.ToDecimal(reader["AvgResponseTime"]); }
                 else { admin.AvgResponseTime = -1; }
-
                 list.Add(admin);
             }
             reader.Close();

@@ -11,9 +11,8 @@ namespace Metaforge_Marketing.Models
     {
         #region Fields
         private int _id, _rfqCount = -1, _preparedCostingsCount = -1, _convertedQuotationsCount = -1;
-        private float _avgResponseTime = -1, _conversionRate = -1;
+        private float _avgResponseTime = -1, _conversionRate = -1, _totalBusinessBrought;
         private string _name;
-        private string conn_string = Properties.Settings.Default.conn_string;
         #endregion Fields
 
         #region Properties
@@ -31,6 +30,11 @@ namespace Metaforge_Marketing.Models
         #endregion Properties
 
         #region Properties For Performance Review
+        public float TotalBusinessBrought
+        {
+            get { return _totalBusinessBrought; }
+            set { _totalBusinessBrought = value; }
+        }
         public int RFQCount
         {
             get { return _rfqCount; }

@@ -48,6 +48,7 @@
                 <DataGridTextColumn Header="Converted Items" Binding="{Binding ConvertedQuotationsCount}"/>
                 <DataGridTextColumn Header="Conversion Rate" Binding="{Binding ConversionRate}"/>
                 <DataGridTextColumn Header="Avg Response Time" Binding="{Binding AvgResponseTime}"/>
+                <DataGridTextColumn Header="Total Business Brought" Binding="{Binding TotalBusinessBrought, StringFormat=N2}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
