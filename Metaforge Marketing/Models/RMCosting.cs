@@ -17,6 +17,10 @@ namespace Metaforge_Marketing.Models
         #region Properties
         public int Id { get { return _id; } set { _id = value; } }
         public string RMAsPerDrawing { get { return _rmAsPerDrawing; } set { _rmAsPerDrawing = value;} }
+
+        public bool IsRMCostingPresent { get { return _isRMCostingPresent; } set { _isRMCostingPresent= value; } }
+        public bool IsRMCostingDetailsPresent { get { return _isRMCostingDetailsPresent; } set { _isRMCostingDetailsPresent= value; } }
+
         public Admin CostingPreparedBy
         {
             get { return _costingPreparedBy; }

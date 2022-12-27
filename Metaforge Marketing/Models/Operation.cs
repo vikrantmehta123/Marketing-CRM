@@ -2,11 +2,13 @@
 
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows;
 
 namespace Metaforge_Marketing.Models
 {
-    public class Operation
+    public class Operation : ModelsBase
     {
         #region Static Fields
         private static List<Operation> _allOperations;
@@ -31,36 +33,43 @@ namespace Metaforge_Marketing.Models
         #region Fields
         private string _operationName;
         private int _id, _stepNo;
-        private float _efficiency, _mchr, _cycleTime, _costPerPiece;
+        private float _costPerPiece;
         private bool _isOutsourced;
         private Item _item;
         private Admin _admin;
+        private Machine _machine;
         #endregion Fields
 
         #region Properties
         public int Id { get { return _id;} set { _id = value;} }
         public int StepNo { get { return _stepNo; } set { _stepNo = value;} }
         public string OperationName { get { return _operationName; } set { _operationName = value; } }
-        public float Efficiency { get { return _efficiency;} set { _efficiency = value; } }
-        public float MCHr { get { return _mchr; } set { _mchr= value; } }
-        public float CostPerPiece { get { return _costPerPiece; } set { _costPerPiece = value; } }
-        public float CycleTime { get { return _cycleTime; } set { _cycleTime = value; } }
-
+        public float CostPerPiece { 
+            get { 
+                if(_machine != null && _machine.CycleTime > 0)
+                {
+                    _costPerPiece = ComputeCostPerPiece();
+                }
+                return _costPerPiece; 
+            } 
+            set { 
+                _costPerPiece = value;
+            }
+        }
         public bool IsOutsourced { get { return _isOutsourced; } set { _isOutsourced = value;} }
+        public Machine Machine { get { return _machine; } set { _machine = value; } }
         #endregion Properties
 
-
         #region Methods
-
         public float ComputeCostPerPiece()
         {
-            int SecondsInAnHour = 3600;
-            return MCHr / ((SecondsInAnHour / CycleTime) * (Efficiency / 100));
+            return Machine.ComputeCostPerPiece();
         }
         public override string ToString()
         {
             return OperationName;
         }
+
         #endregion Methods
     }
 }

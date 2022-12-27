@@ -46,7 +46,7 @@ namespace Metaforge_Marketing.HelperClasses
             row += rowHeader;
             foreach (Costing costing in costings)
             {
-                row += $"<td> {costing.CCPerPiece} </td>";
+                //row += $"<td> {costing.CCPerPiece} </td>";
             }
             row += rowEndTag;
 

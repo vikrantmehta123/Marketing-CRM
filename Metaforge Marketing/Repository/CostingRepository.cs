@@ -11,6 +11,8 @@ namespace Metaforge_Marketing.Repository
 {
     public class CostingRepository
     {
+
+        #region Insert Queries
         /// <summary>
         /// Inserts the whole Costing into their respective tables
         /// Requires that the data be valid
@@ -118,7 +120,11 @@ namespace Metaforge_Marketing.Repository
             ItemHistoryCommand.Parameters.Clear();
         }
 
+        #endregion Insert Queries
 
+
+        // Summary:
+        //      Updates an Item's status in the database
         public static void UpdateItemStatus(SqlConnection conn, Costing costing)
         {
             SqlCommand UpdateItemStatusCommand = new SqlCommand("UpdateItemStatus", conn)
@@ -133,25 +139,26 @@ namespace Metaforge_Marketing.Repository
             UpdateItemStatusCommand.Parameters.Clear();
         }
 
-        /// <summary>
-        /// Given an Item and the Costing Category(Metaforge, Customer, Customer Approved)
-        /// Fetches the record in the database if any, returns empty instance if there are no records
-        /// Used when preparing costing
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="selectedItem"></param>
-        /// <param name="category"></param>
-        /// <returns>Instance of RMCosting class</returns>
+        #region Select Queries
+        // Summary:
+        //      Fetches the RMCosting of an Item
+        //      Returns an empty instance if no costing is present
+        // Parameters:
+        //      item- the item whose costing needs to be fetched
+        //      category- the category of the costing: Customer's, Metaforge's, Customer's approved?
         public static RMCosting FetchRMCosting(SqlConnection conn, Item selectedItem, CostingCategoryEnum category)
         {
             RMCosting rmCosting = new RMCosting();
-            SqlCommand cmd = new SqlCommand("FetchRMCosting", conn);
-            cmd.CommandType = CommandType.StoredProcedure;
+            SqlCommand cmd = new SqlCommand("FetchRMCosting", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
             cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = selectedItem.Id;
             cmd.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)category);
             SqlDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
+                rmCosting.IsRMCostingPresent = true;
                 while (reader.Read())
                 {
                     rmCosting.Id = Convert.ToInt32(reader["Id"]);
@@ -161,24 +168,42 @@ namespace Metaforge_Marketing.Repository
                         Name = reader["Name"].ToString()
                     };
 
-                    rmCosting.RMConsidered = new RM { 
-                        Id = Convert.ToInt32(reader["RMMasterId"]), 
-                        Grade = reader["Grade"].ToString() ,
-                        Category = (RMCategoryEnum)Convert.ToInt16(reader["Category"])
-                    };
+                    if (reader["RMMasterId"] != DBNull.Value)
+                    {
+                        rmCosting.IsRMCostingDetailsPresent = true;
+                        rmCosting.RMConsidered = new RM
+                        {
+                            Id = Convert.ToInt32(reader["RMMasterId"]),
+                            Grade = reader["Grade"].ToString(),
+                            Category = (RMCategoryEnum)Convert.ToInt16(reader["Category"])
+                        };
+                    }
+                    else { rmCosting.RMConsidered = new RM(); }
+
                     // TODO: Figure out why the RMRate if set before the RMConsidered property was giving error
                     rmCosting.RMRate = (float)Convert.ToDecimal(reader["RMRate"]);
                     rmCosting.RMAsPerDrawing = reader["RMAsPerDrawing"].ToString();
                 }
                 reader.Close();
             }
+            else { rmCosting.IsRMCostingPresent = false; }
+
             return rmCosting;
         }
 
-        public static IEnumerable<Operation> FetchConversionCosting(SqlConnection conn, Item selectedItem, CostingCategoryEnum category)
+
+        // Summary:
+        //      Fetches the Conversion Costings from the Database, in the ascending order of the Step no and returns those as a list
+        //      Returns an empty instance if no result is present in the database for given params
+        // Parameters:
+        //      Item- The Item whose Conversion Costings need to be fetched
+        //      CostingCategory- Which Costing to Fetch? Customer's, Metaforge's, or Customer's Approved
+        public static ConversionCosting FetchConversionCosting(SqlConnection conn, Item selectedItem, CostingCategoryEnum category)
         {
-            List<Operation> results = new List<Operation>();
-            SqlCommand cmd = new SqlCommand("FetchConversionCostings", conn)
+            ConversionCosting convCosting = new ConversionCosting();
+            List<Operation> operations = new List<Operation>();
+
+            SqlCommand cmd = new SqlCommand("FetchConversionCosting", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -187,21 +212,75 @@ namespace Metaforge_Marketing.Repository
             SqlDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
+                convCosting.IsConvCostingPresent= true;
                 while(reader.Read())
                 {
                     Operation op = new Operation
-                    { 
-                        CostPerPiece = (float)Convert.ToDecimal(reader["CCPerPiece"]), 
-                        Id = Convert.ToInt32(reader["Id"]), 
+                    {
+                        CostPerPiece = (float)Convert.ToDecimal(reader["CCPerPiece"]),
+                        Id = Convert.ToInt32(reader["Id"]),
                         IsOutsourced = Convert.ToBoolean(reader["IsOutsourced"]),
-                        StepNo = Convert.ToInt32(reader["StepNo"])
+                        StepNo = Convert.ToInt32(reader["StepNo"]),
+                        Machine = new Machine ()
                     };
-                    results.Add(op);
+                    // If there Conversion Costing Details such as machine description present, assign them
+                    if (reader["MachineDescription"] != DBNull.Value) 
+                    { 
+                        op.Machine.MachineDescription = reader["MachineDescription"].ToString();
+                        if (! convCosting.IsConvCostingDetailsPresent) { convCosting.IsConvCostingDetailsPresent = true; }
+                    };
+                    if (reader["MachineName"] != DBNull.Value) { op.Machine.MachineName = reader["MachineName"].ToString(); }
+                    if (reader["Efficiency"] != DBNull.Value) { op.Machine.Efficiency = (float)Convert.ToDecimal(reader["Efficiency"]); }
+                    if (reader["CycleTime"] != DBNull.Value) { op.Machine.CycleTime = Convert.ToInt16(reader["CycleTime"]); }
+                    if (reader["MCHr"] != DBNull.Value) { op.Machine.MCHr = (float)Convert.ToDecimal(reader["MCHr"]); }
+
+                    operations.Add(op);
                 }
                 reader.Close();
             }
+            else
+            {
+                convCosting.IsConvCostingDetailsPresent = false;
+                convCosting.IsConvCostingPresent = false;
+            }
+            convCosting.Operations = new System.Collections.ObjectModel.ObservableCollection<Operation>( operations);
+            return convCosting;
+        }
 
+
+        // Summary:
+        //      Fetches the Raw Material and The Conversion Costing of an Item
+        // Parameters:
+        //      item- The Item whose costing needs to be fetched
+        //      category- the Category of the costing: Customer's, Metaforge's, or Customer's Approved costing
+        public static Costing FetchCosting(SqlConnection conn, Item item, CostingCategoryEnum category)
+        {
+            Costing costing = new Costing
+            {
+                RMCosting = FetchRMCosting(conn, item, category),
+                Item = item,
+                Category = category
+            };
+            costing.ConvCosting = FetchConversionCosting(conn, item, category);
+            return costing;
+        }
+
+        // Summary:
+        //      Fetches all the costings of an RFQ, and returns those costings as a list
+        // Parameters:
+        //      rfq- The RFQ whose items will be fetched, and the items' costings will be returned
+        //      category- The category of the costing
+        public static IEnumerable<Costing> FetchCostings(SqlConnection conn, RFQ rfq, CostingCategoryEnum category)
+        {
+            List<Costing> results = new List<Costing>();
+            foreach (Item item in rfq.Items)
+            {
+                Costing costing = FetchCosting(conn, item, category);
+                results.Add(costing);
+            }
             return results;
         }
+
+        #endregion Select Queries
     }
 }

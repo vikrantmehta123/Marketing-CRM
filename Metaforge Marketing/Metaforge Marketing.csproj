@@ -213,11 +213,14 @@
     <Compile Include="HelperClasses\Converters\OrderTypeConverter.cs" />
     <Compile Include="HelperClasses\Email.cs" />
     <Compile Include="HelperClasses\HTMLQuotationCreater.cs" />
-    <Compile Include="HelperClasses\PDFQuotationCreater.cs" />
+    <Compile Include="HelperClasses\Quotation\BajajQuotationCreator.cs" />
+    <Compile Include="HelperClasses\Quotation\LongQuotationCreator.cs" />
+    <Compile Include="HelperClasses\Quotation\PDFQuotationCreator.cs" />
+    <Compile Include="HelperClasses\Quotation\QuotationSender.cs" />
+    <Compile Include="HelperClasses\Quotation\ShortQuotationCreator.cs" />
     <Compile Include="HelperClasses\SQLWrapper.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Buyer.cs" />
-    <Compile Include="Models\Communication.cs" />
     <Compile Include="Models\ConversionCosting.cs" />
     <Compile Include="Models\Costing.cs" />
     <Compile Include="Models\Enums\CostingCategoryEnum.cs" />
@@ -227,6 +230,7 @@
     <Compile Include="Models\Enums\OrderTypeEnum.cs" />
     <Compile Include="Models\Enums\PriorityEnum.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Enums\QuotationFormatEnum.cs" />
     <Compile Include="Models\Enums\RMCategoryEnum.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Machine.cs" />

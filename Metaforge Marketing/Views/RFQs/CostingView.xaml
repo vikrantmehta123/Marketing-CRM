@@ -121,7 +121,7 @@
             <StackPanel VerticalAlignment="Top" >
                 <Label Content="Conversion Cost Details" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-                <DataGrid ItemsSource="{Binding Path=Costing.Operations}" AutoGenerateColumns="False" 
+                <DataGrid ItemsSource="{Binding Path=ConvCosting.Operations}" AutoGenerateColumns="False" 
                           CanUserAddRows="True" CanUserResizeColumns="True"  HorizontalAlignment="Center">
                     <DataGrid.Columns>
                         <DataGridComboBoxColumn Header="Operation Name" ItemsSource="{Binding Source={StaticResource op}, Path=AllOperations}"
@@ -147,7 +147,7 @@
 
                     <DockPanel>
                         <Label Content="Material As Per Drawing" FontWeight="DemiBold"/>
-                        <TextBox Text="{Binding Path=Costing.RMCosting.RMAsPerDrawing}" VerticalContentAlignment="Center" />
+                        <TextBox Text="{Binding Path=RMCosting.RMAsPerDrawing}" VerticalContentAlignment="Center" />
                     </DockPanel>
 
                     <DockPanel>
@@ -157,27 +157,27 @@
 
                     <DockPanel>
                         <Label Content="Raw Material Rate" FontWeight="DemiBold"/>
-                        <TextBox Text="{Binding Path=Costing.RMCosting.RMRate}" VerticalContentAlignment="Center" />
+                        <TextBox Text="{Binding Path=RMCosting.RMRate}" VerticalContentAlignment="Center" />
                     </DockPanel>
                     
                     <DockPanel>
                         <Label Content="Scrap Recovery" FontWeight="DemiBold"/>
-                        <TextBox Text="{Binding Path=Costing.RMCosting.ScrapRecovery}" VerticalContentAlignment="Center"/>
+                        <TextBox Text="{Binding Path=RMCosting.ScrapRecovery}" VerticalContentAlignment="Center"/>
                     </DockPanel>
 
                     <DockPanel>
                         <Label Content="Scrap Rate" FontWeight="DemiBold"/>
-                        <TextBox Text="{Binding Path=Costing.RMCosting.ScrapRate, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" VerticalContentAlignment="Center" />
+                        <TextBox Text="{Binding Path=RMCosting.ScrapRate, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" VerticalContentAlignment="Center" />
                     </DockPanel>
 
                     <DockPanel>
                         <Label Content="Cutting Allowance" FontWeight="DemiBold"/>
-                        <TextBox Text="{Binding Path=Costing.RMCosting.CuttingAllowance}" VerticalContentAlignment="Center" />
+                        <TextBox Text="{Binding Path=RMCosting.CuttingAllowance}" VerticalContentAlignment="Center" />
                     </DockPanel>
 
                     <DockPanel>
                         <Label Content="Item Length" FontWeight="DemiBold"/>
-                        <TextBox Text="{Binding Path=Costing.RMCosting.ItemLength}" VerticalContentAlignment="Center" />
+                        <TextBox Text="{Binding Path=RMCosting.ItemLength}" VerticalContentAlignment="Center" />
                     </DockPanel>
                 </StackPanel>
 
@@ -190,17 +190,18 @@
             <StackPanel VerticalAlignment="Top" >
                 <Label Content="Conversion Cost Details" FontWeight="Bold" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-                <DataGrid x:Name="CCWithDetails" ItemsSource="{Binding Path=Costing.Operations}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserResizeColumns="True" 
+                <DataGrid x:Name="CCWithDetails" ItemsSource="{Binding Path=ConvCosting.Operations}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserResizeColumns="True" 
                            HorizontalAlignment="Center">
                     <DataGrid.Columns>
-                        <DataGridComboBoxColumn Header="Operation Name" SelectedItemBinding="{Binding Path=OperationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Machine Category" Binding="{Binding Path=MachineCategory}"/>
-                        <DataGridTextColumn Header="Machine Name" Binding="{Binding Path=MachineName}"/>
-                        <DataGridTextColumn Header="Mc/Hr" Binding="{Binding Path=MachineCostPerHour, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N0}"/>
-                        <DataGridTextColumn Header="Cycle Time" Binding="{Binding Path=CycleTime, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N0}"/>
-                        <DataGridTextColumn Header="Efficiency" Binding="{Binding Path=Efficiency, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
-                        <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding Path=CostPerPiece, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
-                        <DataGridCheckBoxColumn Header="Is Offloaded" Binding="{Binding Path=IsOffloaded}"/>
+                        <DataGridComboBoxColumn Header="Operation Name" ItemsSource="{Binding Source={StaticResource op}, Path=AllOperations}"
+                                                SelectedValuePath="Id" SelectedValueBinding="{Binding Path=Id}"/>
+                        <DataGridTextColumn Header="Machine Category" Binding="{Binding Path=Machine.MachineName}"/>
+                        <DataGridTextColumn Header="Machine Name" Binding="{Binding Path=Machine.MachineDescription}"/>
+                        <DataGridTextColumn Header="Mc/Hr" Binding="{Binding Path=Machine.MCHr, UpdateSourceTrigger=PropertyChanged, StringFormat=N0}"/>
+                        <DataGridTextColumn Header="Cycle Time" Binding="{Binding Path=Machine.CycleTime, UpdateSourceTrigger=PropertyChanged, StringFormat=N0}"/>
+                        <DataGridTextColumn Header="Efficiency" Binding="{Binding Path=Machine.Efficiency, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
+                        <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding Path=Machine.CostPerPiece, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
+                        <DataGridCheckBoxColumn Header="Is Offloaded" Binding="{Binding Path=IsOutsourced}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>

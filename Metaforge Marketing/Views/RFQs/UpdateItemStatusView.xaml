@@ -20,7 +20,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!--#region Dashboard-->
         <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Separator/>
             <StackPanel>
                 <DockPanel>
                     <Label Content="Item Name:" FontWeight="DemiBold"/>
@@ -39,28 +41,30 @@
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             
         </StackPanel>
-
+        <!--#endregion Dashboard-->
+        
+        
         <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Separator/>
             <StackPanel>
-                <DockPanel>
+                <DockPanel IsEnabled="{Binding CanAllowMoreChanges}">
                     <Label Content="Mark as Regretted" FontWeight="DemiBold"/>
-                    <CheckBox VerticalContentAlignment="Center"/>
-                    <DatePicker/>
+                    <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding IsRegretted}"/>
+                    <DatePicker SelectedDate="{Binding DateOfEvent}"/>
                     <Label Content="Note:" FontWeight="DemiBold"/>
                     <TextBox MinWidth="100"/>
                 </DockPanel>
-                <DockPanel>
+                <DockPanel IsEnabled="{Binding CanAllowMoreChanges}">
                     <Label Content="Mark as Rejected By Customer" FontWeight="DemiBold"/>
-                    <CheckBox VerticalContentAlignment="Center"/>
-                    <DatePicker/>
+                    <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding IsRejected}"/>
+                    <DatePicker SelectedDate="{Binding DateOfEvent}"/>
                     <Label Content="Note:" FontWeight="DemiBold"/>
                     <TextBox MinWidth="100"/>
                 </DockPanel>
-                <DockPanel>
+                <DockPanel IsEnabled="{Binding CanAllowMoreChanges}">
                     <Label Content="Mark as Quotation Sent" FontWeight="DemiBold"/>
-                    <CheckBox VerticalContentAlignment="Center"/>
-                    <DatePicker/>
+                    <CheckBox VerticalContentAlignment="Center" />
+                    <DatePicker SelectedDate="{Binding DateOfEvent}"/>
                     <Label Content="Note:" FontWeight="DemiBold"/>
                     <TextBox MinWidth="100"/>
                 </DockPanel>
@@ -71,7 +75,12 @@
 
                 <Separator/>
 
-                <StackPanel Visibility="{Binding IsAddingPODetails, Converter={StaticResource boolToVisibilityConverter}}">
+                <!--#region The PO Received Region-->
+                <StackPanel Visibility="{Binding IsAddingPODetails, Converter={StaticResource boolToVisibilityConverter}}" IsEnabled="{Binding CanAllowMoreChanges}">
+                    <DockPanel LastChildFill="False">
+                        <Label Content="Date" FontWeight="DemiBold"/>
+                        <DatePicker SelectedDate="{Binding DateOfEvent}"/>
+                    </DockPanel>
                     <DockPanel LastChildFill="False">
                         <Label Content="PO Number" FontWeight="DemiBold"/>
                         <TextBox  MinWidth="150"/>
@@ -85,19 +94,18 @@
                         <TextBox/>
                     </DockPanel>
                 </StackPanel>
-                <Separator/>
             </StackPanel>
-            
-            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-            
+            <!--#endregion-->
         </StackPanel>
 
+        <!--#region Button Panel-->
         <StackPanel Grid.Row="3">
             <DockPanel LastChildFill="False">
                 <Button Content="Save" Command="{Binding SaveCommand}"/>
                 <Button Content="Clear" Command="{Binding ClearCommand}"/>
             </DockPanel>
         </StackPanel>
+        <!--#endregion Button Panel-->
         
     </Grid>
 </UserControl>

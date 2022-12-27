@@ -10,30 +10,59 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="5*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Label Content="Send Quotations" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
 
-        <ListView ItemsSource="{Binding RFQs}" Grid.Row="1">
+        <!--#region Search Bar -->
+        <DockPanel Grid.Row="1" LastChildFill="False" VerticalAlignment="Bottom">
+            <Label Content="Search This Page:"/>
+            <TextBox Text="{Binding Pagination.PageSearchText}" MinWidth="100"/>
+        </DockPanel>
+        <!--#endregion Search Bar-->
+        
+        <!--#region Quotation List-->
+        <ListView ItemsSource="{Binding Pagination.Collection}" Grid.Row="2" SelectedItem="{Binding SelectedRFQ}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Customer"/>
+                    <GridViewColumn Header="Customer" DisplayMemberBinding="{Binding Path=Customer.CustomerName}" />
                     <GridViewColumn Header="Buyer"/>
-                    <GridViewColumn Header="Project Name"/>
+                    <GridViewColumn Header="Project Name" DisplayMemberBinding="{Binding Path=ProjectName}"/>
+                    <GridViewColumn Header="Enquiry Date" DisplayMemberBinding="{Binding Path=EnquiryDate, StringFormat={}{0:dd-MM-yyyy}}"/>
+                    <GridViewColumn Header="Choose Format">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox>
+                                    
+                                </ComboBox>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button IsEnabled="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" 
                                         Content="Send Quote" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.SendQuoteCommand}" 
-                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                        />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
+        <!--#endregion Quotation List-->
+
+        <!--#region Button Panel (Pagination Buttons)-->
+        <DockPanel Grid.Row="3" LastChildFill="False" VerticalAlignment="Center">
+            <Button Content="First" Command="{Binding Pagination.FirstPageCommand}"/>
+            <Button Content="Prev" Command="{Binding Pagination.PrevPageCommand}"/>
+            <Button Content="Next" Command="{Binding Pagination.NextPageCommand}"/>
+            <Button Content="Last" Command="{Binding Pagination.LastPageCommand}"/>
+        </DockPanel>
+        <!--#endregion-->
         
     </Grid>
 </UserControl>

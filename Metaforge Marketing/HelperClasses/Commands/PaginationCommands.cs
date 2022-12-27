@@ -142,6 +142,18 @@ namespace Metaforge_Marketing.HelperClasses.Commands
             view.Filter = _filterFunction;
         }
 
+        public PaginationCommands(Func<SqlConnection, int, int, IEnumerable<T>> fetchFunction, Func<SqlConnection, int> countFunction, Predicate<object> filterFunction) :
+            this()
+        {
+            _fetchFunction = fetchFunction;
+            _countFunction = countFunction;
+            _filterFunction = filterFunction;
+
+            _collection = new ObservableCollection<T>(SQLWrapper<T>.FetchWrapper(fetchFunction, _offsetIndex, _entriesPerPage));
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(_collection);
+            view.Filter = _filterFunction;
+        }
+
         public PaginationCommands(IEnumerable<T> collection, int count, Predicate<object> filterFunction) : this()
         {
             _filterFunction = filterFunction;

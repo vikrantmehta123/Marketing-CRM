@@ -54,6 +54,49 @@ namespace Metaforge_Marketing.Repository
             return rfqs;
         }
 
+        // Summary:
+        //      Fetches the RFQs that are ready for sending quotation (Items are either regretted or customer costing prepared)
+        //      Ordered as the Oldest RFQ first
+        // Parameters:
+        //      Offset Index- How many first rows to skip
+        //      Entries Per Page- How Many entries to keep in each page
+        public static IEnumerable<RFQ> FetchQuotationReadyRFQs(SqlConnection conn, int offsetIndex, int entriesPerPage)
+        {
+            List<RFQ> results = new List<RFQ>();
+            SqlCommand cmd = new SqlCommand("FetchQuotationReadyRFQs", conn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.Add("@entriesPerPage", System.Data.SqlDbType.Int).Value = entriesPerPage;
+            cmd.Parameters.Add("@offsetIndex", System.Data.SqlDbType.Int).Value = offsetIndex;
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                RFQ rfq = new RFQ 
+                { 
+                    Id = Convert.ToInt32(reader["Id"]),
+                    ProjectName = reader["ProjectName"].ToString() , 
+                    EnquiryDate = Convert.ToDateTime(reader["EnquiryDate"]),
+                    Customer = new Customer
+                    {
+                        CustomerName = reader["CustomerName"].ToString()
+                    }
+                };
+                results.Add(rfq);
+            }
+            return results;
+        }
+
+        // Summary:
+        //      Counts the Quotations that are ready for mailing.
+        //      Used for pagination
+        // Returns:
+        //      The count of the RFQs that are quotation ready
+
+        public static int CountQuotationReadyRFQs(SqlConnection conn)
+        {
+            SqlCommand cmd = new SqlCommand("CountQuotationReadyRFQs", conn);
+            return Convert.ToInt32(cmd.ExecuteScalar());
+        }
+
 
         /// <summary>
         /// Given the status of an Item, fetches the count of the RFQs where there is at least one item of that status

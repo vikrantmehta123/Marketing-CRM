@@ -1,26 +1,27 @@
 ﻿
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Metaforge_Marketing.Models
 {
-    public class ConversionCosting
+    public class ConversionCosting :  ModelsBase
     {
         #region Fields
         private bool _isConvCostingPresent, _isConvCostingDetailsPresent;
         private float _totalCostPerPiece;
-        private List<Operation> _operations;
+        private ObservableCollection<Operation> _operations;
         private Item _item;
         #endregion Fields
 
         #region Properties
-        public List<Operation> Operations { get { return _operations;} set { _operations = value; } }
+        public ObservableCollection<Operation> Operations { get { return _operations;} set { _operations = value; } }
 
         public float TotalCostPerPiece
         {
             get 
             {
-                _totalCostPerPiece = _operations.Sum(op => op.CostPerPiece);
+                _totalCostPerPiece = _operations.Sum(op => op.Machine.CostPerPiece);
                 return _totalCostPerPiece;
             }
         }

@@ -49,16 +49,6 @@ namespace Metaforge_Marketing.Models
 
             } 
         }
-
-        public float CCPerPiece
-        {
-            get
-            {
-                _ccPerPiece = _operations.Sum(item => item.CostPerPiece);
-                return _ccPerPiece;
-            }
-        }
-
         public ConversionCosting ConvCosting
         {
             get { return _convCosting; }
