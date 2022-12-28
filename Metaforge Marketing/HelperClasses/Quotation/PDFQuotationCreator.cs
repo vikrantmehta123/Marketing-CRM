@@ -32,6 +32,15 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
         }
 
         // Summary:
+        //      Inserts a page break at the end of the document and returns the document
+        protected static Document InsertPageBreak(ref Document doc)
+        {
+            Range rng = doc.Bookmarks.get_Item(oEndOfDoc).Range;
+            rng.InsertBreak(WdBreakType.wdPageBreak);
+            return doc;
+        }
+
+        // Summary:
         //      Adds a document to the given app
         //
         // Returns:
@@ -43,7 +52,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
         }
         
         // Summary:
-        //      Adds the header to the given document
+        //      Adds the header to the given document to all sections
         protected static void AddDocumentHeader(ref Document doc, string header)
         {
             foreach (Section section in doc.Sections)
@@ -95,13 +104,13 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
             }
         }
 
-        private static Table AddBlankRow(ref Table table, int index)
+        protected static int AddBlankRow(ref Table table, int index)
         {
             for (int i = 1; i <= table.Columns.Count; i++)
             {
                 table.Cell(index, i).Range.Text = "";
             }
-            return table;
+            return index + 1;
         }
 
         // Summary:
