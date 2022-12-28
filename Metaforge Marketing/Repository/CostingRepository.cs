@@ -25,13 +25,13 @@ namespace Metaforge_Marketing.Repository
             SqlTransaction transaction = conn.BeginTransaction();
             try
             {
-                int RMCostingId = InsertRMCosting(conn, costing);
+                int RMCostingId = InsertRMCosting(conn, costing, transaction);
                 foreach (Operation op in costing.Operations)
                 {
-                    int CCId = InsertConversionCosting(conn, op, costing);
+                    int CCId = InsertConversionCosting(conn, op, costing, transaction);
                 }
-                InsertItemHistory(conn, costing);
-                UpdateItemStatus(conn, costing);
+                InsertItemHistory(conn, costing, transaction);
+                UpdateItemStatus(conn, costing, transaction);
                 transaction.Commit();
             }
             catch(Exception e1) 
@@ -50,9 +50,9 @@ namespace Metaforge_Marketing.Repository
 
 
         }
-        public static int InsertRMCosting(SqlConnection conn, Costing costing)
+        public static int InsertRMCosting(SqlConnection conn, Costing costing, SqlTransaction transaction)
         {
-            SqlCommand RMCostingCommand = new SqlCommand("InsertRMCosting", conn)
+            SqlCommand RMCostingCommand = new SqlCommand("InsertRMCosting", conn, transaction)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -63,7 +63,6 @@ namespace Metaforge_Marketing.Repository
             RMCostingCommand.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)costing.Category);
             RMCostingCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = costing.Item.Id;
             RMCostingCommand.Parameters.Add("@rmMasterId", SqlDbType.Int).Value = costing.RMCosting.RMConsidered.Id;
-            RMCostingCommand.Parameters.Add("@adminId", SqlDbType.Int).Value = costing.CostingPreparedBy.Id;
 
             // Execute the insert and clear parameters
             int Id = Convert.ToInt32(RMCostingCommand.ExecuteScalar());
@@ -80,9 +79,9 @@ namespace Metaforge_Marketing.Repository
         /// <param name="op"></param>
         /// <param name="costing"></param>
         /// <returns></returns>
-        public static int InsertConversionCosting(SqlConnection conn, Operation op, Costing costing)
+        public static int InsertConversionCosting(SqlConnection conn, Operation op, Costing costing, SqlTransaction transaction)
         {
-            SqlCommand ConvCostingCommand = new SqlCommand("InsertConversionCosting", conn)
+            SqlCommand ConvCostingCommand = new SqlCommand("InsertConversionCosting", conn, transaction)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -102,9 +101,9 @@ namespace Metaforge_Marketing.Repository
             return Id;
         }
 
-        public static void InsertItemHistory(SqlConnection conn, Costing costing)
+        public static void InsertItemHistory(SqlConnection conn, Costing costing, SqlTransaction transaction)
         {
-            SqlCommand ItemHistoryCommand = new SqlCommand("InsertItemHistory", conn)
+            SqlCommand ItemHistoryCommand = new SqlCommand("InsertItemHistory", conn, transaction)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -125,9 +124,9 @@ namespace Metaforge_Marketing.Repository
 
         // Summary:
         //      Updates an Item's status in the database
-        public static void UpdateItemStatus(SqlConnection conn, Costing costing)
+        public static void UpdateItemStatus(SqlConnection conn, Costing costing, SqlTransaction transaction)
         {
-            SqlCommand UpdateItemStatusCommand = new SqlCommand("UpdateItemStatus", conn)
+            SqlCommand UpdateItemStatusCommand = new SqlCommand("UpdateItemStatus", conn, transaction)
             {
                 CommandType = CommandType.StoredProcedure
             };
