@@ -136,7 +136,7 @@ namespace Metaforge_Marketing.HelperClasses.Commands
             _searchFunction = searchFunction;
             _countFunction = countFunction;
             _filterFunction = filterFunction;
-
+            TotalPages = ComputeTotalPages(SQLWrapper<T>.CountWrapper(_countFunction), EntriesPerPage);
             _collection = new ObservableCollection<T>(SQLWrapper<T>.FetchWrapper(fetchFunction, _offsetIndex, _entriesPerPage));
             CollectionView view = (CollectionView) CollectionViewSource.GetDefaultView(_collection);
             view.Filter = _filterFunction;
@@ -148,6 +148,7 @@ namespace Metaforge_Marketing.HelperClasses.Commands
             _fetchFunction = fetchFunction;
             _countFunction = countFunction;
             _filterFunction = filterFunction;
+            TotalPages = ComputeTotalPages(SQLWrapper<T>.CountWrapper(_countFunction), EntriesPerPage);
 
             _collection = new ObservableCollection<T>(SQLWrapper<T>.FetchWrapper(fetchFunction, _offsetIndex, _entriesPerPage));
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(_collection);
@@ -157,7 +158,6 @@ namespace Metaforge_Marketing.HelperClasses.Commands
         public PaginationCommands(IEnumerable<T> collection, int count, Predicate<object> filterFunction) : this()
         {
             _filterFunction = filterFunction;
-            CurrentPage = 1;
             _collection = new ObservableCollection<T>(collection);
             TotalPages = ComputeTotalPages(count, EntriesPerPage); 
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(_collection);
