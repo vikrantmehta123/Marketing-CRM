@@ -162,32 +162,27 @@ namespace Metaforge_Marketing.Repository
                 while (reader.Read())
                 {
                     rmCosting.Id = Convert.ToInt32(reader["Id"]);
+                    rmCosting.RMAsPerDrawing = reader["RMAsPerDrawing"].ToString();
                     rmCosting.CostPerPiece = (float)Convert.ToDecimal(reader["RMCostPerPiece"]);
-                    rmCosting.CostingPreparedBy = new Admin { 
-                        Id = Convert.ToInt32(reader["AdminId"]) ,
-                        Name = reader["Name"].ToString()
+                    rmCosting.RMConsidered = new RM
+                    {
+                        Id = Convert.ToInt32(reader["RMMasterId"]),
+                        Grade = reader["Grade"].ToString(),
+                        Category = (RMCategoryEnum)Convert.ToInt16(reader["Category"]), 
+                        CurrentRate = (float)Convert.ToDecimal(reader["CurrentRate"])
                     };
+                    rmCosting.RMRate = (float)Convert.ToDecimal(reader["RMRate"]);
 
-                    if (reader["RMMasterId"] != DBNull.Value)
+                    if (reader["DetailsId"] != DBNull.Value)
                     {
                         rmCosting.IsRMCostingDetailsPresent = true;
-                        rmCosting.RMConsidered = new RM
-                        {
-                            Id = Convert.ToInt32(reader["RMMasterId"]),
-                            Grade = reader["Grade"].ToString(),
-                            Category = (RMCategoryEnum)Convert.ToInt16(reader["Category"])
-                        };
+                        rmCosting.ScrapRate = (float)Convert.ToDecimal(reader["ScrapRate"]);
+                        rmCosting.ScrapRecovery = (float)Convert.ToDecimal(reader["ScrapRecovery"]);
+                        rmCosting.CuttingAllowance = (float)Convert.ToDecimal(reader["CuttingAllowance"]);
                     }
-                    else { rmCosting.RMConsidered = new RM(); }
-
-                    // TODO: Figure out why the RMRate if set before the RMConsidered property was giving error
-                    rmCosting.RMRate = (float)Convert.ToDecimal(reader["RMRate"]);
-                    rmCosting.RMAsPerDrawing = reader["RMAsPerDrawing"].ToString();
                 }
                 reader.Close();
             }
-            else { rmCosting.IsRMCostingPresent = false; }
-
             return rmCosting;
         }
 
