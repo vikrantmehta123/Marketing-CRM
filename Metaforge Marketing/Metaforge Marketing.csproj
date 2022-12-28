@@ -265,7 +265,6 @@
     <Compile Include="ViewModels\Reports\PerformanceReportViewModel.cs" />
     <Compile Include="ViewModels\RFQs\DetailedRFQViewModel.cs" />
     <Compile Include="ViewModels\RFQs\PendingRFQViewModel.cs" />
-    <Compile Include="ViewModels\RFQs\UpdateItemStatusViewModel.cs" />
     <Compile Include="ViewModels\Send\SendGeneralMailViewModel.cs" />
     <Compile Include="ViewModels\Send\SendQuotationViewModel.cs" />
     <Compile Include="ViewModels\Shared\PopupCloseMarker.cs" />
@@ -309,9 +308,6 @@
     </Compile>
     <Compile Include="Views\RFQs\PendingRFQView.xaml.cs">
       <DependentUpon>PendingRFQView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RFQs\UpdateItemStatusView.xaml.cs">
-      <DependentUpon>UpdateItemStatusView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shared\SelectCustomerView.xaml.cs">
       <DependentUpon>SelectCustomerView.xaml</DependentUpon>
@@ -381,10 +377,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RFQs\PendingRFQView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\RFQs\UpdateItemStatusView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -41,7 +41,7 @@ namespace Metaforge_Marketing.Models
         #endregion Properties
 
         #region Boolean Indicator Properties
-        public bool IsRegretted { get { return _isRegretted;} private set { _isRegretted = value; } }
+        public bool IsRegretted { get { return _isRegretted;} set { _isRegretted = value; } }
         public bool IsMFCostingPrepared { get { return _isMFCostingPrepared; } private set { _isMFCostingPrepared = value; } }
         public bool IsCustomerCostingPrepared { get { return _isCustomerCostingPrepared; } private set { _isCustomerCostingPrepared = value; } }
         public bool IsRejected { get { return _isRejectedByCustomer; } set { _isRejectedByCustomer = value; } }

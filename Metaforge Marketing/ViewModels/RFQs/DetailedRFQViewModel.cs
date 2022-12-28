@@ -14,32 +14,24 @@ namespace Metaforge_Marketing.ViewModels.RFQs
     internal class DetailedRFQViewModel : PopupCloseMarker
     {
         #region Fields
-        private ICommand _selectionDoneCommand, _updateStatusCommand, _addCostingCommand;
+        private ICommand _selectionDoneCommand, _addCostingCommand;
         private ObservableCollection<Item> _items;
         #endregion Fields
 
         #region Properties
 
-        public ICommand UpdateStatusCommand
-        {
-            get
-            {
-                if (_updateStatusCommand== null)
-                {
-                    _updateStatusCommand = new Command(p => 
-                    {
-                        new PopupWindowViewModel().Show(new UpdateItemStatusViewModel(SelectedItem));
-                        
-                    });
-                }
-                return _updateStatusCommand;
-            }
-        }
-
         public ICommand AddCostingCommand
         {
             get
             {
+                if (_addCostingCommand == null)
+                {
+                    _addCostingCommand = new Command(p =>
+                    {
+                        ChangeViewModel(new CostingViewModel());
+                        Close(p);
+                    });
+                }
                 return _addCostingCommand;
             }
         }

@@ -63,12 +63,11 @@
                     <GridViewColumn Header="Order Type" DisplayMemberBinding="{Binding Path=OrderType,Converter={StaticResource OrderTypeConverter}}"/>
                     <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Path=Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ItemStatusConverter}}"/>
 
-                    <GridViewColumn>
+                    <GridViewColumn Header="Regret">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button IsEnabled="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" 
-                                        Content="Update Status" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.UpdateStatusCommand}" 
-                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                <CheckBox IsEnabled="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" 
+                                        Content="Regret" IsChecked="{Binding Path=IsRegretted}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -77,7 +76,9 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button IsEnabled="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" 
-                                        Content="Add Costing" Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.AddCostingCommand}"/>
+                                        Content="Add Costing" 
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.AddCostingCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
