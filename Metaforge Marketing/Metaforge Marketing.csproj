@@ -269,6 +269,7 @@
     <Compile Include="ViewModels\Send\SendQuotationViewModel.cs" />
     <Compile Include="ViewModels\Shared\PopupCloseMarker.cs" />
     <Compile Include="ViewModels\Shared\PopupWindowViewModel.cs" />
+    <Compile Include="ViewModels\Shared\SelectBuyerViewModel.cs" />
     <Compile Include="ViewModels\Shared\SelectCustomerViewModel.cs" />
     <Compile Include="ViewModels\Shared\SelectItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\SharedViewModelBase.cs" />
@@ -308,6 +309,9 @@
     </Compile>
     <Compile Include="Views\RFQs\PendingRFQView.xaml.cs">
       <DependentUpon>PendingRFQView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Shared\SelectBuyerView.xaml.cs">
+      <DependentUpon>SelectBuyerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Shared\SelectCustomerView.xaml.cs">
       <DependentUpon>SelectCustomerView.xaml</DependentUpon>
@@ -377,6 +381,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RFQs\PendingRFQView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shared\SelectBuyerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

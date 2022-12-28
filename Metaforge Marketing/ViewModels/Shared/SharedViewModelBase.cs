@@ -21,6 +21,7 @@ namespace Metaforge_Marketing.ViewModels.Shared
         private static Item _selectedItem;
         private static RFQ _selectedRFQ;
         private static Customer _selectedCustomer;
+        private static Buyer _selectedBuyer;
         #endregion Fields
 
         #region Properties
@@ -62,6 +63,19 @@ namespace Metaforge_Marketing.ViewModels.Shared
                 }
             }
         }
+
+        public static Buyer SelectedBuyer
+        {
+            get { return _selectedBuyer; }
+            set
+            {
+                if (_selectedBuyer != value)
+                {
+                    _selectedBuyer = value;
+                    NotifyStaticPropertyChanged(nameof(SelectedBuyer));
+                }
+            }
+        }
         #endregion Properties
 
         #region Methods
@@ -70,6 +84,7 @@ namespace Metaforge_Marketing.ViewModels.Shared
             SelectedCustomer = null;
             SelectedItem = null;
             SelectedRFQ = null;
+            SelectedBuyer = null;
         }
         #endregion Methods
     }

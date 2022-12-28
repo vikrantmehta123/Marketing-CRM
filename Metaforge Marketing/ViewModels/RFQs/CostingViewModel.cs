@@ -42,10 +42,13 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                 }
                 return _rmCosting;
             }
-            set
+            private set
             {
-                _rmCosting = value;
-                OnPropertyChanged(nameof(RMCosting));
+                if (_rmCosting != value)
+                {
+                    _rmCosting = value;
+                    OnPropertyChanged(nameof(RMCosting));
+                }
             }
         }
 
@@ -53,7 +56,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         {
             get
             {
-                if (SelectedItem != null && Costing.Category != Models.Enums.CostingCategoryEnum.None)
+                if (SelectedItem != null && Costing.Category != CostingCategoryEnum.None)
                 {
                     using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
                     {
@@ -65,8 +68,11 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                 return _convCosting;
             }
             private set { 
-                _convCosting = value; 
-                OnPropertyChanged(nameof(ConvCosting));
+                if(_convCosting != value)
+                {
+                    _convCosting = value;
+                    OnPropertyChanged(nameof(ConvCosting));
+                }
             }
         }
 
@@ -160,7 +166,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
             using(SqlConnection connection = new SqlConnection(Properties.Settings.Default.conn_string))
             {
                 connection.Open();
-                //Repository.CostingRepository.InsertToDB(connection, Costing);
+                CostingRepository.InsertToDB(connection, Costing);
                 connection.Close();
             }
         }

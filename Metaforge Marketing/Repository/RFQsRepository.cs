@@ -121,14 +121,17 @@ namespace Metaforge_Marketing.Repository
             }
         }
 
-        /// <summary>
-        /// Given an instance of the RFQ Class, inserts it into the database
-        /// Requires that the Customer property of the rfq be set
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <param name="rfq"></param>
+
+        // Summary:
+        //      Inserts an RFQ to RFQs table, then inserts the Items in the items table (along with an insert in the ItemHistory table)
+        // Parameters:
+        //      RFQ- the RFQ that needs to be inserted
         public static void InsertToDB(SqlConnection connection, RFQ rfq)
         {
+
+            SqlCommand ItemHistoryInsertCommand = new SqlCommand("InsertItemHistory", connection);
+            ItemHistoryInsertCommand.CommandType = System.Data.CommandType.StoredProcedure;
+
             using (SqlCommand cmd = connection.CreateCommand())
             {
                 cmd.CommandText = "INSERT INTO RFQs (EnquiryDate, ProjectName, ReferredBy, AdminId, BuyerId) " +
@@ -143,13 +146,16 @@ namespace Metaforge_Marketing.Repository
                 SqlTransaction transaction = connection.BeginTransaction();
                 cmd.Transaction = transaction;
                 cmd.Connection = connection;
+                ItemHistoryInsertCommand.Transaction = transaction; 
 
                 try
                 { 
                     int RFQId = Convert.ToInt32(cmd.ExecuteScalar());
+                    cmd.Parameters.Clear();
+
                     cmd.CommandText = "INSERT INTO Items " +
-                        "(ItemName, ItemCode, GrossWeight, NetWeight, Status, Priority, Qty, OrderType, RFQId) " +
-                        "VALUES (@itemName, @itemCode, @grossWt, @netWt, @status, @priority, @qty, @orderType, @rfqId)";
+                        "(ItemName, ItemCode, GrossWeight, NetWeight, Status, Priority, Qty, OrderType, AdminId, RFQId) " +
+                        "VALUES (@itemName, @itemCode, @grossWt, @netWt, @status, @priority, @qty, @orderType, @adminId, @rfqId) SELECT SCOPE_IDENTITY()";
                     foreach (Item item in rfq.Items)
                     {
                         cmd.Parameters.Add("@itemName", System.Data.SqlDbType.VarChar).Value = item.ItemName;
@@ -160,10 +166,20 @@ namespace Metaforge_Marketing.Repository
                         cmd.Parameters.Add("@status", System.Data.SqlDbType.Int).Value = 0;
                         cmd.Parameters.Add("@priority", System.Data.SqlDbType.Int).Value = ((int)item.Priority);
                         cmd.Parameters.Add("@orderType", System.Data.SqlDbType.Int).Value = ((int)item.OrderType);
+                        cmd.Parameters.Add("@adminId", System.Data.SqlDbType.Int).Value = item.QuotationHandledBy.Id;
                         cmd.Parameters.Add("@rfqId", System.Data.SqlDbType.Int).Value = RFQId;
 
-                        cmd.ExecuteNonQuery();
+                        int ItemId = Convert.ToInt32(cmd.ExecuteScalar());
                         cmd.Parameters.Clear();
+
+                        ItemHistoryInsertCommand.Parameters.Add("@itemId", System.Data.SqlDbType.Int).Value = ItemId;
+                        ItemHistoryInsertCommand.Parameters.Add("@oldStatus", System.Data.SqlDbType.Int).Value = -1; // As -1 means that there is no item history before this point
+                        ItemHistoryInsertCommand.Parameters.Add("@newStatus", System.Data.SqlDbType.Int).Value = 0; // As 0 is status of pending item
+                        ItemHistoryInsertCommand.Parameters.Add("@date", System.Data.SqlDbType.Date).Value = rfq.EnquiryDate.Date;
+                        ItemHistoryInsertCommand.Parameters.Add("@note", System.Data.SqlDbType.VarChar).Value = "Enquiry for the item was received";
+
+                        ItemHistoryInsertCommand.ExecuteNonQuery();
+                        ItemHistoryInsertCommand.Parameters.Clear();
                     }
 
                     transaction.Commit();

@@ -6,13 +6,14 @@ using Metaforge_Marketing.ViewModels.Shared;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
+using System;
 
 namespace Metaforge_Marketing.ViewModels.Add
 {
     public class AddRFQViewModel : SharedViewModelBase
     {
         #region Fields
-        private ICommand _selectCustomerCommand, _addAnotherItemCommand, _clearCommand, _saveCommand;
+        private ICommand _selectCustomerCommand, _selectBuyerCommand, _addAnotherItemCommand, _clearCommand, _saveCommand;
         private ObservableCollection<Admin> _admins;
         #endregion Fields
 
@@ -44,6 +45,18 @@ namespace Metaforge_Marketing.ViewModels.Add
                     _selectCustomerCommand = new Command(p=> new PopupWindowViewModel().Show(new SelectCustomerViewModel()));
                 }
                 return _selectCustomerCommand;
+            }
+        }
+
+        public ICommand SelectBuyerCommand
+        {
+            get
+            {
+                if(_selectBuyerCommand == null && SelectedCustomer != null)
+                {
+                    _selectBuyerCommand = new Command(p => new PopupWindowViewModel().Show(new SelectBuyerViewModel(SelectedCustomer)));
+                }
+                return _selectBuyerCommand;
             }
         }
 
@@ -94,19 +107,31 @@ namespace Metaforge_Marketing.ViewModels.Add
         }
         private void Save()
         {
-            RFQToAdd.Items.Add(RFQItem);
-            if (RFQToAdd.Customer != null)
+            if (RFQItem.IsFormEntryValid()) { RFQToAdd.Items.Add(RFQItem); }
+            if (RFQToAdd.Customer != null && RFQToAdd.Buyer != null)
             {
-                SQLWrapper<RFQ>.InsertWrapper(Repository.RFQsRepository.InsertToDB, RFQToAdd);
+                try
+                {
+                    SQLWrapper<RFQ>.InsertWrapper(RFQsRepository.InsertToDB, RFQToAdd);
+                    RFQItem = new Item();
+                    RFQToAdd = new RFQ();
+                    RFQToAdd.Items.Clear();
+                    OnPropertyChanged(nameof(RFQToAdd));
+                    OnPropertyChanged(nameof(RFQItem));
+                    MessageBox.Show("Succeffully Added");
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
             }
-            RFQItem = new Item();
-            OnPropertyChanged(nameof(RFQItem));
         }
         private void Clear() { SelectedRFQ = null; }
 
         #endregion Methods
         public AddRFQViewModel() 
         {
+            ClearAllSelections(); // Clear All previous selections, if there are any
             StaticPropertyChanged += AddRFQViewModel_StaticPropertyChanged;
         }
 
@@ -115,6 +140,11 @@ namespace Metaforge_Marketing.ViewModels.Add
             if (e.PropertyName == nameof(SelectedCustomer))
             {
                 RFQToAdd.Customer = SelectedCustomer;
+                OnPropertyChanged(nameof(SelectBuyerCommand));
+            }
+            if (e.PropertyName== nameof(SelectedBuyer))
+            {
+                RFQToAdd.Buyer = SelectedBuyer;
             }
         }
     }

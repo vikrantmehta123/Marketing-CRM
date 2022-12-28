@@ -11,6 +11,7 @@ namespace Metaforge_Marketing.Repository
 {
     public class BuyersRepository
     {
+        #region Insert Queries
         public static void InsertToDB(SqlConnection conn, IEnumerable<Buyer> buyers)
         {
             using(SqlCommand cmd = conn.CreateCommand())
@@ -35,5 +36,37 @@ namespace Metaforge_Marketing.Repository
                 }
             }
         }
+        #endregion Insert Queries
+
+        #region Select Queries
+
+        // Summary:
+        //      Fetches all the buyers of a Customer
+        //      Used when adding an RFQ
+        // Parameters:
+        //      Customer- Whose buyers need to be fetched
+        public static IEnumerable<Buyer> FetchBuyers(SqlConnection conn, Customer cust)
+        {
+            List<Buyer> buyers = new List<Buyer>();
+            using(SqlCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "SELECT * FROM Buyers WHERE CustId = @custId";
+                cmd.Parameters.Add("@custId", System.Data.SqlDbType.Int).Value = cust.Id;
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Buyer buyer = new Buyer
+                    {
+                        Name = reader["BuyerName"].ToString(),
+                        Id = Convert.ToInt32(reader["Id"]),
+                        Email = reader["Email"].ToString()
+                    };
+                    buyers.Add(buyer);
+                }
+            }
+            return buyers;
+        }
+        #endregion Select Queries
     }
 }

@@ -37,6 +37,11 @@ namespace Metaforge_Marketing.Models
         public float GrossWeight { get { return _grossWeight; } set { _grossWeight = value; } }
         public float NetWeight { get { return _netWeight; } set { _netWeight = value; } }
         public Customer Customer { get { return _customer; } set { _customer = value; } }
+        public Admin QuotationHandledBy
+        {
+            get { return _quotationHandledBy; }
+            set { _quotationHandledBy = value; }
+        }
         public RFQ RFQ { get { return _rfq; } set { _rfq = value;}}
         #endregion Properties
 
@@ -49,6 +54,20 @@ namespace Metaforge_Marketing.Models
         public bool IsPOReceived { get { return _isPOReceived; } set { _isPOReceived = value; } }
 
         #endregion Boolean Indicator Properties
+
+
+        #region Methods
+        public bool IsFormEntryValid()
+        {
+            if (GrossWeight == 0) { return false; }
+            if (NetWeight== 0) { return false; }
+            if(String.IsNullOrEmpty(ItemCode)) { return false; }
+            if(String.IsNullOrEmpty(ItemName)) { return false; }
+            return true;
+        }
+        #endregion Methods
+
+
 
         public void InitIndicatorVariables()
         {
