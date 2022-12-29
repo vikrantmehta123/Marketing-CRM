@@ -32,6 +32,7 @@ namespace Metaforge_Marketing.ViewModels.Reports
                 return _selectCustomerCommand;
             }
         }
+        // Controls visibility of the dashboard
         public bool IsCustomerSelected
         {
             get
@@ -57,17 +58,14 @@ namespace Metaforge_Marketing.ViewModels.Reports
 
         public CustomerHistoryViewModel()
         {
+            SelectedCustomer = null; // Clear Selection on load
             StaticPropertyChanged += CustomerSelected;
         }
 
 
         #region Methods
-        /// <summary>
-        /// Notifies the reqd properties when the customer is selected. 
-        /// The UI then makes the dashboard visible, and the datagrid fetches the remarks
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
+        // When Customer is selected, notifies the Remarks property
         private void CustomerSelected(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(SelectedCustomer))

@@ -25,17 +25,15 @@
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
             <StackPanel>
                 <Button Content="Select Customer" Command="{Binding SelectCustomerCommand}"/>
+                <DockPanel>
+                    <TextBlock Text="Customer Name: " FontWeight="DemiBold"/>
+                    <TextBlock Text="{Binding Path=SelectedCustomer.CustomerName}"/>
+                </DockPanel>
             </StackPanel>
-
 
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
 
             <StackPanel Orientation="Vertical">
-                <DockPanel>
-                    <TextBlock Text="Customer Name: " FontWeight="DemiBold"/>
-                    <TextBlock Text="{Binding Path=SelectedCustomer.Name}"/>
-                </DockPanel>
-
                 <DockPanel>
                     <TextBlock Text="City: " FontWeight="DemiBold"/>
                     <TextBlock Text="{Binding Path=SelectedCustomer.City}"/>
@@ -60,7 +58,10 @@
             <DatePicker HorizontalAlignment="Left" SelectedDateFormat="Short" SelectedDate="{Binding Path=RemarkToAdd.EventDate}"/>
             
             <Label Margin="0, 25, 0, 0" HorizontalAlignment="Left" Content="Remark" FontWeight="DemiBold"/>
-            <TextBox HorizontalAlignment="Left" MinWidth="200" MinHeight="100" Text="{Binding Path=RemarkToAdd.Remark}"/>
+            <TextBox HorizontalAlignment="Left" MinWidth="200" MinHeight="100" Text="{Binding Path=RemarkToAdd.Note, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap"
+                        VerticalScrollBarVisibility="Visible"
+                        AcceptsReturn="True"/>
 
             <DockPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right">
                 <Button Content="Save" Command="{Binding Path=SaveCommand}"/>

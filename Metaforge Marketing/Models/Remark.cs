@@ -7,7 +7,7 @@ namespace Metaforge_Marketing.Models
     {
 
         public Customer Customer { get; set; }
-        public DateTime EventDate { get; set; }
+        public DateTime EventDate { get; set; } = DateTime.Today.Date;
         public int Id { get; set; }
         public string Note { get; set; }
 
@@ -15,7 +15,6 @@ namespace Metaforge_Marketing.Models
         #region Methods
         public bool IsDataValid()
         {
-            if (Customer == null) { return false; }
             if (EventDate > DateTime.Today) { return false; }
             if (String.IsNullOrEmpty(Note)) { return false; }
             return true;

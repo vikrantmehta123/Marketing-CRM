@@ -4,6 +4,7 @@ using Metaforge_Marketing.Models;
 using Metaforge_Marketing.Repository;
 using Metaforge_Marketing.ViewModels.Shared;
 using Microsoft.Data.SqlClient;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Metaforge_Marketing.ViewModels.Add
@@ -16,7 +17,7 @@ namespace Metaforge_Marketing.ViewModels.Add
         #endregion Fields
 
         #region Properties
-        public Remark RemarkToAdd { get; set; }
+        public Remark RemarkToAdd { get; set; } = new Remark();
         public ICommand SelectCustomerCommand
         {
             get
@@ -55,8 +56,7 @@ namespace Metaforge_Marketing.ViewModels.Add
 
         public AddRemarkViewModel()
         {
-            RemarkToAdd = new Remark();
-            RemarkToAdd.Customer = SelectedCustomer;
+            SelectedCustomer = null; // Clear Selection when the view loads
         }
 
         #region Methods
@@ -68,15 +68,24 @@ namespace Metaforge_Marketing.ViewModels.Add
         }
         private void Save()
         {
+            RemarkToAdd.Customer = SelectedCustomer;
             using(SqlConnection conn = new SqlConnection(conn_string))
             {
                 conn.Open();
-                RemarksRepository.InsertToDB(conn, RemarkToAdd);
-                conn.Close();
+                try
+                {
+                    RemarksRepository.InsertToDB(conn, RemarkToAdd);
+                    MessageBox.Show("Successfully inserted");
+                }
+                finally
+                {
+                    conn.Close();
+                }
             }   
         }
         private bool CanSave()
         {
+            if(SelectedCustomer == null) { return false; }
             return RemarkToAdd.IsDataValid();
         }
         #endregion Methods
