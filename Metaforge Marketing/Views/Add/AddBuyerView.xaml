@@ -33,7 +33,7 @@
             <StackPanel Orientation="Vertical">
                 <DockPanel>
                     <TextBlock Text="Customer Name: " FontWeight="DemiBold"/>
-                    <TextBlock Text="{Binding Path=SelectedCustomer.Name}"/>
+                    <TextBlock Text="{Binding Path=SelectedCustomer.CustomerName}"/>
                 </DockPanel>
 
                 <DockPanel>
@@ -59,14 +59,14 @@
             <TextBox Text="{Binding Path=BuyerToAdd.Name}" HorizontalAlignment="Left" Width="150"/>
 
             <Label Content="Email" Margin="0, 10, 0, 0" FontWeight="DemiBold"/>
-            <TextBox Text="{Binding Path=BuyerToAdd.Email}" HorizontalAlignment="Left" Width="150"/>
+            <TextBox Text="{Binding Path=BuyerToAdd.Email, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Width="150"/>
 
             <Label Content="Mobile Number" Margin="0, 10, 0, 0" FontWeight="DemiBold"/>
             <TextBox Text="{Binding Path=BuyerToAdd.Phone}" HorizontalAlignment="Left" Width="150"/>
             <DockPanel Margin="0, 15, 0, 0" HorizontalAlignment="Left">
-                <Button Content="Save" Command="{Binding AddNewBuyerCommand}" />
-                <Button Content="Clear" Command="{Binding Path=ClearBuyerCommand}"/>
+                <Button Content="Clear" Command="{Binding Path=ClearCommand}"/>
                 <Button Content="Add Another Buyer" Command="{Binding Path=AddAnotherBuyerCommand}" />
+                <Button Content="Save" Command="{Binding SaveCommand}"/>
             </DockPanel>
         </StackPanel>
         <!--#endregion-->

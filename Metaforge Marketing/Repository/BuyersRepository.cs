@@ -12,6 +12,13 @@ namespace Metaforge_Marketing.Repository
     public class BuyersRepository
     {
         #region Insert Queries
+
+        // Summary:
+        //      Inserts a list of buyers into the database
+        //      Requires that their Customer Property be set
+        // Parameters:
+        //      List of Buyers that needs to be inserted
+        //      An open SQL Connection
         public static void InsertToDB(SqlConnection conn, IEnumerable<Buyer> buyers)
         {
             using(SqlCommand cmd = conn.CreateCommand())
@@ -28,6 +35,7 @@ namespace Metaforge_Marketing.Repository
                     try
                     {
                         cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
                     }
                     catch(Exception ex)
                     {

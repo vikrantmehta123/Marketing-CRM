@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 namespace Metaforge_Marketing.Models
 {
     public class Buyer
@@ -17,5 +19,18 @@ namespace Metaforge_Marketing.Models
         public string Phone { get { return _phone;} set { _phone = value; } }
         public Customer Customer { get { return _customer;} set { _customer = value; } }
         #endregion Properties
+
+        #region Methods
+        // Summary:
+        //      Performs basic validation on the "Add Buyer" form
+        //      Returns true if the name and the email are set
+        public bool IsFormDataValid()
+        {
+            if (String.IsNullOrEmpty(Name)) { return false; }
+            if (String.IsNullOrEmpty(Email)) { return false; }
+            return true;
+        }
+        #endregion Methods
+
     }
 }

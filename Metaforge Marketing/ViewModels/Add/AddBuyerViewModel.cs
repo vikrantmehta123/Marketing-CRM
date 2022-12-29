@@ -6,6 +6,7 @@ using Metaforge_Marketing.ViewModels.Shared;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Metaforge_Marketing.ViewModels.Add
@@ -19,7 +20,15 @@ namespace Metaforge_Marketing.ViewModels.Add
         #endregion Fields
 
         #region Bounded Properties
-        public Buyer BuyerToAdd { get { return _buyerToAdd; } set { _buyerToAdd = value; } }
+        public Buyer BuyerToAdd 
+        {
+            get { return _buyerToAdd; }
+            set 
+            { 
+                _buyerToAdd = value; 
+                OnPropertyChanged(nameof(BuyerToAdd));
+            }
+        }
         public ICommand AddAnotherBuyerCommand
         {
             get
@@ -49,7 +58,7 @@ namespace Metaforge_Marketing.ViewModels.Add
             {
                 if (_selectCustomerCommand == null)
                 {
-                    _selectCustomerCommand = new Command(p => new PopupWindowViewModel().Show(new ViewModels.Shared.SelectCustomerViewModel()));
+                    _selectCustomerCommand = new Command(p => new PopupWindowViewModel().Show(new SelectCustomerViewModel()));
                 }
                 return _selectCustomerCommand;
             }
@@ -70,37 +79,47 @@ namespace Metaforge_Marketing.ViewModels.Add
 
         public AddBuyerViewModel()
         {
+            SelectedCustomer = null;
             BuyerToAdd = new Buyer();
         }
         #region Command Functions
         private void AddAnotherBuyer()
         {
-            if (SelectedCustomer.Buyers == null) { SelectedCustomer.Buyers = new List<Buyer>(); }
-            BuyerToAdd.Customer = SelectedCustomer;
+            if (SelectedCustomer.Buyers == null) { SelectedCustomer.Buyers = new List<Buyer>(); } // Init the list if null
+
+            BuyerToAdd.Customer = SelectedCustomer; // Set the customer property of the Buyer
             SelectedCustomer.Buyers.Add(BuyerToAdd);
             BuyerToAdd = new Buyer();
-            OnPropertyChanged(nameof(BuyerToAdd));
         }
         private bool CanAddAnotherBuyer()
         {
             if (SelectedCustomer == null) { return false; }
-            return true;
+            return BuyerToAdd.IsFormDataValid();
         }
         private void Save()
         {
-            AddAnotherBuyer();
+            if(BuyerToAdd.IsFormDataValid()) { AddAnotherBuyer(); } // Add the current buyer to the list
+            
             using(SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
             {
                 conn.Open();
-                BuyersRepository.InsertToDB(conn, SelectedCustomer.Buyers);
-                conn.Close();
+                try
+                {
+                    BuyersRepository.InsertToDB(conn, SelectedCustomer.Buyers);
+                    MessageBox.Show("Successfully inserted");
+                }
+                finally
+                {
+                    conn.Close();
+                }
             }
         }
 
         private void Clear()
         {
-            SelectedCustomer.Buyers.Clear();
-            BuyerToAdd = new Buyer();
+            SelectedCustomer = null; // Clear the customer
+            OnPropertyChanged(nameof(SelectedCustomer));   
+            BuyerToAdd = new Buyer(); // Clear the buyer
         }
         #endregion Command Functions
 
