@@ -275,6 +275,34 @@ namespace Metaforge_Marketing.Repository
             return results;
         }
 
+
+        // Summary:
+        //      Fetches Raw Material costings of an Item into a Datatable. 
+        //      Used in Costing Comparison Reports
+        public static DataTable FetchRMCostingsIntoDatatable(SqlConnection conn, Item item)
+        {
+            DataTable table = new DataTable();
+            SqlCommand cmd = new SqlCommand("SELECT * FROM RMCostings LEFT JOIN RMCostingDetails ON RMCostings.Id = RMCostingDetails.RMCostingId WHERE ItemId = @itemId", conn);
+            cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(table);
+            return table;
+        }
+
+        // Summary:
+        //      Fetches the Conversion Costings into a table based on the item and the category
+        //      Used in Costing Comparison
+        public static DataTable FetchCCIntoDatatable(SqlConnection conn, Item item, CostingCategoryEnum category)
+        {
+            DataTable table = new DataTable();
+            SqlCommand cmd = new SqlCommand("SELECT * FROM ConversionCostings LEFT JOIN CCDetails ON CCId = ConversionCostings.Id WHERE ItemId = @itemId AND WhoseCosting = @category ", conn);
+            cmd.Parameters.Add("@itemId",SqlDbType.Int).Value = item.Id;
+            cmd.Parameters.Add("@category", SqlDbType.Int).Value = ((int)category);
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(table);
+            return table;
+        }
+
         #endregion Select Queries
     }
 }

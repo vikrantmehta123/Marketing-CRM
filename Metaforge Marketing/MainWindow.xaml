@@ -70,6 +70,9 @@
         <DataTemplate DataType="{x:Type reports_vm:ItemHistoryReportViewModel}">
             <reports_views:ItemHistoryReportView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type reports_vm:CostingComparisonViewModel}">
+            <reports_views:CostingComparisonView/>
+        </DataTemplate>
         <!--#endregion Update Section-->
         
         <!--#region Update Section -->

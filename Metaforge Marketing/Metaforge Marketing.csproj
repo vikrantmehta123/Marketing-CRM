@@ -209,6 +209,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="HelperClasses\Commands\PaginationCommands.cs" />
+    <Compile Include="HelperClasses\Converters\CostingCategoryConverter.cs" />
+    <Compile Include="HelperClasses\Converters\IntegerToYesNoConverter.cs" />
     <Compile Include="HelperClasses\Converters\ItemStatusConverter.cs" />
     <Compile Include="HelperClasses\Converters\OrderTypeConverter.cs" />
     <Compile Include="HelperClasses\Converters\RMCategoryConverter.cs" />
@@ -302,6 +304,9 @@
     <Compile Include="Views\Mails\SendQuotationView.xaml.cs">
       <DependentUpon>SendQuotationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Reports\CostingComparisonView.xaml.cs">
+      <DependentUpon>CostingComparisonView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Reports\ItemHistoryReportView.xaml.cs">
       <DependentUpon>ItemHistoryReportView.xaml</DependentUpon>
     </Compile>
@@ -378,6 +383,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Mails\SendQuotationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\CostingComparisonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
