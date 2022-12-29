@@ -9,6 +9,7 @@ using System.Windows;
 using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Controls.Primitives;
 using System.Windows.Controls;
+using System.Data;
 
 namespace Metaforge_Marketing.Repository
 {
@@ -16,13 +17,8 @@ namespace Metaforge_Marketing.Repository
     {
         #region Select Queries
 
-        /// <summary>
-        /// Returns the count of all items present in database
-        /// Requires an open connection
-        /// Used in pagination
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <returns>Count of items in database</returns>
+        // Summary:
+        //      Returns the count of all the items in the database
         public static int CountItems(SqlConnection connection)
         {
             using (SqlCommand cmd = connection.CreateCommand())
@@ -32,6 +28,12 @@ namespace Metaforge_Marketing.Repository
             }
         }
 
+        // Summary:
+        //      Fetches items of a particular RFQ and of a particular Status
+        //      Mostly used in sending Quotations
+        // Parameters:
+        //      RFQ- the RFQ whose items need to be fetched
+        //      status- the Status of the Items (e.g Pending, or Regretted)
         public static IEnumerable<Item> FetchItems(SqlConnection conn, RFQ rfq, ItemStatusEnum status)
         {
             List<Item> items = new List<Item>();
@@ -193,6 +195,27 @@ namespace Metaforge_Marketing.Repository
         }
 
         #endregion Select Queries
+
+        // Summary:
+        //      Given an item, fetches all its item history and fills a datatable from that
+        //      Used in generating reports of Item history
+        public static DataTable FetchItemHistory(SqlConnection conn, Item item)
+        {
+            SqlCommand cmd = new SqlCommand("FetchItemHistory", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
+
+            DataTable table = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter
+            {
+                SelectCommand = cmd
+            };
+            adapter.Fill(table);
+
+            return table;
+        }
 
     }
 }

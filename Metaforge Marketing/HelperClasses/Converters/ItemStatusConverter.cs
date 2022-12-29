@@ -11,6 +11,8 @@ namespace Metaforge_Marketing.HelperClasses.Converters
             int status = (int)value;
             switch (status)
             {
+                case -1:
+                    return "None";
                 case 0:
                     return "Pending";
                 case 1:
@@ -35,6 +37,7 @@ namespace Metaforge_Marketing.HelperClasses.Converters
         {
             switch(value.ToString())
             {
+                case "None": return -1;
                 case "Pending": return 0;
                 case "Regretted": return 1;
                 case "Rejected By Customer": return 2;

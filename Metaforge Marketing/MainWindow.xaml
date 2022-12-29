@@ -67,6 +67,9 @@
         <DataTemplate DataType="{x:Type reports_vm:PerformanceReportViewModel}">
             <reports_views:PerformanceReportView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type reports_vm:ItemHistoryReportViewModel}">
+            <reports_views:ItemHistoryReportView/>
+        </DataTemplate>
         <!--#endregion Update Section-->
         
         <!--#region Update Section -->
@@ -120,7 +123,7 @@
                         <MenuItem Header="Customer History" Command="{Binding CustomerHistoryCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Costing Comparison" Command="{Binding CostingComparisonCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Performance Reports" Command="{Binding PerformanceReportCommand}" CommandParameter="{Binding}"/>
-                        <MenuItem Header="Monthwise Data"/>
+                        <MenuItem Header="Item History" Command="{Binding ItemHistoryCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
                 <Separator/>

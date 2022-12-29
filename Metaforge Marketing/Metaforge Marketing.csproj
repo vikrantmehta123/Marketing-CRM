@@ -260,6 +260,7 @@
     <Compile Include="ViewModels\Add\AddRemarkViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRFQViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRMMasterDataViewModel.cs" />
+    <Compile Include="ViewModels\Reports\ItemHistoryReportViewModel.cs" />
     <Compile Include="ViewModels\RFQs\CostingViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Reports\CostingComparisonViewModel.cs" />
@@ -300,6 +301,9 @@
     </Compile>
     <Compile Include="Views\Mails\SendQuotationView.xaml.cs">
       <DependentUpon>SendQuotationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Reports\ItemHistoryReportView.xaml.cs">
+      <DependentUpon>ItemHistoryReportView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RFQs\CostingView.xaml.cs">
       <DependentUpon>CostingView.xaml</DependentUpon>
@@ -374,6 +378,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Mails\SendQuotationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Reports\ItemHistoryReportView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
