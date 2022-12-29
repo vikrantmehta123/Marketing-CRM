@@ -32,6 +32,35 @@ namespace Metaforge_Marketing.Repository
             }
         }
 
+        public static IEnumerable<Item> FetchItems(SqlConnection conn, RFQ rfq, ItemStatusEnum status)
+        {
+            List<Item> items = new List<Item>();
+            using(SqlCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "SELECT * FROM Items WHERE RFQId = @rfqId AND Status = @status";
+                cmd.Parameters.Add("@status", System.Data.SqlDbType.Int).Value = ((int)status);
+                cmd.Parameters.Add("@rfqId", System.Data.SqlDbType.Int).Value = rfq.Id;
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Item item = new Item
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        ItemName = reader["ItemName"].ToString(),
+                        Status = (ItemStatusEnum)Convert.ToInt32(reader["Status"]),
+                        ItemCode = reader["ItemCode"].ToString(),
+                        Qty = Convert.ToInt32(reader["Qty"]),
+                        OrderType = (OrderTypeEnum)(Convert.ToInt16(reader["OrderType"])),
+                        Priority = (PriorityEnum)(Convert.ToInt16(reader["Priority"]))
+                    };
+                    items.Add(item);
+                }
+                reader.Close();
+            }
+
+            return items;
+        }
 
         public static IEnumerable<Item> FetchItems(SqlConnection conn, RFQ rfq)
         {

@@ -10,8 +10,8 @@ namespace Metaforge_Marketing.HelperClasses
     public class Email
     {
         #region Fields
-        private string Username = Environment.GetEnvironmentVariable("My_email");
-        private string Password = Environment.GetEnvironmentVariable("My_email_password");
+        private readonly string Username = Environment.GetEnvironmentVariable("My_email");
+        private readonly string Password = Environment.GetEnvironmentVariable("My_email_password");
         #endregion Fields
 
         #region Properties
@@ -22,8 +22,10 @@ namespace Metaforge_Marketing.HelperClasses
 
         public Email()
         {
-            MailMessage = new MailMessage();
-            MailMessage.From = new MailAddress(Username);
+            MailMessage = new MailMessage
+            {
+                From = new MailAddress(Username)
+            };
         }
 
 
@@ -47,10 +49,10 @@ namespace Metaforge_Marketing.HelperClasses
         {
             var client = new SmtpClient("smtp.gmail.com", 587)
             {
-                Credentials = new NetworkCredential(Username, Password),
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(Username, Password)
             };
             return client;
         }
@@ -60,7 +62,7 @@ namespace Metaforge_Marketing.HelperClasses
         /// </summary>
         public void Send()
         {
-            SmtpClient client = EstablishConnection();
+            var client = EstablishConnection();
             try { client.Send(MailMessage); }
             finally { MailMessage.Dispose(); }
         }

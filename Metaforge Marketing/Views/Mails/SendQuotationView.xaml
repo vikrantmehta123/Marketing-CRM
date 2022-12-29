@@ -29,13 +29,13 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Customer" DisplayMemberBinding="{Binding Path=Customer.CustomerName}" />
-                    <GridViewColumn Header="Buyer"/>
+                    <GridViewColumn Header="Buyer" DisplayMemberBinding="{Binding Buyer.Name}"/>
                     <GridViewColumn Header="Project Name" DisplayMemberBinding="{Binding Path=ProjectName}"/>
                     <GridViewColumn Header="Enquiry Date" DisplayMemberBinding="{Binding Path=EnquiryDate, StringFormat={}{0:dd-MM-yyyy}}"/>
                     <GridViewColumn Header="Choose Format">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox>
+                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.QuotationFormats}">
                                     
                                 </ComboBox>
                             </DataTemplate>

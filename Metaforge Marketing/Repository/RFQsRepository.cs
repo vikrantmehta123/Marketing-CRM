@@ -78,6 +78,11 @@ namespace Metaforge_Marketing.Repository
                     Customer = new Customer
                     {
                         CustomerName = reader["CustomerName"].ToString()
+                    },
+                    Buyer = new Buyer
+                    {
+                        Email = reader["Email"].ToString(),
+                        Name = reader["BuyerName"].ToString()
                     }
                 };
                 results.Add(rfq);

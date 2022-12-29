@@ -19,28 +19,23 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
         #endregion Methods
 
         #region Methods
-        public void SendQuotation(IEnumerable<Costing> preparedCostings, IEnumerable<Item> regrettedItems, IEnumerable<Buyer> recipients, QuotationFormatEnum quotationFormat)
+        public static void SendQuotation(string path, IEnumerable<Item> regrettedItems, IEnumerable<Buyer> recipients, QuotationFormatEnum quotationFormat)
         {
             Email email = new Email();
             recipients.ToList().ForEach( buyer => email.MailMessage.To.Add(buyer.Email)); // Add the recipients to the list
 
-            string path = "";
-            if (quotationFormat == QuotationFormatEnum.Short)
-            {
-                //path = ShortQuotationCreator.CreateQuotation()
-            }
-            else if( quotationFormat == QuotationFormatEnum.Long)
-            {
-                // path = LongQuotationCreator.CreateQuotation()
-            }
-            else
-            {
-                // path = BajajQuotationCreator.CreateQuotation()
-            }
-            email.MailMessage.Attachments.Add(new System.Net.Mail.Attachment(path));
-
             // TODO: Add the body to the email
             email.MailMessage.Body = "";
+
+            if (!String.IsNullOrEmpty(path))
+            {
+                email.MailMessage.Attachments.Add(new System.Net.Mail.Attachment(path));
+            }
+            if(regrettedItems.Count() > 0)
+            {
+                regrettedItems.ToList().ForEach(item => email.MailMessage.Body += item.ItemName + ", ");
+            }
+
             email.Send();
         }
 

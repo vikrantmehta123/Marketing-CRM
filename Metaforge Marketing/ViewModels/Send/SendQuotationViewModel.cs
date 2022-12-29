@@ -9,12 +9,18 @@ using Metaforge_Marketing.Repository;
 using Metaforge_Marketing.Models.Enums;
 using System;
 using System.Linq;
+using System.Data.Common;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
+using Metaforge_Marketing.HelperClasses;
+using System.Windows;
+using System.Text.RegularExpressions;
+using Metaforge_Marketing.HelperClasses.Quotation;
 
 namespace Metaforge_Marketing.ViewModels.Send
 {
     public class SendQuotationViewModel : ViewModelBase
     {
-        public static IEnumerable<QuotationFormatEnum> QuotationFormat { get; } = Enum.GetValues(typeof(QuotationFormatEnum)).Cast<QuotationFormatEnum>();
+        public static IEnumerable<QuotationFormatEnum> QuotationFormats { get; } = Enum.GetValues(typeof(QuotationFormatEnum)).Cast<QuotationFormatEnum>();
         #region Fields
         private ICommand _sendQuoteCommand;
         private RFQ _selectedRFQ;
@@ -38,6 +44,10 @@ namespace Metaforge_Marketing.ViewModels.Send
         {
             get
             {
+                if (_sendQuoteCommand== null)
+                {
+                    _sendQuoteCommand = new Command(p => SendQuotation());
+                }
                 return _sendQuoteCommand;
             }
         }
@@ -74,8 +84,17 @@ namespace Metaforge_Marketing.ViewModels.Send
         //      regretted items, creates a word document based on the format selected, and sends it to the buyer in question
         private void SendQuotation()
         {
-            // IEnumerable<Costing> RegrettedItems = CostingsRepository.FetchCostings(connection, SelectedRFQ, RegrettedItemStatus);
-            // IEnumerable<Costing> CostingPreparedItems = CostingsRepository.FetchCostings(connection, SelectedRFQ, CustomerCostingPreparedStatus); :=> A query to fetch all items with their costings, whose status = CustomerCostingPrepared
+            IEnumerable<Item> RegrettedItems;
+            IEnumerable<Costing> CostingPreparedItems;
+            string path;
+            using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
+            {
+                conn.Open();
+                RegrettedItems = ItemsRepository.FetchItems(conn, SelectedRFQ, ItemStatusEnum.Regretted);
+                CostingPreparedItems = CostingRepository.FetchCostings(conn, SelectedRFQ, CostingCategoryEnum.CustomerQuoted); //:=> A query to fetch all items with their costings, whose status = CustomerCostingPrepared
+                conn.Close();
+            }
+            MessageBox.Show(RegrettedItems.Count() + " ");
             // if (SelectedFormat == QuotationFormat.Short)
             // {
             //      PDFQuotationCreator.SendShortQuotation(CostingPreparedItems, RegrettedItems, SelectedRFQ.Buyer);
@@ -84,6 +103,7 @@ namespace Metaforge_Marketing.ViewModels.Send
             // {
             //      PDFQuotationCreator(CostingPreparedItems, RegrettedItems, SelectedRFQ.Buyer)
             // }
+            QuotationSender.SendQuotation("", RegrettedItems, new List<Buyer> { SelectedRFQ.Buyer }, SelectedQuotationFormat);
         }
         #endregion Methods
     }
