@@ -1,4 +1,5 @@
 ﻿using Metaforge_Marketing.HelperClasses;
+using Metaforge_Marketing.Models.Enums;
 using Metaforge_Marketing.Repository;
 using Microsoft.Data.SqlClient;
 using System;
@@ -16,7 +17,6 @@ namespace Metaforge_Marketing.ViewModels.Update
     {
         private DataTable _rmMasterData;
         private ICommand _updateCommand;
-
 
         public ICommand UpdateCommand
         {

@@ -20,6 +20,7 @@ namespace Metaforge_Marketing.Models
         }
         #endregion INPC
 
+        public IEnumerable<RMCategoryEnum> RMCategories { get; } = Enum.GetValues(typeof(RMCategoryEnum)).Cast<RMCategoryEnum>();
 
         #region Fields
         private int _id;

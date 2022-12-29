@@ -296,9 +296,6 @@
     <Compile Include="Views\Add\AddRFQView.xaml.cs">
       <DependentUpon>AddRFQView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Add\AddRMMasterDataView.xaml.cs">
-      <DependentUpon>AddRMMasterDataView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Mails\GeneralMailView.xaml.cs">
       <DependentUpon>GeneralMailView.xaml</DependentUpon>
     </Compile>
@@ -372,10 +369,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Add\AddRFQView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Add\AddRMMasterDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
