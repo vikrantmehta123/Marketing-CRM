@@ -6,11 +6,13 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Windows;
 
 namespace Metaforge_Marketing.Repository
 {
     public class RMRepository
     {
+        #region Select Queries
 
         // Summary:
         //      Fetches a list of Raw Materials in the master data.
@@ -50,6 +52,9 @@ namespace Metaforge_Marketing.Repository
             }
             return table;
         }
+        #endregion Select Queries
+
+        #region Update Queries
 
         public static void UpdateRMMaster(SqlConnection conn, DataTable table)
         {
@@ -60,5 +65,27 @@ namespace Metaforge_Marketing.Repository
                 
             }
         }
+        #endregion Update Queries
+
+        #region Insert Queries
+        public static void InsertToDB(SqlConnection conn, RM RMToInsert)
+        {
+            using(SqlCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "INSERT INTO RMMaster (Grade, Category, CurrentRate) VALUES (@grade, @category, @currentRate)";
+                cmd.Parameters.Add("@grade", SqlDbType.VarChar).Value = RMToInsert.Grade;
+                cmd.Parameters.Add("@currentRate", SqlDbType.Float).Value = (RMToInsert.CurrentRate);
+                cmd.Parameters.Add("@category", SqlDbType.Int).Value = ((int)RMToInsert.Category); 
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+        #endregion Insert Queries
     }
 }

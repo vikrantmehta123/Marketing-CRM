@@ -20,7 +20,7 @@
         <StackPanel Grid.Row="1" HorizontalAlignment="Center">
             <DockPanel>
                 <Label Content="Name"/>
-                <TextBox MinWidth="100" Text="{Binding AdminToAdd.Name}"/>
+                <TextBox MinWidth="100" Text="{Binding AdminToAdd.Name, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"/>
             </DockPanel>
             <DockPanel LastChildFill="False">
                 <Button Content="Save" Command="{Binding SaveCommand}"/>

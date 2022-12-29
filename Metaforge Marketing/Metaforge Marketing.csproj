@@ -259,6 +259,7 @@
     <Compile Include="ViewModels\Add\AddCustomerViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRemarkViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRFQViewModel.cs" />
+    <Compile Include="ViewModels\Add\AddRMMasterDataViewModel.cs" />
     <Compile Include="ViewModels\RFQs\CostingViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Reports\CostingComparisonViewModel.cs" />
@@ -290,6 +291,9 @@
     </Compile>
     <Compile Include="Views\Add\AddRFQView.xaml.cs">
       <DependentUpon>AddRFQView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Add\AddRMMasterDataView.xaml.cs">
+      <DependentUpon>AddRMMasterDataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Mails\GeneralMailView.xaml.cs">
       <DependentUpon>GeneralMailView.xaml</DependentUpon>
@@ -358,6 +362,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Add\AddRFQView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Add\AddRMMasterDataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

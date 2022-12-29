@@ -20,8 +20,10 @@ namespace Metaforge_Marketing.Repository
         //     Requires an open connection, and an instance of Admin class to insert 
         public static void InsertToDB(SqlConnection conn, Admin admin)
         {
-            SqlCommand cmd = new SqlCommand("InsertAdmin", conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            SqlCommand cmd = new SqlCommand("InsertAdmin", conn)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
             cmd.Parameters.Add("@name", System.Data.SqlDbType.VarChar).Value = admin.Name;
             cmd.ExecuteNonQuery();
         }

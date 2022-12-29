@@ -18,6 +18,8 @@
         Title="{Binding WindowTitle}" Height="720" Width="1280">
 
     <Window.Resources>
+        
+        <!--#region Add Section -->
         <DataTemplate DataType="{x:Type add_vm:AddBuyerViewModel}">
             <add_views:AddBuyerView/>
         </DataTemplate>
@@ -30,31 +32,48 @@
         <DataTemplate DataType="{x:Type add_vm:AddRFQViewModel}">
             <add_views:AddRFQView/>
         </DataTemplate>
-
+        <DataTemplate DataType="{x:Type add_vm:AddAdminViewModel}">
+            <add_views:AddAdminView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type add_vm:AddRMMasterDataViewModel}">
+            <add_views:AddRMMasterDataView/>
+        </DataTemplate>
+        <!--#endregion Add Section -->
+        
+        
+        <!--#region Mailing Section-->
         <DataTemplate DataType="{x:Type SendMail_vm:SendGeneralMailViewModel}">
             <SendMail_views:GeneralMailView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type SendMail_vm:SendQuotationViewModel}">
             <SendMail_views:SendQuotationView/>
         </DataTemplate>
+        <!--#endregion Mailing Section-->
         
+        <!--#region RFQ Section-->
         <DataTemplate DataType="{x:Type rfq_vm:CostingViewModel}">
             <rfq_views:CostingView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type rfq_vm:PendingRFQViewModel}">
             <rfq_views:PendingRFQView/>
         </DataTemplate>
+        <!--#endregion Mailing Section-->
         
+        
+        <!--#region Reports Section-->
         <DataTemplate DataType="{x:Type reports_vm:CustomerHistoryViewModel}">
             <reports_views:CustomerHistoryView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type reports_vm:PerformanceReportViewModel}">
             <reports_views:PerformanceReportView/>
         </DataTemplate>
-
+        <!--#endregion Update Section-->
+        
+        <!--#region Update Section -->
         <DataTemplate DataType="{x:Type update_vm:UpdateRMMasterViewModel}">
             <update_views:UpdateRMMasterView/>
         </DataTemplate>
+        <!--#endregion Update Section-->
 
     </Window.Resources>
     
@@ -91,6 +110,7 @@
                         <MenuItem Header="Buyer" Command="{Binding AddBuyerCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="RFQ" Command="{Binding AddRFQCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Remark" Command="{Binding AddRemarkCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="RM Master Data" Command="{Binding AddRMMasterDataCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
                 <Separator/>

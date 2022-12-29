@@ -1,6 +1,7 @@
 ﻿using Metaforge_Marketing.Models.Enums;
 using Metaforge_Marketing.Repository;
 using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -49,6 +50,13 @@ namespace Metaforge_Marketing.Models
         #endregion Properties
 
         #region Methods
+
+        public bool IsFormDataValid()
+        {
+            if(String.IsNullOrEmpty(Grade)) { return false; }
+            if (CurrentRate <= 0) { return false; }
+            return true;
+        }
         public override string ToString()
         {
             if (((int)Category) == 0) { return Grade; }
