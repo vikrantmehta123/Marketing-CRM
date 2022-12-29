@@ -11,6 +11,8 @@
         xmlns:reports_views="clr-namespace:Metaforge_Marketing.Views.Reports"
         xmlns:SendMail_vm="clr-namespace:Metaforge_Marketing.ViewModels.Send"
         xmlns:SendMail_views="clr-namespace:Metaforge_Marketing.Views.Mails"
+        xmlns:update_vm="clr-namespace:Metaforge_Marketing.ViewModels.Update"
+        xmlns:update_views="clr-namespace:Metaforge_Marketing.Views.Update"
         xmlns:local="clr-namespace:Metaforge_Marketing"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="720" Width="1280">
@@ -48,6 +50,10 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type reports_vm:PerformanceReportViewModel}">
             <reports_views:PerformanceReportView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type update_vm:UpdateRMMasterViewModel}">
+            <update_views:UpdateRMMasterView/>
         </DataTemplate>
 
     </Window.Resources>
@@ -98,6 +104,13 @@
                     </MenuItem>
                 </Menu>
                 <Separator/>
+
+                <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
+                    <MenuItem Header="Update">
+                        <MenuItem Header="RM Master" Command="{Binding UpdateRMMasterCommand}" CommandParameter="{Binding}"/>
+                    </MenuItem>
+                </Menu>
+
             </ToolBar>
         </DockPanel>
 

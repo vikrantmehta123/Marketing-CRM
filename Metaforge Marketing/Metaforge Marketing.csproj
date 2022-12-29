@@ -211,6 +211,7 @@
     <Compile Include="HelperClasses\Commands\PaginationCommands.cs" />
     <Compile Include="HelperClasses\Converters\ItemStatusConverter.cs" />
     <Compile Include="HelperClasses\Converters\OrderTypeConverter.cs" />
+    <Compile Include="HelperClasses\Converters\RMCategoryConverter.cs" />
     <Compile Include="HelperClasses\Email.cs" />
     <Compile Include="HelperClasses\HTMLQuotationCreater.cs" />
     <Compile Include="HelperClasses\Quotation\BajajQuotationCreator.cs" />
@@ -273,6 +274,7 @@
     <Compile Include="ViewModels\Shared\SelectCustomerViewModel.cs" />
     <Compile Include="ViewModels\Shared\SelectItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\SharedViewModelBase.cs" />
+    <Compile Include="ViewModels\Update\UpdateRMMasterViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\Add\AddAdminView.xaml.cs">
       <DependentUpon>AddAdminView.xaml</DependentUpon>
@@ -318,6 +320,9 @@
     </Compile>
     <Compile Include="Views\Shared\SelectItemView.xaml.cs">
       <DependentUpon>SelectItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Update\UpdateRMMasterView.xaml.cs">
+      <DependentUpon>UpdateRMMasterView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -393,6 +398,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Shared\SelectItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Update\UpdateRMMasterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
