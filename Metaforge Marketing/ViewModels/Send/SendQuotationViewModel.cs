@@ -1,19 +1,13 @@
-﻿
-using Metaforge_Marketing.HelperClasses.Commands;
+﻿using Metaforge_Marketing.HelperClasses.Commands;
 using Metaforge_Marketing.Models;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Metaforge_Marketing.Repository;
 using Metaforge_Marketing.Models.Enums;
 using System;
 using System.Linq;
-using System.Data.Common;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 using Metaforge_Marketing.HelperClasses;
-using System.Windows;
-using System.Text.RegularExpressions;
 using Metaforge_Marketing.HelperClasses.Quotation;
 
 namespace Metaforge_Marketing.ViewModels.Send
@@ -86,7 +80,7 @@ namespace Metaforge_Marketing.ViewModels.Send
         {
             IEnumerable<Item> RegrettedItems;
             IEnumerable<Costing> CostingPreparedItems;
-            string path;
+            string path = "";
             using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
             {
                 conn.Open();
@@ -94,16 +88,21 @@ namespace Metaforge_Marketing.ViewModels.Send
                 CostingPreparedItems = CostingRepository.FetchCostings(conn, SelectedRFQ, CostingCategoryEnum.CustomerQuoted); //:=> A query to fetch all items with their costings, whose status = CustomerCostingPrepared
                 conn.Close();
             }
-            MessageBox.Show(RegrettedItems.Count() + " ");
-            // if (SelectedFormat == QuotationFormat.Short)
-            // {
-            //      PDFQuotationCreator.SendShortQuotation(CostingPreparedItems, RegrettedItems, SelectedRFQ.Buyer);
-            // }
-            // else if (SelectedFormat == QuotationFormat.WithBreakUp)
-            // {
-            //      PDFQuotationCreator(CostingPreparedItems, RegrettedItems, SelectedRFQ.Buyer)
-            // }
-            QuotationSender.SendQuotation("", RegrettedItems, new List<Buyer> { SelectedRFQ.Buyer }, SelectedQuotationFormat);
+            if (CostingPreparedItems.Count() > 0)
+            {
+                if (SelectedQuotationFormat == QuotationFormatEnum.Short)
+                {
+                    path = ShortQuotationCreator.CreateQuotation(CostingPreparedItems);
+                }
+                else if (SelectedQuotationFormat == QuotationFormatEnum.Long)
+                {
+                    path = LongQuotationCreator.CreateQuotation(CostingPreparedItems.ToList());
+                }
+            }
+
+            QuotationSender.SendQuotation(path, RegrettedItems, new List<Buyer> { SelectedRFQ.Buyer });
+
+            //TODO: Update the status of the Items as Mail sent
         }
         #endregion Methods
     }

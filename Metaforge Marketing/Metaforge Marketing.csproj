@@ -263,6 +263,7 @@
     <Compile Include="ViewModels\Add\AddRFQViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRMMasterDataViewModel.cs" />
     <Compile Include="ViewModels\Reports\ItemHistoryReportViewModel.cs" />
+    <Compile Include="ViewModels\RFQs\AddPODetailsViewModel.cs" />
     <Compile Include="ViewModels\RFQs\CostingViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Reports\CostingComparisonViewModel.cs" />

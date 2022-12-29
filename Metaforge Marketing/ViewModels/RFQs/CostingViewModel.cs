@@ -17,7 +17,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         #region Fields
         private bool _showDetailedCostingForm, _showShortFormatForm;
         private Costing _costing;
-        private RMCosting _rmCosting;
+        private RMCosting _rmCosting = new RMCosting();
         private ConversionCosting _convCosting = new ConversionCosting();
         private ICommand _saveCommand, _clearCommand, _selectItemCommand;
         #endregion Fields
@@ -36,7 +36,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                     using(SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
                     {
                         conn.Open();
-                        _rmCosting =  CostingRepository.FetchRMCosting(conn, SelectedItem, Costing.Category);
+                        _rmCosting =  CostingRepository.FetchRMCosting(conn, SelectedItem, Costing.Category, _rmCosting);
                         conn.Close();
                     }
                 }

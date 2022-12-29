@@ -145,9 +145,8 @@ namespace Metaforge_Marketing.Repository
         // Parameters:
         //      item- the item whose costing needs to be fetched
         //      category- the category of the costing: Customer's, Metaforge's, Customer's approved?
-        public static RMCosting FetchRMCosting(SqlConnection conn, Item selectedItem, CostingCategoryEnum category)
+        public static RMCosting FetchRMCosting(SqlConnection conn, Item selectedItem, CostingCategoryEnum category, RMCosting rmCosting)
         {
-            RMCosting rmCosting = new RMCosting();
             SqlCommand cmd = new SqlCommand("FetchRMCosting", conn)
             {
                 CommandType = CommandType.StoredProcedure
@@ -251,11 +250,12 @@ namespace Metaforge_Marketing.Repository
         {
             Costing costing = new Costing
             {
-                RMCosting = FetchRMCosting(conn, item, category),
+                
+                RMCosting = FetchRMCosting(conn, item, category, new RMCosting()),
                 Item = item,
-                Category = category
+                Category = category,
+                ConvCosting = FetchConversionCosting(conn, item, category)
             };
-            costing.ConvCosting = FetchConversionCosting(conn, item, category);
             return costing;
         }
 

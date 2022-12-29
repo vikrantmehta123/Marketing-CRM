@@ -12,14 +12,17 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
     {
         #region Fields
         private const string _file = "some path to the file";
-        private IEnumerable<Costing> _preparedCostings;
-        private IEnumerable<Item> _regrettedItems;
-        private QuotationFormatEnum _quotationFormat;
-        private IEnumerable<Buyer> _recipients;
+        private const string PATH_TO_TERMS_AND_CONDITIONS = "SOME PATH";
         #endregion Methods
 
         #region Methods
-        public static void SendQuotation(string path, IEnumerable<Item> regrettedItems, IEnumerable<Buyer> recipients, QuotationFormatEnum quotationFormat)
+
+        // Summary:
+        //      Sends the Quotation to the Buyer
+        // Parameters:
+        //      List- Regretted Items list
+        //      path- The path of the Quotation document
+        public static void SendQuotation(string path, IEnumerable<Item> regrettedItems, IEnumerable<Buyer> recipients)
         {
             Email email = new Email();
             recipients.ToList().ForEach( buyer => email.MailMessage.To.Add(buyer.Email)); // Add the recipients to the list
@@ -35,7 +38,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
             {
                 regrettedItems.ToList().ForEach(item => email.MailMessage.Body += item.ItemName + ", ");
             }
-
+            email.MailMessage.Attachments.Add(new System.Net.Mail.Attachment(PATH_TO_TERMS_AND_CONDITIONS)); // Add the terms and conditions document
             email.Send();
         }
 

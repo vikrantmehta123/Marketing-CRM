@@ -102,8 +102,7 @@
 
                     <DockPanel>
                         <Label Content="Material Considered" FontWeight="DemiBold"/>
-                        <ComboBox ItemsSource="{Binding RMMaster.RMMaster}" SelectedItem="{Binding RMCosting.RMConsidered, UpdateSourceTrigger=PropertyChanged}" 
-                                  IsReadOnly="True" IsEditable="True" Text="{Binding RMCosting.RMConsidered}"/>
+                        <ComboBox ItemsSource="{Binding RMMaster.RMMaster}" SelectedItem="{Binding RMCosting.RMConsidered, UpdateSourceTrigger=PropertyChanged}"/>
                     </DockPanel>
 
                     <DockPanel>
