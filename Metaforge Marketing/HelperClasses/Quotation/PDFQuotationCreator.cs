@@ -81,13 +81,13 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
                 Filter = "PDF |*.pdf"
             };
             bool res = (bool)dialog.ShowDialog();
+            string path;
             try
             {
                 if (res)
                 {
-                    string path = dialog.FileName.ToString();
+                    path = dialog.FileName.ToString();
                     document.ExportAsFixedFormat(path, WdExportFormat.wdExportFormatPDF);
-                    return path;
                 }
                 else
                 {
@@ -102,6 +102,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
                 document.Close(ref saveOption, ref originalFormat, ref routeDocument);
                 document.Application.Quit();
             }
+            return path;
         }
 
         protected static int AddBlankRow(ref Table table, int index)

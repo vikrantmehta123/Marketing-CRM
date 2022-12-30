@@ -21,7 +21,7 @@ namespace Metaforge_Marketing.Models
         {
             get 
             {
-                _totalCostPerPiece = _operations.Sum(op => op.Machine.CostPerPiece);
+                _totalCostPerPiece = _operations.Sum(op => op.CostPerPiece);
                 return _totalCostPerPiece;
             }
         }

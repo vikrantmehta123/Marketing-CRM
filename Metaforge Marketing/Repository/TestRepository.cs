@@ -70,11 +70,10 @@ namespace Metaforge_Marketing.Repository
                 try
                 {
                     adapter.Update(table);
-                    MessageBox.Show("Update successful");
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    throw ex;
                 }
                 
             }
@@ -96,7 +95,14 @@ namespace Metaforge_Marketing.Repository
             InsertCommand.Parameters.Add("@rmRate", SqlDbType.Float).Value = costing.RMRate;
             InsertCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
 
-            InsertCommand.ExecuteNonQuery();
+            try
+            {
+                InsertCommand.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
         }
 
         private static void UpdateRM(SqlConnection conn, SqlTransaction transaction, Item item, RMCosting costing, CostingCategoryEnum category)
@@ -113,7 +119,16 @@ namespace Metaforge_Marketing.Repository
             UpdateCommand.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)category);
             UpdateCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
             UpdateCommand.Parameters.Add("@rmAsPerDrawing", SqlDbType.VarChar).Value = costing.RMAsPerDrawing;
-            UpdateCommand.ExecuteNonQuery();
+            try
+            {
+                UpdateCommand.ExecuteNonQuery();
+                MessageBox.Show("Inserted");
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+            
         }
 
 
@@ -129,10 +144,8 @@ namespace Metaforge_Marketing.Repository
             {
                 //SetAdmin(conn, transaction, item, admin);
                 if (costing.IsRMCostingPresent) { UpdateRM(conn, transaction, item, costing, category); }
-                else { InsertRM(conn, transaction, item, costing, category); }
+                else { InsertRM(conn, transaction, item, costing, category);  }
                 InsertCC(conn, transaction, convCostingTable, item, category);
-
-
 
                 if(status != item.Status)
                 {
@@ -178,7 +191,15 @@ namespace Metaforge_Marketing.Repository
             cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
             cmd.Parameters.Add("@status", SqlDbType.Int).Value = ((int)status);
 
-            cmd.ExecuteNonQuery();
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+            
         }
     }
 }

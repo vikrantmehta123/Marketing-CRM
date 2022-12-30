@@ -35,9 +35,8 @@
                     <GridViewColumn Header="Choose Format">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.QuotationFormats}">
-                                    
-                                </ComboBox>
+                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.QuotationFormats}" 
+                                          SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.SelectedQuotationFormat}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

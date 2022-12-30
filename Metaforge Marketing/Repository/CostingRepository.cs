@@ -163,7 +163,7 @@ namespace Metaforge_Marketing.Repository
                     rmCosting.RMAsPerDrawing = reader["RMAsPerDrawing"].ToString();
                     rmCosting.CostPerPiece = (float)Convert.ToDecimal(reader["RMCostPerPiece"]);
                     rmCosting.RMRate = (float)Convert.ToDecimal(reader["RMRate"]);
-                    
+                    System.Diagnostics.Debug.Assert(rmCosting.CostPerPiece > 0);
                     rmCosting.RMConsidered = new RM()
                     {
                         Id = Convert.ToInt32(reader["RMMasterId"]),

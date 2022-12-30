@@ -31,7 +31,6 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
                 quote.Close(ref saveOption, ref originalFormat, ref routeDocument);
                 app.Quit();
             }
-            
         }
 
         private static Document AddShortQuotationTable(ref Document doc, IEnumerable<Costing> costings)

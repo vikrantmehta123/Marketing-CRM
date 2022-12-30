@@ -16,7 +16,7 @@ namespace Metaforge_Marketing.ViewModels.Test
     public class TestCostingViewModel : ViewModelBase
     {
         #region Fields
-        private Item _item = new Item() { Id = 2, Status = ItemStatusEnum.MF_Costing_Prepared };
+        private Item _item = new Item() { Id = 3, Status = ItemStatusEnum.Pending };
         private RMCosting _rmCosting = new RMCosting() { RMConsidered = new RM() };
         private DataTable _convCosting;
         private ICommand _updateCommand;
@@ -33,6 +33,7 @@ namespace Metaforge_Marketing.ViewModels.Test
                 {
                     _costingCategory = value;
                     OnPropertyChanged(nameof(RMCosting));
+                    OnPropertyChanged(nameof(ConvCosting));
                 }
             }
         }
@@ -45,7 +46,7 @@ namespace Metaforge_Marketing.ViewModels.Test
                 using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
                 {
                     conn.Open();
-                    _rmCosting = CostingRepository.FetchRMCosting(conn, new Models.Item { Id = 2 }, CostingCategory, _rmCosting);
+                    _rmCosting = CostingRepository.FetchRMCosting(conn, _item, CostingCategory, _rmCosting);
                     conn.Close();
                    
                 }
@@ -67,7 +68,7 @@ namespace Metaforge_Marketing.ViewModels.Test
                 using (SqlConnection conn = new SqlConnection(conn_string))
                 {
                     conn.Open();
-                    _convCosting = TestRepository.FetchConvCosting(conn, new Models.Item { Id = 2}, Models.Enums.CostingCategoryEnum.Metaforge );
+                    _convCosting = TestRepository.FetchConvCosting(conn, _item, CostingCategory );
                     conn.Close();
                 }
                 return _convCosting.DefaultView; 
@@ -101,16 +102,6 @@ namespace Metaforge_Marketing.ViewModels.Test
                 }
                 return _updateCommand; 
             }
-        }
-
-        public TestCostingViewModel()
-        {
-            PropertyChanged += TestCostingViewModel_PropertyChanged;
-        }
-
-        private void TestCostingViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            MessageBox.Show(e.PropertyName);
         }
     }
 }

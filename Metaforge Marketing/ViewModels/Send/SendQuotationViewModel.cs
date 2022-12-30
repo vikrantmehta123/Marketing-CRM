@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using Metaforge_Marketing.HelperClasses;
 using Metaforge_Marketing.HelperClasses.Quotation;
+using System.Windows;
 
 namespace Metaforge_Marketing.ViewModels.Send
 {
@@ -84,6 +85,7 @@ namespace Metaforge_Marketing.ViewModels.Send
             using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
             {
                 conn.Open();
+                SelectedRFQ.Items = new List<Item>(ItemsRepository.FetchItems(conn, SelectedRFQ));
                 RegrettedItems = ItemsRepository.FetchItems(conn, SelectedRFQ, ItemStatusEnum.Regretted);
                 CostingPreparedItems = CostingRepository.FetchCostings(conn, SelectedRFQ, CostingCategoryEnum.CustomerQuoted); //:=> A query to fetch all items with their costings, whose status = CustomerCostingPrepared
                 conn.Close();
@@ -92,7 +94,13 @@ namespace Metaforge_Marketing.ViewModels.Send
             {
                 if (SelectedQuotationFormat == QuotationFormatEnum.Short)
                 {
-                    path = ShortQuotationCreator.CreateQuotation(CostingPreparedItems);
+                    MessageBox.Show(CostingPreparedItems.ToList()[0].RMCosting.CostPerPiece + "");
+                    try
+                    {
+                        path = ShortQuotationCreator.CreateQuotation(CostingPreparedItems);
+                    }
+                    catch(Exception ex) { MessageBox.Show(ex.Message); }
+                    
                 }
                 else if (SelectedQuotationFormat == QuotationFormatEnum.Long)
                 {
@@ -100,7 +108,7 @@ namespace Metaforge_Marketing.ViewModels.Send
                 }
             }
 
-            QuotationSender.SendQuotation(path, RegrettedItems, new List<Buyer> { SelectedRFQ.Buyer });
+            //QuotationSender.SendQuotation(path, RegrettedItems, new List<Buyer> { SelectedRFQ.Buyer });
 
             //TODO: Update the status of the Items as Mail sent
         }
