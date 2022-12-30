@@ -21,54 +21,58 @@
         <Grid.ColumnDefinitions>
         </Grid.ColumnDefinitions>
 
+        <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="0" Grid.RowSpan="2">
+            <StackPanel>
+                <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.RowSpan="3" Orientation="Vertical" >
 
-        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.RowSpan="2" Orientation="Vertical"  Visibility="{Binding IsAddingCustomer, Converter={StaticResource booleanToVisibilityConverter}}" >
+                    <Label Content="Add Customer" HorizontalAlignment="Center" FontSize="24" VerticalAlignment="Center" FontWeight="Bold"/>
+                    <Label Content="Name:" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="0,10,10,0" VerticalAlignment="Top"/>
+                    <TextBox Text="{Binding Path=CustomerToAdd.CustomerName}" MinWidth="100"/>
 
-            <Label Content="Add Customer" HorizontalAlignment="Center" FontSize="24" VerticalAlignment="Center" FontWeight="Bold"/>
-            <Label Content="Name:" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="0,10,10,0" VerticalAlignment="Top"/>
-            <TextBox Text="{Binding Path=CustomerToAdd.CustomerName}" MinWidth="100"/>
+                    <Label Content="Address:" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="0,10,10,0" VerticalAlignment="Top"/>
+                    <TextBox Text="{Binding Path=CustomerToAdd.Address}" MinWidth="150"/>
 
-            <Label Content="Address:" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="0,10,10,0" VerticalAlignment="Top"/>
-            <TextBox Text="{Binding Path=CustomerToAdd.Address}" MinWidth="150"/>
+                    <Label Content="City:" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="0,10,10,0" VerticalAlignment="Top"/>
+                    <TextBox Text="{Binding Path=CustomerToAdd.City}" />
 
-            <Label Content="City:" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="0,10,10,0" VerticalAlignment="Top"/>
-            <TextBox Text="{Binding Path=CustomerToAdd.City}" />
+                    <Label Content="Pincode:" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="0,10,10,0" VerticalAlignment="Top"/>
+                    <TextBox Text="{Binding Path=CustomerToAdd.Pincode}" />
 
-            <Label Content="Pincode:" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="0,10,10,0" VerticalAlignment="Top"/>
-            <TextBox Text="{Binding Path=CustomerToAdd.Pincode}" />
+                    <Label Content="Referrer:" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="0,10,10,0" VerticalAlignment="Top"/>
+                    <TextBox Text="{Binding Path=CustomerToAdd.ReferredBy}" />
 
-            <Label Content="Referrer:" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="0,10,10,0" VerticalAlignment="Top"/>
-            <TextBox Text="{Binding Path=CustomerToAdd.ReferredBy}" />
+                    <Label Content="Category" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="0,10,10,0" VerticalAlignment="Top"/>
+                    <ComboBox ItemsSource="{Binding Path=CustomerToAdd.Categories}" SelectedItem="{Binding Path=CustomerToAdd.Category}" MinWidth="175" HorizontalAlignment="Left"/>
 
-            <Label Content="Category" FontWeight="DemiBold" HorizontalAlignment="Left" Margin="0,10,10,0" VerticalAlignment="Top"/>
-            <ComboBox ItemsSource="{Binding Path=CustomerToAdd.Categories}" SelectedItem="{Binding Path=CustomerToAdd.Category}" MinWidth="175" HorizontalAlignment="Left"/>
+                    <DockPanel LastChildFill="False" x:Name="MainButtonPanel">
+                        <Button Content="Add Buyers" Click="AddBuyer_Click"/>
+                        <Button Content="Clear" Command="{Binding ClearCommand}"/>
+                        <Button Content="Save" Command="{Binding SaveCommand}"/>
+                    </DockPanel>
+                </StackPanel>
 
-            <DockPanel LastChildFill="False">
-                <Button Content="Add Buyers" Command="{Binding AddBuyersCommand}"/>
-                <Button Content="Save"/>
-                <Button Content="Clear" Command="{Binding ClearCommand}"/>
-            </DockPanel>
-        </StackPanel>
+                <StackPanel Grid.Row="1" HorizontalAlignment="Center" x:Name="AddBuyerForm" Visibility="Collapsed">
+                    <Label Content="Add Buyer Details" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16"/>
 
+                    <Label Content="Name" Margin="0, 10, 0, 0" FontWeight="DemiBold"/>
+                    <TextBox Text="{Binding Path=BuyerToAdd.Name}" HorizontalAlignment="Left" Width="150"/>
 
-        <StackPanel Grid.Row="1" HorizontalAlignment="Center" Visibility="{Binding IsAddingBuyers, Converter={StaticResource booleanToVisibilityConverter}}">
-            <Label Content="Add Buyer Details" HorizontalAlignment="Center" FontWeight="Bold" FontSize="24"/>
-            
-            <Label Content="Name" Margin="0, 10, 0, 0" FontWeight="DemiBold"/>
-            <TextBox Text="{Binding Path=BuyerToAdd.Name}" HorizontalAlignment="Left" Width="150"/>
+                    <Label Content="Email" Margin="0, 10, 0, 0" FontWeight="DemiBold"/>
+                    <TextBox Text="{Binding Path=BuyerToAdd.Email}" HorizontalAlignment="Left" Width="150"/>
 
-            <Label Content="Email" Margin="0, 10, 0, 0" FontWeight="DemiBold"/>
-            <TextBox Text="{Binding Path=BuyerToAdd.Email}" HorizontalAlignment="Left" Width="150"/>
+                    <Label Content="Mobile Number" Margin="0, 10, 0, 0" FontWeight="DemiBold"/>
+                    <TextBox Text="{Binding Path=BuyerToAdd.Phone}" HorizontalAlignment="Left" Width="150"/>
 
-            <Label Content="Mobile Number" Margin="0, 10, 0, 0" FontWeight="DemiBold"/>
-            <TextBox Text="{Binding Path=BuyerToAdd.Phone}" HorizontalAlignment="Left" Width="150"/>
-                
-            <DockPanel LastChildFill="False" Margin="0, 10, 0, 0">
-                <Button Content="Add Another Buyer" Command="{Binding AddAnotherBuyerCommand}"/>
-                <Button Content="Save"/>
-                <Button Content="Go Back to Customer Form" Command="{Binding ShowCustomerFormCommand}"/>
-            </DockPanel>
-        </StackPanel>
+                    <DockPanel LastChildFill="False" Margin="0, 10, 0, 0" x:Name="AddBuyerButtongPanel">
+                        <Button Content="Hide" Click="HideBuyer_Click"/>
+                        <Button Content="Add Another Buyer" Command="{Binding AddAnotherBuyerCommand}"/>
+                        <Button Content="Clear" Command="{Binding ClearCommand}"/>
+                        <Button Content="Save" Command="{Binding SaveCommand}"/>
+                    </DockPanel>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
 
     </Grid>
 </UserControl>

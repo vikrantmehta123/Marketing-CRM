@@ -239,6 +239,7 @@
     <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\ModelsBase.cs" />
     <Compile Include="Models\Operation.cs" />
+    <Compile Include="Models\PO.cs" />
     <Compile Include="Models\Remark.cs" />
     <Compile Include="Models\RFQ.cs" />
     <Compile Include="Models\RM.cs" />
@@ -308,6 +309,9 @@
     </Compile>
     <Compile Include="Views\Reports\ItemHistoryReportView.xaml.cs">
       <DependentUpon>ItemHistoryReportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RFQs\AddPODetailsView.xaml.cs">
+      <DependentUpon>AddPODetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RFQs\CostingView.xaml.cs">
       <DependentUpon>CostingView.xaml</DependentUpon>
@@ -389,6 +393,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Reports\ItemHistoryReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RFQs\AddPODetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

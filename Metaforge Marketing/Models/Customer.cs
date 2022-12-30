@@ -40,5 +40,15 @@ namespace Metaforge_Marketing.Models
         public CustomerCategoryEnum Category { get { return _category; } set { _category = value; } }
         public List<Buyer> Buyers { get { return _buyers; } set { _buyers = value; } }
         #endregion Properties
+
+        public bool IsFormDataValid()
+        {
+            if (String.IsNullOrEmpty(CustomerName)) { return false; }
+            if (String.IsNullOrEmpty(City)) { return false; }
+            if (String.IsNullOrEmpty(Address)) { return false; }
+            if (String.IsNullOrEmpty(Pincode)) { return false; }
+            if(Category == CustomerCategoryEnum.None) { return false; }
+            return true;
+        }
     }
 }

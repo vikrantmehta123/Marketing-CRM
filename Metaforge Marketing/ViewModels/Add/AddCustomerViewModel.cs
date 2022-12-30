@@ -1,11 +1,8 @@
 ﻿using Metaforge_Marketing.HelperClasses;
-using Metaforge_Marketing.HelperClasses.Commands;
 using Metaforge_Marketing.Models;
 using Metaforge_Marketing.Repository;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows;
 using System.Windows.Input;
 
 namespace Metaforge_Marketing.ViewModels.Add
@@ -13,54 +10,37 @@ namespace Metaforge_Marketing.ViewModels.Add
     public class AddCustomerViewModel : ViewModelBase
     {
         #region Fields
-        private Customer _customerToAdd;
-        private Buyer _buyerToAdd;
-        private ICommand _addBuyersCommand, _clearCommand, _addAnotherBuyerCommand, _saveCommand;
-        private bool _isAddingBuyers, _isAddingCustomer = true;
+        private Customer _customerToAdd = new Customer();
+        private List<Buyer> _buyers = new List<Buyer>();
+        private Buyer _buyerToAdd = new Buyer();
+        private ICommand _clearCommand, _addAnotherBuyerCommand, _saveCommand;
         #endregion Fields
 
 
         #region Properties
-        public Buyer BuyerToAdd { get { return _buyerToAdd; } set { _buyerToAdd = value; } }
-        public Customer CustomerToAdd { get { return _customerToAdd; } set { _customerToAdd = value; } }
-
-        public bool IsAddingBuyers
-        {
-            get { return _isAddingBuyers;}
+        public Buyer BuyerToAdd 
+        { 
+            get { return _buyerToAdd; } 
+            set 
+            { 
+                if (_buyerToAdd != value)
+                {
+                    _buyerToAdd = value;
+                    OnPropertyChanged(nameof(BuyerToAdd));
+                }
+            } 
         }
-
-        public bool IsAddingCustomer
+        public Customer CustomerToAdd
         {
-            get { return _isAddingCustomer; }
-        }
-
-        public ICommand AddBuyersCommand
-        {
-            get
-            {
-                return new Command(p => { 
-                    if (_isAddingBuyers) { _isAddingBuyers = false; _isAddingCustomer = true; }
-                    else { 
-                        _isAddingBuyers = true;
-                        BuyerToAdd = new Buyer();
-                        _customerToAdd.Buyers = new List<Buyer>();
-                        _isAddingCustomer = false;
-                    }
-                    OnPropertyChanged(nameof(IsAddingBuyers));
-                    OnPropertyChanged(nameof(IsAddingCustomer));
-                } );
-            }
-        }
-        public ICommand ShowCustomerFormCommand
-        {
-            get
-            {
-                return new Command(p => { 
-                    if (_isAddingBuyers) { _isAddingBuyers = false; _isAddingCustomer = true; }
-                    OnPropertyChanged(nameof(IsAddingCustomer));
-                    OnPropertyChanged(nameof(IsAddingBuyers));
-                } );
-            }
+            get { return _customerToAdd; } 
+            set 
+            {   
+                if(_customerToAdd != value) 
+                {
+                    _customerToAdd = value;
+                    OnPropertyChanged(nameof(CustomerToAdd));
+                }
+            } 
         }
 
         public ICommand ClearCommand
@@ -69,14 +49,7 @@ namespace Metaforge_Marketing.ViewModels.Add
             {
                 if (_clearCommand == null)
                 {
-                    _clearCommand = new Command(p => { 
-                        CustomerToAdd = new Customer();
-                        BuyerToAdd = new Buyer();
-                        CustomerToAdd.Buyers.Clear();
-                        OnPropertyChanged(nameof(BuyerToAdd));
-                        OnPropertyChanged(nameof(CustomerToAdd)); 
-
-                    });
+                    _clearCommand = new Command(p => Clear());
                 }
                 return _clearCommand;
             }
@@ -88,7 +61,7 @@ namespace Metaforge_Marketing.ViewModels.Add
             {
                 if (_saveCommand == null)
                 {
-                    _saveCommand = new Command(p => Save());
+                    _saveCommand = new Command(p => Save(), p => CanSave());
                 }
                 return _saveCommand;
             }
@@ -100,37 +73,49 @@ namespace Metaforge_Marketing.ViewModels.Add
             {
                 if (_addAnotherBuyerCommand == null)
                 {
-                    _addAnotherBuyerCommand = new Command(p => AddAnotherBuyer());
+                    _addAnotherBuyerCommand = new Command(p => AddAnotherBuyer(), p => CanAddAnotherBuyer());
                 }
                 return _addAnotherBuyerCommand;
             }
         }
         #endregion Properties
 
-        public AddCustomerViewModel()
+        #region Methods
+        private void Clear()
         {
-            _customerToAdd= new Customer();
+            BuyerToAdd = new Buyer(); CustomerToAdd = new Customer();
+            _buyers.Clear();
         }
-
-
-        #region Command Functions
         private void AddAnotherBuyer()
         {
-            _customerToAdd.Buyers.Add(BuyerToAdd);
+            _buyers.Add(BuyerToAdd);
             BuyerToAdd = new Buyer();
-            OnPropertyChanged(nameof(BuyerToAdd));
+        }
+        private bool CanAddAnotherBuyer()
+        {
+            return BuyerToAdd.IsFormDataValid();
         }
 
+        // Summary:
+        //      Calls the database save function
         private void Save()
         {
-            _customerToAdd.Buyers.Add(BuyerToAdd);
+            if(BuyerToAdd.IsFormDataValid()) { _buyers.Add(BuyerToAdd); }
             using(SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
             {
                 conn.Open();
-                CustomersRepository.InsertToDB(conn, _customerToAdd);
+                CustomersRepository.InsertToDB(conn, _customerToAdd, _buyers);
                 conn.Close();
             }
+            Clear();
         }
-        #endregion Command Functions
+
+        // Summary:
+        //      Returns true if the Customer's Form data is valid
+        private bool CanSave()
+        {
+            return CustomerToAdd.IsFormDataValid();
+        }
+        #endregion Methods
     }
 }

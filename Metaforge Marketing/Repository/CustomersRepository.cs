@@ -4,6 +4,7 @@ using Metaforge_Marketing.Models;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 
 namespace Metaforge_Marketing.Repository
@@ -12,57 +13,59 @@ namespace Metaforge_Marketing.Repository
     {
         #region Insert Queries
 
-        /// <summary>
-        /// Given a customer, inserts it in the database, and if there are buyers too, inserts them in the database too
-        /// Used when adding a new Customer to the database
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <param name="customer"></param>
-        public static void InsertToDB(SqlConnection connection, Customer customer)
+        // Summary:
+        //      Inserts a Customer in the database
+        //      Used in "Add Customer" form
+        // Parameters:
+        //      Customer- The customer which needs to be inserted
+        //      buyers- A list of buyers which needs to be inserted along with the Customer
+        //              If there are no buyers, pass empty list
+        public static void InsertToDB(SqlConnection connection, Customer customer, IEnumerable<Buyer> buyers)
         {
-            using(SqlCommand cmd = connection.CreateCommand())
+            SqlTransaction transaction = connection.BeginTransaction();
+
+            // Add the customer insert query
+            SqlCommand CustomerInsertCommand = new SqlCommand("INSERT INTO Customers (CustomerName, City, Address, Pincode) VALUES(@customerName, @city, @address, @pincode) SELECT SCOPE_IDENTITY()", connection, transaction);
+            CustomerInsertCommand.Parameters.Add("@customerName", System.Data.SqlDbType.VarChar).Value = customer.CustomerName;
+            CustomerInsertCommand.Parameters.Add("@city", System.Data.SqlDbType.VarChar).Value = customer.City;
+            CustomerInsertCommand.Parameters.Add("@address", System.Data.SqlDbType.VarChar).Value = customer.Address;
+            CustomerInsertCommand.Parameters.Add("@pincode", System.Data.SqlDbType.VarChar).Value = customer.Pincode;
+
+            SqlCommand BuyerInsertCommand = new SqlCommand("INSERT INTO Buyers (BuyerName, Email, Phone, CustId) VALUES (@buyerName, @email, @phone, @custId)", connection, transaction);
+            try
             {
-                string BuyerInsertQuery = "INSERT INTO Buyers (BuyerName, Email, Phone, CustId) VALUES (@buyerName, @email, @phone, @custId)";
-                string CustomerInsertQuery = "INSERT INTO Customers (CustomerName, City, Address, Pincode) VALUES(@customerName, @city, @address, @pincode)";
-
-                cmd.Parameters.Add("@customerName", System.Data.SqlDbType.VarChar).Value = customer.CustomerName;
-                cmd.Parameters.Add("@city", System.Data.SqlDbType.VarChar).Value = customer.City;
-                cmd.Parameters.Add("@address", System.Data.SqlDbType.VarChar).Value = customer.Address;
-                cmd.Parameters.Add("@pincode", System.Data.SqlDbType.VarChar).Value = customer.Pincode;
-                try
+                int CustId = Convert.ToInt32(CustomerInsertCommand.ExecuteScalar());
+                if (buyers.Count() > 0)
                 {
-                    cmd.CommandText = CustomerInsertQuery;
-                    int CustId = Convert.ToInt32(cmd.ExecuteScalar());
-                    if (customer.Buyers.Count > 0)
+                    // Insert buyers
+                    foreach (Buyer buyer in buyers)
                     {
-                        foreach (Buyer buyer in customer.Buyers)
-                        {
-                            try
-                            {
-                                cmd.CommandText = BuyerInsertQuery;
-                                cmd.Parameters.Add("@custId", System.Data.SqlDbType.Int).Value = CustId; 
-                                cmd.Parameters.Add("@buyerName", System.Data.SqlDbType.VarChar).Value = buyer.Name;
-                                cmd.Parameters.Add("@email", System.Data.SqlDbType.VarChar).Value = buyer.Email;
-                                if (!String.IsNullOrEmpty(buyer.Phone))
-                                {
-                                    cmd.Parameters.Add("@phone", System.Data.SqlDbType.VarChar).Value = buyer.Phone;
-                                }
+                        BuyerInsertCommand.Parameters.Add("@custId", System.Data.SqlDbType.Int).Value = CustId; 
+                        BuyerInsertCommand.Parameters.Add("@buyerName", System.Data.SqlDbType.VarChar).Value = buyer.Name;
+                        BuyerInsertCommand.Parameters.Add("@email", System.Data.SqlDbType.VarChar).Value = buyer.Email;
+                        if (!String.IsNullOrEmpty(buyer.Phone)) { BuyerInsertCommand.Parameters.Add("@phone", System.Data.SqlDbType.VarChar).Value = buyer.Phone; }
+                        else { BuyerInsertCommand.Parameters.Add("@phone", System.Data.SqlDbType.VarChar).Value = DBNull.Value; }
 
-                                cmd.ExecuteNonQuery();
-                                cmd.Parameters.Clear();
-                            }
-                            catch (Exception e2)
-                            {
-                                MessageBox.Show(e2.Message);
-                            }
-                        }
+                        BuyerInsertCommand.ExecuteNonQuery();
+                        BuyerInsertCommand.Parameters.Clear();
                     }
                 }
-                catch(Exception e1)
+                transaction.Commit();
+                MessageBox.Show("Successfully inserted");
+            }
+            catch(Exception e1)
+            {
+                MessageBox.Show(e1.Message);
+                try
                 {
-                    MessageBox.Show(e1.Message);
+                    transaction.Rollback(); // Rollback if errors
+                }
+                catch(Exception e2)
+                {
+                    MessageBox.Show(e2.Message);
                 }
             }
+            finally { transaction.Dispose(); }
         }
         #endregion Insert Queries
 
