@@ -12,6 +12,8 @@
     <UserControl.Resources>
         <converter:CostingCategoryConverter x:Key="CostingCategoryConverter"/>
         <converter:IntegerToYesNoConverter x:Key="IntegerToYesNoConverter"/>
+        <converter:RMCategoryConverter x:Key="RMCategoryConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
     
     <Grid>
@@ -21,86 +23,97 @@
             <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+        <Label Content="Costing Comparison Reports" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center">
             <StackPanel>
                 <Button Content="Select Item" Command="{Binding SelectItemCommand}"/>
-                <Label Content="Item Name:"/>
-                <Label Content="{Binding SelectedItem.ItemName}"/>
+                <DockPanel LastChildFill="False">
+                    <Label Content="Item Name:" FontWeight="DemiBold"/>
+                    <Label Content="{Binding SelectedItem.ItemName}"/>
+                </DockPanel>
             </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Orientation="Vertical" CanVerticallyScroll="True">
+        <Separator Grid.Row="1" VerticalAlignment="Bottom"/>
 
-            <StackPanel >
-                <Label Content="Raw Material Costing Comparisons" FontWeight="DemiBold"/>
-                <DataGrid ItemsSource="{Binding RMCostings}" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="RM Per Drwg" Binding="{Binding RMAsPerDrawing}"/>
-                        <DataGridTextColumn Header="Category" Binding="{Binding WhoseCosting, Converter={StaticResource CostingCategoryConverter}}"/>
-                        <DataGridTextColumn Header="RM Rate" Binding="{Binding RMRate}"/>
-                        <DataGridTextColumn Header="RM Cost Per Piece" Binding="{Binding RMCostPerPiece}"/>
-                        <DataGridTextColumn Header="Scrap Rate" Binding="{Binding ScrapRate}"/>
-                        <DataGridTextColumn Header="Scrap Recovery" Binding="{Binding ScrapRecovery}"/>
-                        <DataGridTextColumn Header="Cutting Allowance" Binding="{Binding CuttingAllowance}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+        <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="2">
+            <StackPanel Grid.Row="2" Orientation="Vertical" CanVerticallyScroll="True">
+
+                <!--#region Raw Material Costing Comparison -->
+                <StackPanel HorizontalAlignment="Left" Visibility="{Binding ShowRMCostings, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Label Content="Raw Material Costing Comparisons" FontWeight="DemiBold"/>
+                    <DataGrid ItemsSource="{Binding RMCostings}" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="RM Per Drwg" Binding="{Binding RMAsPerDrawing}"/>
+                            <DataGridTextColumn Header="Costing Category" Binding="{Binding WhoseCosting, Converter={StaticResource CostingCategoryConverter}}"/>
+                            <DataGridTextColumn Header="RM Rate Quoted" Binding="{Binding RMRate}"/>
+                            <DataGridTextColumn Header="Current Rate" Binding="{Binding CurrentRate}"/>
+                            <DataGridTextColumn Header="RM Cost Per Piece" Binding="{Binding RMCostPerPiece}"/>
+                            <DataGridTextColumn Header="Grade" Binding="{Binding Grade}"/>
+                            <DataGridTextColumn Header="Category" Binding="{Binding Category, Converter={StaticResource RMCategoryConverter}}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+
+                <Separator Margin="0, 20, 0, 10" Visibility="{Binding ShowRMCostings, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <!--#endregion Raw Material Costing Comparison-->
+
+
+                <!--#region Metaforge Conversion Costing-->
+                <StackPanel HorizontalAlignment="Left" Visibility="{Binding ShowMetaforgeCC, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Label Content="Metaforge Conversion Costing" FontWeight="DemiBold"/>
+                    <DataGrid ItemsSource="{Binding MetaforgeCC}" AutoGenerateColumns="False" CanUserSortColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Operation" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Is Outsourced" Binding="{Binding IsOutsourced, Converter={StaticResource IntegerToYesNoConverter}}"/>
+                            <DataGridTextColumn Header="Step No" Binding="{Binding StepNo}"/>
+                            <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding CCPerPiece}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+
+                <Separator Margin="0, 20, 0, 10" Visibility="{Binding ShowMetaforgeCC, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <!--#endregion Metaforge Conversion Costing-->
+
+
+                <!--#region Customer Quoted Conversion Costing-->
+                <StackPanel HorizontalAlignment="Left" Visibility="{Binding ShowCustomerQuotedCC, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Label Content="Customer Quoted Conversion Costing" FontWeight="DemiBold"/>
+                    <DataGrid ItemsSource="{Binding CustomerQuotedCC}" AutoGenerateColumns="False" CanUserSortColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Operation" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Is Outsourced" Binding="{Binding IsOutsourced, Converter={StaticResource IntegerToYesNoConverter}}"/>
+                            <DataGridTextColumn Header="Step No" Binding="{Binding StepNo}"/>
+                            <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding CCPerPiece}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+
+                <Separator Margin="0, 20, 0, 10" Visibility="{Binding ShowCustomerQuotedCC, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <!--#endregion Customer Quoted Conversion Costing-->
+
+
+                <!--#region Customer Approved Conversion Costing-->
+                <StackPanel HorizontalAlignment="Left" Visibility="{Binding ShowCustomerApprovedCC, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Label Content="Customer Approved Conversion Costing" FontWeight="DemiBold"/>
+                    <DataGrid ItemsSource="{Binding CustomerApprovedCC}" AutoGenerateColumns="False" CanUserSortColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Operation" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Is Outsourced" Binding="{Binding IsOutsourced, Converter={StaticResource IntegerToYesNoConverter}}"/>
+                            <DataGridTextColumn Header="Step No" Binding="{Binding StepNo}"/>
+                            <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding CCPerPiece}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+
+                <Separator Margin="0, 20, 0, 10" Visibility="{Binding ShowCustomerApprovedCC, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                <!--#endregion Customer Approved Conversion Costing-->
+
             </StackPanel>
-
-            <StackPanel >
-                <Label Content="Metaforge Conversion Costing" FontWeight="DemiBold"/>
-                <DataGrid ItemsSource="{Binding MetaforgeCC}" AutoGenerateColumns="False" CanUserSortColumns="False" IsReadOnly="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Category" Binding="{Binding WhoseCosting, Converter={StaticResource CostingCategoryConverter}}"/>
-                        <DataGridTextColumn Header="Machine Name" Binding="{Binding MachineName}"/>
-                        <DataGridTextColumn Header="Machine Description" Binding="{Binding MachineDescription}"/>
-                        <DataGridTextColumn Header="Cycle Time" Binding="{Binding CycleTime}"/>
-                        <DataGridTextColumn Header="Efficiency" Binding="{Binding Efficiency}"/>
-                        <DataGridTextColumn Header="MCHr" Binding="{Binding MCHr}"/>
-                        <DataGridTextColumn Header="Is Outsourced" Binding="{Binding IsOutsourced, Converter={StaticResource IntegerToYesNoConverter}}"/>
-                        <DataGridTextColumn Header="Operation Id" Binding="{Binding OperationId}"/>
-                        <DataGridTextColumn Header="Step No" Binding="{Binding StepNo}"/>
-                        <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding CCPerPiece}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </StackPanel>
-
-            <StackPanel>
-                <Label Content="Customer Quoted Conversion Costing" FontWeight="DemiBold"/>
-                <DataGrid ItemsSource="{Binding CustomerQuotedCC}" AutoGenerateColumns="False" CanUserSortColumns="False" IsReadOnly="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Category" Binding="{Binding WhoseCosting, Converter={StaticResource CostingCategoryConverter}}"/>
-                        <DataGridTextColumn Header="Machine Name" Binding="{Binding MachineName}"/>
-                        <DataGridTextColumn Header="Machine Description" Binding="{Binding MachineDescription}"/>
-                        <DataGridTextColumn Header="Cycle Time" Binding="{Binding CycleTime}"/>
-                        <DataGridTextColumn Header="Efficiency" Binding="{Binding Efficiency}"/>
-                        <DataGridTextColumn Header="MCHr" Binding="{Binding MCHr}"/>
-                        <DataGridTextColumn Header="Is Outsourced" Binding="{Binding IsOutsourced, Converter={StaticResource IntegerToYesNoConverter}}"/>
-                        <DataGridTextColumn Header="Operation Id" Binding="{Binding OperationId}"/>
-                        <DataGridTextColumn Header="Step No" Binding="{Binding StepNo}"/>
-                        <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding CCPerPiece}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </StackPanel>
-
-            <StackPanel>
-                <Label Content="Customer Approved Conversion Costing" FontWeight="DemiBold"/>
-                <DataGrid ItemsSource="{Binding CustomerApprovedCC}" AutoGenerateColumns="False" CanUserSortColumns="False" IsReadOnly="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Category" Binding="{Binding WhoseCosting, Converter={StaticResource CostingCategoryConverter}}"/>
-                        <DataGridTextColumn Header="Machine Name" Binding="{Binding MachineName}"/>
-                        <DataGridTextColumn Header="Machine Description" Binding="{Binding MachineDescription}"/>
-                        <DataGridTextColumn Header="Cycle Time" Binding="{Binding CycleTime}"/>
-                        <DataGridTextColumn Header="Efficiency" Binding="{Binding Efficiency}"/>
-                        <DataGridTextColumn Header="MCHr" Binding="{Binding MCHr}"/>
-                        <DataGridTextColumn Header="Is Outsourced" Binding="{Binding IsOutsourced, Converter={StaticResource IntegerToYesNoConverter}}"/>
-                        <DataGridTextColumn Header="Operation Id" Binding="{Binding OperationId}"/>
-                        <DataGridTextColumn Header="Step No" Binding="{Binding StepNo}"/>
-                        <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding CCPerPiece}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </StackPanel>
-
-        </StackPanel>
-        
+        </ScrollViewer>
     </Grid>
 </UserControl>

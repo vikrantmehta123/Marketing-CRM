@@ -28,6 +28,9 @@ namespace Metaforge_Marketing.ViewModels.Reports
                 return _selectItemCommand;
             }
         }
+        
+        // Summary: 
+        //      Fetch Raw Material Costings
         public DataTable RMCostings
         {
             get
@@ -40,11 +43,14 @@ namespace Metaforge_Marketing.ViewModels.Reports
                         _rmCostings = CostingRepository.FetchRMCostingsIntoDatatable(conn, SelectedItem);
                         conn.Close();
                     }
+                    OnPropertyChanged(nameof(ShowRMCostings));
                 }
                 return _rmCostings;
             }
         }
 
+        // Summary:
+        //      Fetch Metaforge's Conversion Costing
         public DataTable MetaforgeCC
         {
             get
@@ -57,11 +63,14 @@ namespace Metaforge_Marketing.ViewModels.Reports
                         _metaforgeCC = CostingRepository.FetchCCIntoDatatable(conn, SelectedItem, Models.Enums.CostingCategoryEnum.Metaforge);
                         conn.Close();
                     }
+                    OnPropertyChanged(nameof(ShowMetaforgeCC));
                 }
                 return _metaforgeCC;
             }
         }
 
+        // Summary:
+        //      Fetch the customer Approved Conversion Costing
         public DataTable CustomerApprovedCC
         {
             get
@@ -74,11 +83,14 @@ namespace Metaforge_Marketing.ViewModels.Reports
                         _customerApprovedCC = CostingRepository.FetchCCIntoDatatable(conn, SelectedItem, Models.Enums.CostingCategoryEnum.CustomerApproved);
                         conn.Close();
                     }
+                    OnPropertyChanged(nameof(ShowCustomerApprovedCC));
                 }
                 return _customerApprovedCC;
             }
         }
 
+        // Summary:
+        //      Fetch the Customer Quoted Conversion Costing
         public DataTable CustomerQuotedCC
         {
             get
@@ -91,18 +103,56 @@ namespace Metaforge_Marketing.ViewModels.Reports
                         _customerQuotedCC = CostingRepository.FetchCCIntoDatatable(conn, SelectedItem, Models.Enums.CostingCategoryEnum.CustomerQuoted);
                         conn.Close();
                     }
+                    OnPropertyChanged(nameof(ShowCustomerQuotedCC));
                 }
                 return _customerQuotedCC;
             }
         }
 
         #endregion Properties
+
+        #region Visibility Controllers
+        public bool ShowRMCostings
+        {
+            get
+            {
+                if (_rmCostings == null || _rmCostings.Rows.Count == 0) { return false; }
+                return true;
+            }
+        }
+
+        public bool ShowMetaforgeCC
+        {
+            get
+            {
+                if(_metaforgeCC == null || _metaforgeCC.Rows.Count == 0) { return false; }
+                return true;
+            }
+        }
+        public bool ShowCustomerQuotedCC
+        {
+            get
+            {
+                if (_customerQuotedCC == null || _customerQuotedCC.Rows.Count == 0) { return false; }
+                return true;
+            }
+        }
+
+        public bool ShowCustomerApprovedCC
+        {
+            get
+            {
+                if (_customerApprovedCC == null || _customerApprovedCC.Rows.Count == 0) { return false; }
+                return true;
+            }
+        }
+        #endregion Visibility Controllers
+
         public CostingComparisonViewModel()
         {
             SelectedItem = null; // Clear selections on load
             StaticPropertyChanged += ItemSelectionHandler;
         }
-
 
         #region Methods
         private void ItemSelectionHandler(object sender, PropertyChangedEventArgs e)
