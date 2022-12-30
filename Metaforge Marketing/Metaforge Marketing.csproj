@@ -256,12 +256,12 @@
     <Compile Include="Repository\RemarksRepository.cs" />
     <Compile Include="Repository\RFQsRepository.cs" />
     <Compile Include="Repository\RMRepository.cs" />
+    <Compile Include="Repository\TestRepository.cs" />
     <Compile Include="ViewModels\Add\AddAdminViewModel.cs" />
     <Compile Include="ViewModels\Add\AddBuyerViewModel.cs" />
     <Compile Include="ViewModels\Add\AddCustomerViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRemarkViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRFQViewModel.cs" />
-    <Compile Include="ViewModels\Add\AddRMMasterDataViewModel.cs" />
     <Compile Include="ViewModels\Reports\ItemHistoryReportViewModel.cs" />
     <Compile Include="ViewModels\RFQs\AddPODetailsViewModel.cs" />
     <Compile Include="ViewModels\RFQs\CostingViewModel.cs" />
@@ -279,6 +279,7 @@
     <Compile Include="ViewModels\Shared\SelectCustomerViewModel.cs" />
     <Compile Include="ViewModels\Shared\SelectItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\SharedViewModelBase.cs" />
+    <Compile Include="ViewModels\Test\TestCostingViewModel.cs" />
     <Compile Include="ViewModels\Update\UpdateRMMasterViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\Add\AddAdminView.xaml.cs">
@@ -331,6 +332,9 @@
     </Compile>
     <Compile Include="Views\Shared\SelectItemView.xaml.cs">
       <DependentUpon>SelectItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Test\TestCostingView.xaml.cs">
+      <DependentUpon>TestCostingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Update\UpdateRMMasterView.xaml.cs">
       <DependentUpon>UpdateRMMasterView.xaml</DependentUpon>
@@ -417,6 +421,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Shared\SelectItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Test\TestCostingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -29,22 +29,25 @@ namespace Metaforge_Marketing.Models
         public RM RMConsidered { 
             get { return _rmConsidered;} 
             set { 
-                _rmConsidered = value;
-                _isRMManuallySet = false;
-                OnPropertyChanged(nameof(RMRate));
+                if (_rmConsidered != value)
+                {
+                    _rmConsidered = value;
+                    OnPropertyChanged(nameof(RMConsidered));
+                }
             }
         }
         public float RMRate 
         { 
             get 
             { 
-                if (RMConsidered != null && !_isRMManuallySet) { _rmRate = RMConsidered.CurrentRate; }
                 return _rmRate; 
             } 
             set 
             { 
-                _rmRate = value;
-                _isRMManuallySet = true;
+                if(_rmRate != value)
+                {
+                    _rmRate = value;
+                }
             } 
         }
 

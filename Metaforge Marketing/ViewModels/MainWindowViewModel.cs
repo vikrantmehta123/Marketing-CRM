@@ -11,11 +11,12 @@ namespace Metaforge_Marketing.ViewModels
         public string WindowTitle { get; } = "Home Page:";
 
         #region Fields
-        private ICommand _addAdminCommand,_addCustomerCommand, _addBuyerCommand, _addRFQCommand, _addRemarkCommand, _addRMMasterDataCommand;
+        private ICommand _addAdminCommand,_addCustomerCommand, _addBuyerCommand, _addRFQCommand, _addRemarkCommand;
         private ICommand _prepareCostingCommand, _pendingRFQsCommand;
         private ICommand _customerHistoryCommand, _costingComparisonCommand, _performanceReportCommand, _itemHistoryCommand;
         private ICommand _sendGeneralMailCommand, _sendQuotationMailCommand;
         private ICommand _updateRMMasterCommand;
+        private ICommand _testCommand;
         #endregion Fields
 
         public MainWindowViewModel()
@@ -25,17 +26,6 @@ namespace Metaforge_Marketing.ViewModels
         #region Commands
 
         #region Add Commands
-        public ICommand AddRMMasterDataCommand
-        {
-            get
-            {
-                if (_addRMMasterDataCommand == null)
-                {
-                    _addRMMasterDataCommand = new Command(p => ChangeViewModel(new AddRMMasterDataViewModel()));
-                }
-                return _addRMMasterDataCommand;
-            }
-        }
         public ICommand AddAdminCommand
         {
             get
@@ -208,6 +198,20 @@ namespace Metaforge_Marketing.ViewModels
             }
         }
         #endregion Update Commands
+
+        #region Test Commands
+        public ICommand TestCommand
+        {
+            get
+            {
+                if (_testCommand == null)
+                {
+                    _testCommand = new Command( p => ChangeViewModel(new Test.TestCostingViewModel()));
+                }
+                return _testCommand;
+            }
+        }
+        #endregion Test Commands
         #endregion Commands
     }
 }

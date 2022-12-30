@@ -13,6 +13,8 @@
         xmlns:SendMail_views="clr-namespace:Metaforge_Marketing.Views.Mails"
         xmlns:update_vm="clr-namespace:Metaforge_Marketing.ViewModels.Update"
         xmlns:update_views="clr-namespace:Metaforge_Marketing.Views.Update"
+        xmlns:test_vm="clr-namespace:Metaforge_Marketing.ViewModels.Test"
+        xmlns:test_views="clr-namespace:Metaforge_Marketing.Views.Test"
         xmlns:local="clr-namespace:Metaforge_Marketing"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="720" Width="1280">
@@ -34,9 +36,6 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type add_vm:AddAdminViewModel}">
             <add_views:AddAdminView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type add_vm:AddRMMasterDataViewModel}">
-            <add_views:AddRMMasterDataView/>
         </DataTemplate>
         <!--#endregion Add Section -->
         
@@ -81,6 +80,10 @@
         </DataTemplate>
         <!--#endregion Update Section-->
 
+        <DataTemplate DataType="{x:Type test_vm:TestCostingViewModel}">
+            <test_views:TestCostingView/>
+        </DataTemplate>
+        
     </Window.Resources>
     
 
@@ -116,7 +119,6 @@
                         <MenuItem Header="Buyer" Command="{Binding AddBuyerCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="RFQ" Command="{Binding AddRFQCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Remark" Command="{Binding AddRemarkCommand}" CommandParameter="{Binding}"/>
-                        <MenuItem Header="RM Master Data" Command="{Binding AddRMMasterDataCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
                 <Separator/>
@@ -134,6 +136,12 @@
                 <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
                     <MenuItem Header="Update">
                         <MenuItem Header="RM Master" Command="{Binding UpdateRMMasterCommand}" CommandParameter="{Binding}"/>
+                    </MenuItem>
+                </Menu>
+
+                <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
+                    <MenuItem Header="Test">
+                        <MenuItem Header="Costing" Command="{Binding TestCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
 

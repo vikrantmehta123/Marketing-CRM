@@ -5,21 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
+
 namespace Metaforge_Marketing.Models
 {
-    public class RM : INotifyPropertyChanged
+    public class RM 
     {
-        #region INPC
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-        #endregion INPC
-
         public IEnumerable<RMCategoryEnum> RMCategories { get; } = Enum.GetValues(typeof(RMCategoryEnum)).Cast<RMCategoryEnum>();
 
         #region Fields
@@ -34,7 +25,16 @@ namespace Metaforge_Marketing.Models
         public int Id { get { return _id; } set { _id = value; } }
         public RMCategoryEnum Category { get { return _category; } set { _category = value; } }
         public string Grade { get { return _grade; } set { _grade = value; } }
-        public float CurrentRate { get { return _currentRate;} set { _currentRate = value; } }
+        public float CurrentRate 
+        { 
+            get { return _currentRate;} 
+            set { 
+                if(_currentRate != value )
+                {
+                    _currentRate = value;
+                }
+            }
+        }
 
         public List<RM> RMMaster { 
             get
@@ -63,6 +63,7 @@ namespace Metaforge_Marketing.Models
             if (((int)Category) == 0) { return Grade; }
             return Grade + " " + Category.ToString();
         }
+
         #endregion Methods
     }
 }

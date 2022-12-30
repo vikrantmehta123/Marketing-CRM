@@ -162,25 +162,21 @@ namespace Metaforge_Marketing.Repository
                     rmCosting.Id = Convert.ToInt32(reader["Id"]);
                     rmCosting.RMAsPerDrawing = reader["RMAsPerDrawing"].ToString();
                     rmCosting.CostPerPiece = (float)Convert.ToDecimal(reader["RMCostPerPiece"]);
-                    rmCosting.RMConsidered = new RM
+                    rmCosting.RMRate = (float)Convert.ToDecimal(reader["RMRate"]);
+                    
+                    rmCosting.RMConsidered = new RM()
                     {
                         Id = Convert.ToInt32(reader["RMMasterId"]),
                         Grade = reader["Grade"].ToString(),
-                        Category = (RMCategoryEnum)Convert.ToInt16(reader["Category"]), 
+                            
+                        Category = (RMCategoryEnum)Convert.ToInt16(reader["Category"]),
                         CurrentRate = (float)Convert.ToDecimal(reader["CurrentRate"])
                     };
-                    rmCosting.RMRate = (float)Convert.ToDecimal(reader["RMRate"]);
-
-                    if (reader["DetailsId"] != DBNull.Value)
-                    {
-                        rmCosting.IsRMCostingDetailsPresent = true;
-                        rmCosting.ScrapRate = (float)Convert.ToDecimal(reader["ScrapRate"]);
-                        rmCosting.ScrapRecovery = (float)Convert.ToDecimal(reader["ScrapRecovery"]);
-                        rmCosting.CuttingAllowance = (float)Convert.ToDecimal(reader["CuttingAllowance"]);
-                    }
                 }
+                
                 reader.Close();
             }
+            
             return rmCosting;
         }
 
