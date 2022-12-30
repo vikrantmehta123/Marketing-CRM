@@ -263,6 +263,8 @@
     <Compile Include="ViewModels\Add\AddCustomerViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRemarkViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRFQViewModel.cs" />
+    <Compile Include="ViewModels\Masters\AdminMasterViewModel.cs" />
+    <Compile Include="ViewModels\Masters\OperationsMasterViewModel.cs" />
     <Compile Include="ViewModels\Reports\ItemHistoryReportViewModel.cs" />
     <Compile Include="ViewModels\RFQs\AddPODetailsViewModel.cs" />
     <Compile Include="ViewModels\RFQs\CostingViewModel.cs" />
@@ -281,7 +283,7 @@
     <Compile Include="ViewModels\Shared\SelectItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\SharedViewModelBase.cs" />
     <Compile Include="ViewModels\Test\TestCostingViewModel.cs" />
-    <Compile Include="ViewModels\Update\UpdateRMMasterViewModel.cs" />
+    <Compile Include="ViewModels\Masters\UpdateRMMasterViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\Add\AddAdminView.xaml.cs">
       <DependentUpon>AddAdminView.xaml</DependentUpon>
@@ -303,6 +305,12 @@
     </Compile>
     <Compile Include="Views\Mails\SendQuotationView.xaml.cs">
       <DependentUpon>SendQuotationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Masters\AdminMasterView.xaml.cs">
+      <DependentUpon>AdminMasterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Masters\OperationsMasterView.xaml.cs">
+      <DependentUpon>OperationsMasterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Reports\CostingComparisonView.xaml.cs">
       <DependentUpon>CostingComparisonView.xaml</DependentUpon>
@@ -340,7 +348,7 @@
     <Compile Include="Views\Test\TestCostingView.xaml.cs">
       <DependentUpon>TestCostingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Update\UpdateRMMasterView.xaml.cs">
+    <Compile Include="Views\Masters\UpdateRMMasterView.xaml.cs">
       <DependentUpon>UpdateRMMasterView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -385,6 +393,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Mails\SendQuotationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Masters\AdminMasterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Masters\OperationsMasterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -436,7 +452,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Update\UpdateRMMasterView.xaml">
+    <Page Include="Views\Masters\UpdateRMMasterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

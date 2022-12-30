@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace Metaforge_Marketing.ViewModels.Update
+namespace Metaforge_Marketing.ViewModels.Masters
 {
     public class UpdateRMMasterViewModel : ViewModelBase
     {

@@ -11,8 +11,8 @@
         xmlns:reports_views="clr-namespace:Metaforge_Marketing.Views.Reports"
         xmlns:SendMail_vm="clr-namespace:Metaforge_Marketing.ViewModels.Send"
         xmlns:SendMail_views="clr-namespace:Metaforge_Marketing.Views.Mails"
-        xmlns:update_vm="clr-namespace:Metaforge_Marketing.ViewModels.Update"
-        xmlns:update_views="clr-namespace:Metaforge_Marketing.Views.Update"
+        xmlns:master_vm="clr-namespace:Metaforge_Marketing.ViewModels.Masters"
+        xmlns:master_views="clr-namespace:Metaforge_Marketing.Views.Masters"
         xmlns:test_vm="clr-namespace:Metaforge_Marketing.ViewModels.Test"
         xmlns:test_views="clr-namespace:Metaforge_Marketing.Views.Test"
         xmlns:local="clr-namespace:Metaforge_Marketing"
@@ -74,11 +74,17 @@
         </DataTemplate>
         <!--#endregion Update Section-->
         
-        <!--#region Update Section -->
-        <DataTemplate DataType="{x:Type update_vm:UpdateRMMasterViewModel}">
-            <update_views:UpdateRMMasterView/>
+        <!--#region Masters Section -->
+        <DataTemplate DataType="{x:Type master_vm:UpdateRMMasterViewModel}">
+            <master_views:UpdateRMMasterView/>
         </DataTemplate>
-        <!--#endregion Update Section-->
+        <DataTemplate DataType="{x:Type master_vm:AdminMasterViewModel}">
+            <master_views:AdminMasterView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type master_vm:OperationsMasterViewModel}">
+            <master_views:OperationsMasterView/>
+        </DataTemplate>
+        <!--#endregion Masters Section-->
 
         <DataTemplate DataType="{x:Type test_vm:TestCostingViewModel}">
             <test_views:TestCostingView/>
@@ -134,8 +140,10 @@
                 <Separator/>
 
                 <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
-                    <MenuItem Header="Update">
+                    <MenuItem Header="Masters">
                         <MenuItem Header="RM Master" Command="{Binding UpdateRMMasterCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Operations" Command="{Binding OperationsMasterCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Admins" Command="{Binding AdminMasterCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
 

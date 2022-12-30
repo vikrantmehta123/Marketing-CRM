@@ -15,7 +15,7 @@ namespace Metaforge_Marketing.ViewModels
         private ICommand _prepareCostingCommand, _pendingRFQsCommand;
         private ICommand _customerHistoryCommand, _costingComparisonCommand, _performanceReportCommand, _itemHistoryCommand;
         private ICommand _sendGeneralMailCommand, _sendQuotationMailCommand;
-        private ICommand _updateRMMasterCommand;
+        private ICommand _updateRMMasterCommand, _adminMasterCommand, _operationsMasterCommand;
         private ICommand _testCommand;
         #endregion Fields
 
@@ -185,19 +185,43 @@ namespace Metaforge_Marketing.ViewModels
         }
         #endregion Mailing Commands
 
-        #region Update Commands
+        #region Master Commands
         public ICommand UpdateRMMasterCommand
         {
             get
             {
                 if (_updateRMMasterCommand == null)
                 {
-                    _updateRMMasterCommand = new Command(p => ChangeViewModel(new Update.UpdateRMMasterViewModel()));
+                    _updateRMMasterCommand = new Command(p => ChangeViewModel(new Masters.UpdateRMMasterViewModel()));
                 }
                 return _updateRMMasterCommand;
             }
         }
-        #endregion Update Commands
+
+        public ICommand AdminMasterCommand
+        {
+            get
+            {
+                if(_adminMasterCommand == null)
+                {
+                    _adminMasterCommand = new Command(p => ChangeViewModel(new Masters.AdminMasterViewModel()));
+                }
+                return _adminMasterCommand;
+            }
+        }
+
+        public ICommand OperationsMasterCommand
+        {
+            get
+            {
+                if(_operationsMasterCommand==null)
+                {
+                    _operationsMasterCommand = new Command(p => ChangeViewModel(new Masters.OperationsMasterViewModel()));
+                }
+                return _operationsMasterCommand;
+            }
+        }
+        #endregion Master Commands
 
         #region Test Commands
         public ICommand TestCommand
