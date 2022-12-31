@@ -14,12 +14,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid Grid.Row="1" ItemsSource="{Binding AdminMasterTable}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" HorizontalAlignment="Left" VerticalAlignment="Top"> 
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible">
+            <DataGrid Grid.Row="1" ItemsSource="{Binding AdminMasterTable}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </ScrollViewer>
 
         <DockPanel LastChildFill="False" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Button Content="Update" Command="{Binding UpdateCommand}"/>

@@ -258,7 +258,6 @@
     <Compile Include="Repository\RFQsRepository.cs" />
     <Compile Include="Repository\RMRepository.cs" />
     <Compile Include="Repository\TestRepository.cs" />
-    <Compile Include="ViewModels\Add\AddAdminViewModel.cs" />
     <Compile Include="ViewModels\Add\AddBuyerViewModel.cs" />
     <Compile Include="ViewModels\Add\AddCustomerViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRemarkViewModel.cs" />
@@ -285,9 +284,6 @@
     <Compile Include="ViewModels\Test\TestCostingViewModel.cs" />
     <Compile Include="ViewModels\Masters\UpdateRMMasterViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\Add\AddAdminView.xaml.cs">
-      <DependentUpon>AddAdminView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Add\AddBuyerView.xaml.cs">
       <DependentUpon>AddBuyerView.xaml</DependentUpon>
     </Compile>
@@ -365,10 +361,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PopupWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Add\AddAdminView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

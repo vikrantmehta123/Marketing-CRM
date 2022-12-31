@@ -34,9 +34,6 @@
         <DataTemplate DataType="{x:Type add_vm:AddRFQViewModel}">
             <add_views:AddRFQView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type add_vm:AddAdminViewModel}">
-            <add_views:AddAdminView/>
-        </DataTemplate>
         <!--#endregion Add Section -->
         
         
@@ -56,6 +53,9 @@
         <DataTemplate DataType="{x:Type rfq_vm:PendingRFQViewModel}">
             <rfq_views:PendingRFQView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type rfq_vm:AddPODetailsViewModel}">
+            <rfq_views:AddPODetailsView/>
+        </DataTemplate>
         <!--#endregion Mailing Section-->
         
         
@@ -72,7 +72,7 @@
         <DataTemplate DataType="{x:Type reports_vm:CostingComparisonViewModel}">
             <reports_views:CostingComparisonView/>
         </DataTemplate>
-        <!--#endregion Update Section-->
+        <!--#endregion Reports Section-->
         
         <!--#region Masters Section -->
         <DataTemplate DataType="{x:Type master_vm:UpdateRMMasterViewModel}">
@@ -106,6 +106,7 @@
                     <MenuItem Header="RFQ">
                         <MenuItem Header="Costing" Command="{Binding PrepareCostingCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Pending RFQs" Command="{Binding PendingRFQsCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Add PO Details" Command="{Binding AddPODetailsCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
                 <Separator/>
@@ -120,7 +121,6 @@
 
                 <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
                     <MenuItem Header="Add">
-                        <MenuItem Header="Admin" Command="{Binding AddAdminCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Customer" Command="{Binding AddCustomerCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Buyer" Command="{Binding AddBuyerCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="RFQ" Command="{Binding AddRFQCommand}" CommandParameter="{Binding}"/>

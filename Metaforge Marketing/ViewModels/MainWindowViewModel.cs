@@ -11,8 +11,8 @@ namespace Metaforge_Marketing.ViewModels
         public string WindowTitle { get; } = "Home Page:";
 
         #region Fields
-        private ICommand _addAdminCommand,_addCustomerCommand, _addBuyerCommand, _addRFQCommand, _addRemarkCommand;
-        private ICommand _prepareCostingCommand, _pendingRFQsCommand;
+        private ICommand _addCustomerCommand, _addBuyerCommand, _addRFQCommand, _addRemarkCommand;
+        private ICommand _prepareCostingCommand, _pendingRFQsCommand, _addPODetailsCommand;
         private ICommand _customerHistoryCommand, _costingComparisonCommand, _performanceReportCommand, _itemHistoryCommand;
         private ICommand _sendGeneralMailCommand, _sendQuotationMailCommand;
         private ICommand _updateRMMasterCommand, _adminMasterCommand, _operationsMasterCommand;
@@ -26,17 +26,6 @@ namespace Metaforge_Marketing.ViewModels
         #region Commands
 
         #region Add Commands
-        public ICommand AddAdminCommand
-        {
-            get
-            {   
-                if (_addAdminCommand == null)
-                {
-                    _addAdminCommand = new Command(p => ChangeViewModel(new AddAdminViewModel()));
-                }
-                return _addAdminCommand;
-            }
-        }
         public ICommand AddCustomerCommand
         {
             get
@@ -86,13 +75,24 @@ namespace Metaforge_Marketing.ViewModels
         #endregion
 
         #region RFQ Commands
+        public ICommand AddPODetailsCommand
+        {
+            get
+            {
+                if (_addPODetailsCommand == null)
+                {
+                    _addPODetailsCommand = new Command(p => ChangeViewModel(new AddPODetailsViewModel()));
+                }
+                return _addPODetailsCommand;
+            }
+        }
         public ICommand PrepareCostingCommand
         {
             get
             {
                 if (_prepareCostingCommand == null)
                 {
-                    _prepareCostingCommand = new Command(p => ChangeViewModel(new RFQs.CostingViewModel()));
+                    _prepareCostingCommand = new Command(p => ChangeViewModel(new CostingViewModel()));
                 }
                 return _prepareCostingCommand;
             }
@@ -103,7 +103,7 @@ namespace Metaforge_Marketing.ViewModels
             {
                 if (_pendingRFQsCommand == null)
                 {
-                    _pendingRFQsCommand = new Command(p => ChangeViewModel(new ViewModels.RFQs.PendingRFQViewModel()));
+                    _pendingRFQsCommand = new Command(p => ChangeViewModel(new PendingRFQViewModel()));
                 }return _pendingRFQsCommand;
             }
         }

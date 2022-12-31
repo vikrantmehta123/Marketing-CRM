@@ -21,17 +21,24 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid Grid.Row="1" ItemsSource="{Binding RMMasterData}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
-                <DataGridComboBoxColumn Header="Category" ItemsSource="{Binding Source={StaticResource RM}, Path=RMCategories}" TextBinding="{Binding Category, Converter={StaticResource RMCategoryonverter}}"/>
-                <DataGridTextColumn Header="Grade" Binding="{Binding Grade}"/>
-                <DataGridTextColumn Header="Current Rate" Binding="{Binding CurrentRate}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="1" >
+            <StackPanel HorizontalAlignment="Left">
+                <DataGrid Grid.Row="1" ItemsSource="{Binding RMMasterData}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                        <DataGridComboBoxColumn Header="Category" ItemsSource="{Binding Source={StaticResource RM}, Path=RMCategories}" TextBinding="{Binding Category, Converter={StaticResource RMCategoryonverter}}"/>
+                        <DataGridTextColumn Header="Grade" Binding="{Binding Grade}"/>
+                        <DataGridTextColumn Header="Current Rate" Binding="{Binding CurrentRate}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                
+            </StackPanel>
+        </ScrollViewer>
 
         <DockPanel LastChildFill="False" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Button Content="Update" Command="{Binding UpdateCommand}"/>
         </DockPanel>
+
     </Grid>
 </UserControl>
