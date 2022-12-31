@@ -117,7 +117,7 @@
                     <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Path=ConvCosting, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" 
                           CanUserDeleteRows="True" CanUserAddRows="True"  HorizontalAlignment="Center">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Visibility="Collapsed"/>
+                            <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" Visibility="Visible"/>
                             <DataGridComboBoxColumn Header="Operation Name" ItemsSource="{Binding Source={StaticResource Operation}, Path=AllOperations}"
                                                 SelectedValuePath="Id" SelectedValueBinding="{Binding OperationId}" TextBinding="{Binding Name}"/>
                             <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding Path=CCPerPiece, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>

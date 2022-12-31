@@ -58,7 +58,10 @@ namespace Metaforge_Marketing.Repository
                 };
                 adapter.DeleteCommand.Parameters.Add("@id", SqlDbType.Int, 32, "Id");
 
-                SqlCommand UpdateCommand = new SqlCommand("UpdateConversionCosting",conn, transaction);
+                SqlCommand UpdateCommand = new SqlCommand("UpdateConversionCosting", conn, transaction)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
                 UpdateCommand.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)category);
                 UpdateCommand.Parameters.Add("@operationId", SqlDbType.Int, 16, "OperationId");
                 UpdateCommand.Parameters.Add("@stepNo", SqlDbType.Int, 16, "StepNo");
@@ -66,6 +69,7 @@ namespace Metaforge_Marketing.Repository
                 UpdateCommand.Parameters.Add("@isOutsourced", SqlDbType.Int, 16, "IsOutsourced");
 
                 adapter.UpdateCommand = UpdateCommand;
+                adapter.UpdateCommand.Parameters.Add("@id", SqlDbType.Int, 32, "Id");
 
                 try
                 {
@@ -113,6 +117,7 @@ namespace Metaforge_Marketing.Repository
                 Connection = conn,
                 Transaction = transaction
             };
+            UpdateCommand.Parameters.Add("@id", SqlDbType.Int).Value = costing.Id;
             UpdateCommand.Parameters.Add("@rmMasterId", SqlDbType.Int).Value = costing.RMConsidered.Id;
             UpdateCommand.Parameters.Add("@rmCostPerPiece", SqlDbType.Float).Value = costing.CostPerPiece;
             UpdateCommand.Parameters.Add("@rmRate", SqlDbType.Float).Value = costing.RMRate;
@@ -122,7 +127,6 @@ namespace Metaforge_Marketing.Repository
             try
             {
                 UpdateCommand.ExecuteNonQuery();
-                MessageBox.Show("Inserted");
             }
             catch(Exception e)
             {
@@ -153,6 +157,7 @@ namespace Metaforge_Marketing.Repository
                 }
                 
                 transaction.Commit();
+                MessageBox.Show("Success!");
             }
             catch (Exception e1)
             {
