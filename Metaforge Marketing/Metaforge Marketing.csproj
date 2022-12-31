@@ -273,6 +273,8 @@
     <Compile Include="ViewModels\Reports\PerformanceReportViewModel.cs" />
     <Compile Include="ViewModels\RFQs\DetailedRFQViewModel.cs" />
     <Compile Include="ViewModels\RFQs\PendingRFQViewModel.cs" />
+    <Compile Include="ViewModels\Send\GeneralMailContainer.cs" />
+    <Compile Include="ViewModels\Send\SelectRecipientsViewModel.cs" />
     <Compile Include="ViewModels\Send\SendGeneralMailViewModel.cs" />
     <Compile Include="ViewModels\Send\SendQuotationViewModel.cs" />
     <Compile Include="ViewModels\Shared\PopupCloseMarker.cs" />
@@ -298,6 +300,9 @@
     </Compile>
     <Compile Include="Views\Mails\GeneralMailView.xaml.cs">
       <DependentUpon>GeneralMailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Mails\SelectRecipientsView.xaml.cs">
+      <DependentUpon>SelectRecipientsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Mails\SendQuotationView.xaml.cs">
       <DependentUpon>SendQuotationView.xaml</DependentUpon>
@@ -381,6 +386,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Mails\GeneralMailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Mails\SelectRecipientsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,25 +1,33 @@
 ﻿
 using Metaforge_Marketing.HelperClasses;
+using Metaforge_Marketing.Models;
 using Metaforge_Marketing.ViewModels.Shared;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Metaforge_Marketing.ViewModels.Send
 {
-    public class SendGeneralMailViewModel : ViewModelBase
+    public class SendGeneralMailViewModel : GeneralMailContainer
     {
         #region Fields
         private ICommand _selectRecipientsCommand, _sendCommand, _clearCommand;
         #endregion Fields
 
         #region Properties
-        public Email Email { get; set; }
+        public int RecipientsCount
+        {
+            get
+            {
+                return Email.MailMessage.To.Count;
+            }
+        }
         public ICommand SelectRecipientsCommand
         {
             get
             {
                 if (_selectRecipientsCommand == null)
                 {
-                   // _selectRecipientsCommand = new Command(p => new PopupWindowViewModel().Show(new SelectRecipientsViewModel()));
+                    _selectRecipientsCommand = new Command(p => new PopupWindowViewModel().Show(new SelectRecipientsViewModel()));
                 }
                 return _selectRecipientsCommand;
             }
@@ -56,5 +64,11 @@ namespace Metaforge_Marketing.ViewModels.Send
             }
         }
         #endregion Properties
+
+        public SendGeneralMailViewModel()
+        {
+            Email = new Email();
+            VisitedRecipients = null;
+        }
     }
 }

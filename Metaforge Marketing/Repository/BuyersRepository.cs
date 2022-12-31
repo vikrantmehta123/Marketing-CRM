@@ -75,6 +75,47 @@ namespace Metaforge_Marketing.Repository
             }
             return buyers;
         }
+
+        // Summary:
+        //      Fetches a list of buyers from database
+        //      Used in pagination
+        public static IEnumerable<Buyer> FetchBuyers(SqlConnection conn, int offsetIndex, int entriesPerPage)
+        {
+            List<Buyer> buyers = new List<Buyer>();
+            SqlCommand cmd = new SqlCommand("FetchBuyers", conn)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add("@offsetIndex", System.Data.SqlDbType.Int).Value = offsetIndex;
+            cmd.Parameters.Add("@entriesPerPage", System.Data.SqlDbType.Int).Value = entriesPerPage;
+
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Buyer buyer = new Buyer()
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Name = reader["BuyerName"].ToString(),
+                    Customer = new Customer()
+                    {
+                        CustomerName = reader["CustomerName"].ToString().Trim(),
+                    },
+                    Email = reader["Email"].ToString()
+                };
+                buyers.Add(buyer);
+            }
+            reader.Close();
+            return buyers;
+        }
+
+        // Summary:
+        //      Returns the count of all buyers in the database
+        //      Used in pagination
+        public static int CountBuyers(SqlConnection conn)
+        {
+            SqlCommand cmd = new SqlCommand("SELECT COUNT(Id) FROM Buyers", conn);
+            return Convert.ToInt32(cmd.ExecuteScalar());
+        }
         #endregion Select Queries
     }
 }

@@ -21,33 +21,40 @@
 
         <Label Content="Send an Email" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" />
 
-        <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left">
+        <StackPanel Grid.Column="1" Grid.RowSpan="2" Grid.Row="1">
 
-            <Button Content="Select Recipients" Command="{Binding Path=SelectRecipientsCommand}" />
+            <StackPanel HorizontalAlignment="Left">
+                <Button Content="Select Recipients" Command="{Binding Path=SelectRecipientsCommand}" />
+                <DockPanel LastChildFill="False">
+                    <Label Content="{Binding RecipientsCount}"/>
+                    <Label Content="Recipients Selected"/>
+                </DockPanel>
+            </StackPanel>
 
-            <Label Content="Subject"/>
-            <TextBox Width="100" Text="{Binding Path=Email.MailMessage.Subject, Mode=TwoWay}" Name="MailSubjectBox"  HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" />
+            <DockPanel LastChildFill="False">
+                <Label Content="Subject:" FontWeight="DemiBold"/>
+                <TextBox Width="100" Text="{Binding Path=Email.MailMessage.Subject, Mode=TwoWay}" 
+                     TextWrapping="Wrap" VerticalContentAlignment="Center"/>
+            </DockPanel>
 
-            <Label Content="Select a Mail Blueprint" VerticalAlignment="Top" />
-            <ComboBox ItemsSource="{Binding Path=Email.Blueprints}" SelectedItem="{Binding Path=Email.SelectedBlueprint}" Height="25" Width="125"/>
+            <DockPanel LastChildFill="False">
+                <Label Content="Mail Blueprint" FontWeight="DemiBold"/>
+                <ComboBox ItemsSource="{Binding Path=Email.Blueprints}" MinWidth="65"
+                          SelectedItem="{Binding Path=Email.SelectedBlueprint}" />
+            </DockPanel>
 
+            
+            
+            <Label Content="Content" FontWeight="DemiBold"/>
+            <TextBox Text="{Binding Path=Email.MailMessage.Body, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="150" MaxHeight="150"
+                     Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Visible"/>
+
+            <DockPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Content="Send Email" Command="{Binding SendCommand}"/>
+                <Button Content="Clear" Command="{Binding ClearCommand}" />
+            </DockPanel>
         </StackPanel>
 
 
-        <Grid Grid.Row="3" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.5*"/>
-                <RowDefinition Height="2.5*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Label Content="Content" Grid.Row="0" Grid.Column="1"/>
-            <TextBox Text="{Binding Path=Email.MailMessage.Body, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Name="MailContentBox" TextWrapping="Wrap"/>
-
-            <DockPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <Button Grid.Column="1" Content="Send Email" Command="{Binding SendCommand}"/>
-                <Button Grid.Column="1" Content="Clear" Command="{Binding ClearCommand}" HorizontalAlignment="Left" />
-            </DockPanel>
-
-        </Grid>
     </Grid>
 </UserControl>

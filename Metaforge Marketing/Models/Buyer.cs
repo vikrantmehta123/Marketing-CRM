@@ -16,6 +16,7 @@ namespace Metaforge_Marketing.Models
         public string Name { get { return _name;} set { _name = value; } }
         public string Email { get { return _email;} set { _email = value; } }
         public int Id { get { return _id;} set { _id = value; } }
+        public bool IsChecked { get; set; } // For when selecting Recipients
         public string Phone { get { return _phone;} set { _phone = value; } }
         public Customer Customer { get { return _customer;} set { _customer = value; } }
         #endregion Properties
@@ -23,7 +24,6 @@ namespace Metaforge_Marketing.Models
         #region Methods
         // Summary:
         //      Performs basic validation on the "Add Buyer" form
-        //      Returns true if the name and the email are set
         public bool IsFormDataValid()
         {
             if (String.IsNullOrEmpty(Name)) { return false; }

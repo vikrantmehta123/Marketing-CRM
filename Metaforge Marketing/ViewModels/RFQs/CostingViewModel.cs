@@ -14,7 +14,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         #region Fields
         private Item _item = new Item() { Id = 3, Status = ItemStatusEnum.Pending };
         private RMCosting _rmCosting = new RMCosting() { RMConsidered = new RM() };
-        private DataTable _convCosting;
+        private DataTable _convCosting = new DataTable();
         private ICommand _updateCommand;
         private CostingCategoryEnum _costingCategory;
         private string conn_string = Properties.Settings.Default.conn_string;

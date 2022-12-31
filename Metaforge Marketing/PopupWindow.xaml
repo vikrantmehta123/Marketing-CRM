@@ -7,6 +7,8 @@
         xmlns:shared_views="clr-namespace:Metaforge_Marketing.Views.Shared"
         xmlns:rfq_vm ="clr-namespace:Metaforge_Marketing.ViewModels.RFQs"
         xmlns:rfq_views="clr-namespace:Metaforge_Marketing.Views.RFQs"
+        xmlns:mail_vm="clr-namespace:Metaforge_Marketing.ViewModels.Send"
+        xmlns:mail_views="clr-namespace:Metaforge_Marketing.Views.Mails"
         xmlns:local="clr-namespace:Metaforge_Marketing"
         mc:Ignorable="d"
         Title="PopupWindow" Height="450" Width="800">
@@ -25,6 +27,10 @@
             <rfq_views:DetailedRFQView/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type mail_vm:SelectRecipientsViewModel}">
+            <mail_views:SelectRecipientsView/>
+        </DataTemplate> 
+        
     </Window.Resources>
     
     <Grid>
