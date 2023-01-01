@@ -4,12 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Metaforge_Marketing.Views.RFQs"
-             xmlns:models="clr-namespace:Metaforge_Marketing.Models"
              xmlns:converters="clr-namespace:Metaforge_Marketing.HelperClasses.Converters"
+             xmlns:models="clr-namespace:Metaforge_Marketing.Models"
              mc:Ignorable="d" 
              Background="White"
-             d:DesignHeight="450" d:DesignWidth="800">
-
+             d:DesignHeight="720" d:DesignWidth="1280">
     <UserControl.Resources>
         <models:Operation x:Key="Operation"/>
         <models:RM x:Key="RMMasterData"/>
@@ -26,41 +25,45 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
         <!--#region Dashboard-->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
-            <StackPanel VerticalAlignment="Center">
-                <DockPanel Grid.Row="1" Grid.Column="1" LastChildFill="False" VerticalAlignment="Center">
-                    <Button Content="Select Item" Command="{Binding SelectItemCommand}" VerticalAlignment="Center"/>
-                </DockPanel>
-            </StackPanel>
-
+            <StackPanel>
+                <Button Content="Select Item" Command="{Binding SelectItemCommand}"/>
+            </StackPanel> 
+            
             <StackPanel>
                 <DockPanel>
-                    <Label Content="Item Name:" FontWeight="DemiBold"/>
+                    <Label Content="Item Name:"/>
                     <Label Content="{Binding SelectedItem.ItemName}"/>
                 </DockPanel>
 
                 <DockPanel>
-                    <Label Content="Item Code:" FontWeight="DemiBold"/>
-                    <Label Content="{Binding SelectedItem.ItemCode}"/>
+                    <Label Content="Item Code:"/>
+
                 </DockPanel>
 
                 <DockPanel>
-                    <Label Content="Customer Name:" FontWeight="DemiBold"/>
-                    
+                    <Label Content="Customer Name:"/>
+
                 </DockPanel>
 
             </StackPanel>
 
             <StackPanel>
                 <DockPanel>
-                    <Label Content="Gross Weight:" FontWeight="DemiBold"/>
-                    <Label Content="{Binding SelectedItem.GrossWeight}"/>
+                    <Label Content="Gross Weight:"/>
+
                 </DockPanel>
 
                 <DockPanel>
-                    <Label Content="Net Weight:" FontWeight="DemiBold"/>
-                    <Label Content="{Binding SelectedItem.NetWeight}"/>
+                    <Label Content="Net Weight:"/>
+
                 </DockPanel>
 
                 <DockPanel>
@@ -72,14 +75,8 @@
         </StackPanel>
         <!--#endregion Dashboard -->
 
-        <!--#region Costing form-->
-        
-        <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="1" >
-
+        <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Visible">
             <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" CanVerticallyScroll="True">
-
-                <Separator Margin="0, 15, 0, 15"/>
-                
                 <StackPanel Orientation="Horizontal">
                     <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="250">
 
@@ -111,39 +108,37 @@
                             </DockPanel>
 
                         </StackPanel>
+
                     </StackPanel>
+
                 </StackPanel>
 
-                <Separator Margin="0. 15, 0, 15"/>
 
                 <StackPanel Orientation="Horizontal">
                     <StackPanel>
                         <Label Content="Conversion Costing" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
 
-                        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Path=ConvCosting}" AutoGenerateColumns="False" 
+                        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Path=ConvCosting, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" 
                           CanUserDeleteRows="True" CanUserAddRows="True"  HorizontalAlignment="Center">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" Visibility="Visible"/>
                                 <DataGridComboBoxColumn Header="Operation Name" ItemsSource="{Binding Source={StaticResource Operation}, Path=AllOperations}"
                                                 SelectedValuePath="Id" SelectedValueBinding="{Binding OperationId}" TextBinding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding Path=CCPerPiece, StringFormat=N2}"/>
+                                <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding Path=CCPerPiece, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
                                 <DataGridTextColumn Header="Step No" Binding="{Binding StepNo}"/>
                                 <DataGridCheckBoxColumn Header="Is Outsourced" Binding="{Binding Path=IsOutsourced}"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </StackPanel>
+
                 </StackPanel>
 
             </StackPanel>
         </ScrollViewer>
 
-        <!--#endregion Costing Form-->
-
-        
         <DockPanel LastChildFill="False" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3">
             <Button Content="Update" Command="{Binding UpdateCommand}"/>
         </DockPanel>
-
 
     </Grid>
 </UserControl>

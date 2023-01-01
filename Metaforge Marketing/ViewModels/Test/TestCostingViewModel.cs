@@ -5,10 +5,7 @@ using Metaforge_Marketing.Models;
 using Metaforge_Marketing.Models.Enums;
 using Metaforge_Marketing.Repository;
 using Microsoft.Data.SqlClient;
-using System;
 using System.Data;
-using System.Runtime.InteropServices;
-using System.Windows;
 using System.Windows.Input;
 
 namespace Metaforge_Marketing.ViewModels.Test

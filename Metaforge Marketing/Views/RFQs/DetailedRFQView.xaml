@@ -89,8 +89,7 @@
 
         <StackPanel Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center">
             <DockPanel>
-                <Button Content="Save"/>
-                <Button Content="Clear Changes"/>
+                <Button Content="Save" Command="{Binding SaveCommand}"/>
             </DockPanel>
         </StackPanel>
     </Grid>

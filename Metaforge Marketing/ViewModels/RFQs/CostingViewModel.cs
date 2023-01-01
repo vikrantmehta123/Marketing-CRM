@@ -14,7 +14,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         #region Fields
         private Item _item = new Item() { Id = 3, Status = ItemStatusEnum.Pending };
         private RMCosting _rmCosting = new RMCosting() { RMConsidered = new RM() };
-        private DataTable _convCosting = new DataTable();
+        private DataTable _convCosting;
         private ICommand _updateCommand, _selectItemCommand;
         private CostingCategoryEnum _costingCategory;
         private string conn_string = Properties.Settings.Default.conn_string;
@@ -38,15 +38,13 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         {
             get
             {
-                if (SelectedItem != null && CostingCategory != CostingCategoryEnum.None)
-                {
-                    using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
-                    {
-                        conn.Open();
-                        _rmCosting = CostingRepository.FetchRMCosting(conn, _item, CostingCategory, _rmCosting);
-                        conn.Close();
 
-                    }
+                using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
+                {
+                    conn.Open();
+                    _rmCosting = CostingRepository.FetchRMCosting(conn, _item, CostingCategory, _rmCosting);
+                    conn.Close();
+
                 }
                 return _rmCosting;
             }
@@ -63,31 +61,16 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         {
             get
             {
-                if(SelectedItem != null && CostingCategory != CostingCategoryEnum.None)
+                using (SqlConnection conn = new SqlConnection(conn_string))
                 {
-                    using (SqlConnection conn = new SqlConnection(conn_string))
-                    {
-                        conn.Open();
-                        _convCosting = TestRepository.FetchConvCosting(conn, _item, CostingCategory);
-                        conn.Close();
-                    }
+                    conn.Open();
+                    _convCosting = TestRepository.FetchConvCosting(conn, _item, CostingCategory);
+                    conn.Close();
                 }
                 return _convCosting.DefaultView;
             }
         }
 
-
-        public ICommand SelectItemCommand
-        {
-            get
-            {
-                if(_selectItemCommand== null)
-                {
-                    _selectItemCommand = new Command(p => new PopupWindowViewModel().Show(new SelectItemViewModel()));
-                }
-                return _selectItemCommand;
-            }
-        }
         public ICommand UpdateCommand
         {
             get
@@ -96,10 +79,8 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                 {
                     _updateCommand = new Command(p =>
                     {
-                        Costing costing = new Costing
-                        {
-                            RMCosting = _rmCosting
-                        };
+                        Costing costing = new Costing();
+                        costing.RMCosting = _rmCosting;
                         using (SqlConnection conn = new SqlConnection(conn_string))
                         {
                             conn.Open();
@@ -116,6 +97,21 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                     });
                 }
                 return _updateCommand;
+            }
+        }
+
+        public ICommand SelectItemCommand
+        {
+            get
+            {
+                if (_selectItemCommand == null)
+                {
+                    _selectItemCommand = new Command(p =>
+                    {
+                        new PopupWindowViewModel().Show(new SelectItemViewModel());
+                    });
+                }
+                return _selectItemCommand;
             }
         }
     }

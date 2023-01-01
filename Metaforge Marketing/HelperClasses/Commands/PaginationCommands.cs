@@ -222,7 +222,8 @@ namespace Metaforge_Marketing.HelperClasses.Commands
         #region Methods
         private int ComputeTotalPages(int Count, int EntriesPerPage)
         {
-            if (Count % EntriesPerPage == 0) { return (int)Count / EntriesPerPage; }
+            if (Count == 0) { return 0; }
+            else if (Count % EntriesPerPage == 0) { return (int)Count / EntriesPerPage; }
             else { return ((int)Count / EntriesPerPage) + 1; }
         }
         #endregion Methods

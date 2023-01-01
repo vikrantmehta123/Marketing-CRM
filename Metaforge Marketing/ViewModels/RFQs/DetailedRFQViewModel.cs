@@ -1,20 +1,16 @@
 ﻿using Metaforge_Marketing.HelperClasses;
 using Metaforge_Marketing.Models;
-using Metaforge_Marketing.ViewModels.Add;
 using Metaforge_Marketing.ViewModels.Shared;
-using System;
+using Microsoft.Data.SqlClient;
 using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace Metaforge_Marketing.ViewModels.RFQs
 {
     internal class DetailedRFQViewModel : PopupCloseMarker
     {
         #region Fields
-        private ICommand _selectionDoneCommand, _addCostingCommand;
+        private ICommand _selectionDoneCommand, _addCostingCommand, _saveCommand;
         private ObservableCollection<Item> _items;
         #endregion Fields
 
@@ -33,6 +29,15 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                     });
                 }
                 return _addCostingCommand;
+            }
+        }
+
+        public ICommand SaveCommand
+        {
+            get
+            {
+
+                return _saveCommand;
             }
         }
         public override ICommand SelectionDoneCommand
@@ -58,6 +63,23 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         public override void ClearSelection() { SelectedItem = null; }
 
         public override bool IsSelectionDone() { return SelectedItem != null; }
+
+        private void Save()
+        {
+            foreach (Item item in _items)
+            {
+                if (item.Status != Models.Enums.ItemStatusEnum.Regretted && item.IsRegretted)
+                {
+                    using(SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
+                    {
+                        conn.Open();
+                        // TestRepository.UpdateItemStatus(conn, item, ItemStatusEnum.Regretted);
+                        // InsertItemHistory(conn, item, DateTime.Today.Date, "Item regretted");
+                        conn.Close();
+                    }
+                }
+            }
+        }
 
     }
 }

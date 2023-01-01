@@ -10,6 +10,7 @@ namespace Metaforge_Marketing.Repository
 {
     public class TestRepository
     {
+        #region Select Queries
 
         // Summary:
         //      Fetches a Conversion Costing record into a Datatable based on the Category
@@ -26,6 +27,10 @@ namespace Metaforge_Marketing.Repository
             return table;
         }
 
+        #endregion Select Queries
+
+
+        #region Insert Costing
         // Summary:
         //      Given a DataTable, Inserts/ updates/ deletes rows that are changed
         // Parameters:
@@ -48,7 +53,7 @@ namespace Metaforge_Marketing.Repository
                 InsertCommand.Parameters.Add("@whoseCosting", SqlDbType.Int).Value=((int)category);
                 InsertCommand.Parameters.Add("@operationId", SqlDbType.Int, 16, "OperationId");
                 InsertCommand.Parameters.Add("@stepNo", SqlDbType.Int, 16, "StepNo");
-                InsertCommand.Parameters.Add("@ccPerPiece", SqlDbType.Float, 16, "CCPerPiece");
+                InsertCommand.Parameters.Add("@ccPerPiece", SqlDbType.Decimal, 16, "CCPerPiece");
                 InsertCommand.Parameters.Add("@isOutsourced", SqlDbType.Int, 16, "IsOutsourced");
 
                 adapter.DeleteCommand = new SqlCommand("DELETE FROM ConversionCostings WHERE Id = @id") 
@@ -65,7 +70,7 @@ namespace Metaforge_Marketing.Repository
                 UpdateCommand.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)category);
                 UpdateCommand.Parameters.Add("@operationId", SqlDbType.Int, 16, "OperationId");
                 UpdateCommand.Parameters.Add("@stepNo", SqlDbType.Int, 16, "StepNo");
-                UpdateCommand.Parameters.Add("@ccPerPiece", SqlDbType.Float, 16, "CCPerPiece");
+                UpdateCommand.Parameters.Add("@ccPerPiece", SqlDbType.Decimal, 16, "CCPerPiece");
                 UpdateCommand.Parameters.Add("@isOutsourced", SqlDbType.Int, 16, "IsOutsourced");
 
                 adapter.UpdateCommand = UpdateCommand;
@@ -79,7 +84,6 @@ namespace Metaforge_Marketing.Repository
                 {
                     throw ex;
                 }
-                
             }
         }
 
@@ -94,9 +98,9 @@ namespace Metaforge_Marketing.Repository
             // Add insert query
             InsertCommand.Parameters.Add("@rmMasterId", SqlDbType.Int).Value = costing.RMConsidered.Id;
             InsertCommand.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)category);
-            InsertCommand.Parameters.Add("@rmCostPerPiece", SqlDbType.Float).Value = costing.CostPerPiece;
+            InsertCommand.Parameters.Add("@rmCostPerPiece", SqlDbType.Decimal).Value = costing.ComputeRMCost(item);
             InsertCommand.Parameters.Add("@rmAsPerDrawing", SqlDbType.VarChar).Value = costing.RMAsPerDrawing;
-            InsertCommand.Parameters.Add("@rmRate", SqlDbType.Float).Value = costing.RMRate;
+            InsertCommand.Parameters.Add("@rmRate", SqlDbType.Decimal).Value = costing.RMRate;
             InsertCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
 
             try
@@ -109,6 +113,8 @@ namespace Metaforge_Marketing.Repository
             }
         }
 
+        // Summary:
+        //      Updates a Raw Material entry if required
         private static void UpdateRM(SqlConnection conn, SqlTransaction transaction, Item item, RMCosting costing, CostingCategoryEnum category)
         {
             SqlCommand UpdateCommand = new SqlCommand("UpdateRMCosting")
@@ -119,8 +125,8 @@ namespace Metaforge_Marketing.Repository
             };
             UpdateCommand.Parameters.Add("@id", SqlDbType.Int).Value = costing.Id;
             UpdateCommand.Parameters.Add("@rmMasterId", SqlDbType.Int).Value = costing.RMConsidered.Id;
-            UpdateCommand.Parameters.Add("@rmCostPerPiece", SqlDbType.Float).Value = costing.CostPerPiece;
-            UpdateCommand.Parameters.Add("@rmRate", SqlDbType.Float).Value = costing.RMRate;
+            UpdateCommand.Parameters.Add("@rmCostPerPiece", SqlDbType.Decimal).Value = costing.CostPerPiece;
+            UpdateCommand.Parameters.Add("@rmRate", SqlDbType.Decimal).Value = costing.RMRate;
             UpdateCommand.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)category);
             UpdateCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
             UpdateCommand.Parameters.Add("@rmAsPerDrawing", SqlDbType.VarChar).Value = costing.RMAsPerDrawing;
@@ -132,7 +138,40 @@ namespace Metaforge_Marketing.Repository
             {
                 throw e;
             }
-            
+        }
+
+        // TODO: Use this query if you implement Select Admin on the costing page.
+        private static void SetAdmin(SqlConnection conn, SqlTransaction transaction, Item item, Admin admin)
+        {
+            string query = "UPDATE Items SET AdminId = @adminId WHERE Id = @itemId";
+            SqlCommand cmd = new SqlCommand(query, conn, transaction);
+            cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
+            cmd.Parameters.Add("@adminId", SqlDbType.Int).Value = admin.Id;
+        }
+
+
+        // Summary:
+        //      Updates the status value of an Item
+        public static void UpdateItemStatus(SqlConnection conn, SqlTransaction transaction, Item item, ItemStatusEnum status)
+        {
+            SqlCommand cmd = new SqlCommand("UpdateItemStatus")
+            {
+                Connection = conn,
+                Transaction = transaction,
+                CommandType = CommandType.StoredProcedure
+            };
+
+            cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
+            cmd.Parameters.Add("@status", SqlDbType.Int).Value = ((int)status);
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
 
@@ -146,16 +185,22 @@ namespace Metaforge_Marketing.Repository
 
             try
             {
+                // TODO: Uncomment the below code if you keep Select Admin in the costing view
                 //SetAdmin(conn, transaction, item, admin);
                 if (costing.IsRMCostingPresent) { UpdateRM(conn, transaction, item, costing, category); }
                 else { InsertRM(conn, transaction, item, costing, category);  }
                 InsertCC(conn, transaction, convCostingTable, item, category);
 
-                if(status != item.Status)
+                if(status < item.Status)
                 {
                     UpdateItemStatus(conn, transaction, item, status);
                 }
-                
+
+                string ItemHistoryNote;
+                if (status == ItemStatusEnum.MF_Costing_Prepared) { ItemHistoryNote = "MF Costing prepared"; }
+                else if(status == ItemStatusEnum.Customer_Costing_Prepared) { ItemHistoryNote = "Customer Costing prepared"; }
+                else { ItemHistoryNote = "Approved costing entered"; }
+                //CostingRepository.InsertItemHistory(conn, transaction, item, ItemHistoryNote);
                 transaction.Commit();
                 MessageBox.Show("Success!");
             }
@@ -176,35 +221,6 @@ namespace Metaforge_Marketing.Repository
                 transaction.Dispose();
             }
         }
-        private static void SetAdmin(SqlConnection conn, SqlTransaction transaction, Item item, Admin admin)
-        {
-            string query = "UPDATE Items SET AdminId = @adminId WHERE Id = @itemId";
-            SqlCommand cmd = new SqlCommand(query, conn, transaction);
-            cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
-            cmd.Parameters.Add("@adminId", SqlDbType.Int).Value = admin.Id;
-        }
-
-        private static void UpdateItemStatus(SqlConnection conn, SqlTransaction transaction, Item item, ItemStatusEnum status)
-        {
-            SqlCommand cmd = new SqlCommand("UpdateItemStatus")
-            {
-                Connection = conn,
-                Transaction = transaction,
-                CommandType = CommandType.StoredProcedure
-            };
-
-            cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
-            cmd.Parameters.Add("@status", SqlDbType.Int).Value = ((int)status);
-
-            try
-            {
-                cmd.ExecuteNonQuery();
-            }
-            catch(Exception e)
-            {
-                throw e;
-            }
-            
-        }
+        #endregion Insert Costing
     }
 }

@@ -10,6 +10,8 @@ namespace Metaforge_Marketing.Repository
 {
     public class RFQsRepository
     {
+
+        #region Select Queries
         // TODO: Check with Rahul Fua about the correctness of joins
         // TODO: Change CustId column to BuyerId
 
@@ -120,6 +122,7 @@ namespace Metaforge_Marketing.Repository
             }
         }
 
+        #endregion Select Queries
 
         #region Insert Queries
 
@@ -163,7 +166,7 @@ namespace Metaforge_Marketing.Repository
             return Id;
         }
 
-        private static void InsertItemHistory(SqlConnection conn, SqlTransaction transaction, Item item, RFQ rfq, string note)
+        private static void InsertItemHistory(SqlConnection conn, SqlTransaction transaction, Item item, DateTime date, string note)
         {
             SqlCommand ItemHistoryInsertCommand = new SqlCommand("InsertItemHistory", conn, transaction)
             {
@@ -172,7 +175,7 @@ namespace Metaforge_Marketing.Repository
             ItemHistoryInsertCommand.Parameters.Add("@itemId", System.Data.SqlDbType.Int).Value = item.Id;
             ItemHistoryInsertCommand.Parameters.Add("@oldStatus", System.Data.SqlDbType.Int).Value = -1; // As -1 means that there is no item history before this point
             ItemHistoryInsertCommand.Parameters.Add("@newStatus", System.Data.SqlDbType.Int).Value = 0; // As 0 is status of pending item
-            ItemHistoryInsertCommand.Parameters.Add("@date", System.Data.SqlDbType.Date).Value = rfq.EnquiryDate.Date;
+            ItemHistoryInsertCommand.Parameters.Add("@date", System.Data.SqlDbType.Date).Value = date;
             ItemHistoryInsertCommand.Parameters.Add("@note", System.Data.SqlDbType.VarChar).Value = note;
 
             ItemHistoryInsertCommand.ExecuteNonQuery();
@@ -194,7 +197,7 @@ namespace Metaforge_Marketing.Repository
                 foreach (Item item in rfq.Items)
                 {
                     item.Id = InsertItem(connection, transaction, item, rfq);
-                    InsertItemHistory(connection, transaction, item, rfq, "Enquiry for the item was recd");
+                    InsertItemHistory(connection, transaction, item, rfq.EnquiryDate.Date, "Enquiry for the item was recd");
                 }
                 transaction.Commit();
             }

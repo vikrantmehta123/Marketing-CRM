@@ -8,8 +8,8 @@ namespace Metaforge_Marketing.Models
         #region Fields
         private int _id;
         private string _rmAsPerDrawing;
-        private float _rmRate, _scrapRate, _scrapRecovery, _cuttingAllowance, _itemLength, _costPerPiece;
-        private bool _isRMCostingPresent, _isRMCostingDetailsPresent;
+        private float _rmRate, _costPerPiece;
+        private bool _isRMCostingPresent;
         private RM _rmConsidered = new RM();
         private Admin _costingPreparedBy;
         #endregion Fields
@@ -17,9 +17,7 @@ namespace Metaforge_Marketing.Models
         #region Properties
         public int Id { get { return _id; } set { _id = value; } }
         public string RMAsPerDrawing { get { return _rmAsPerDrawing; } set { _rmAsPerDrawing = value;} }
-
         public bool IsRMCostingPresent { get { return _isRMCostingPresent; } set { _isRMCostingPresent= value; } }
-
         public Admin CostingPreparedBy
         {
             get { return _costingPreparedBy; }
@@ -37,10 +35,7 @@ namespace Metaforge_Marketing.Models
         }
         public float RMRate 
         { 
-            get 
-            { 
-                return _rmRate; 
-            } 
+            get { return _rmRate; } 
             set 
             { 
                 if(_rmRate != value)
@@ -49,21 +44,9 @@ namespace Metaforge_Marketing.Models
                 }
             } 
         }
-
-        public float ScrapRate { get { return _scrapRate; } set { _scrapRate= value; } }
-        public float CuttingAllowance { get { return _cuttingAllowance; } set { _cuttingAllowance = value; } }
-        public float ItemLength { get { return _itemLength; } set { _itemLength = value; } }
-        public float ScrapRecovery { get { return _scrapRecovery; } set { _scrapRecovery= value; } }
-
         public float CostPerPiece
         {
-            get 
-            {   if (_scrapRate != 0 && _scrapRecovery != 0 && _rmRate != 0 && _scrapRecovery != 0) 
-                {
-                    // TODO: Implement a formula to compute cost per piece of raw material
-                }
-                return _costPerPiece; 
-            }
+            get { return _costPerPiece; }
             set { _costPerPiece = value; }
         }
 
@@ -78,7 +61,10 @@ namespace Metaforge_Marketing.Models
             return true;
         }
 
-
+        public float ComputeRMCost(Item item)
+        {
+            return (float)(item.GrossWeight * RMRate / 1000);
+        }
         #endregion Methods
     }
 }
