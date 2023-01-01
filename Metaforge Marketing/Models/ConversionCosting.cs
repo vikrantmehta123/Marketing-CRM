@@ -1,6 +1,4 @@
-﻿
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Metaforge_Marketing.Models
@@ -8,10 +6,9 @@ namespace Metaforge_Marketing.Models
     public class ConversionCosting :  ModelsBase
     {
         #region Fields
-        private bool _isConvCostingPresent, _isConvCostingDetailsPresent;
+        private bool _isConvCostingPresent;
         private float _totalCostPerPiece;
         private ObservableCollection<Operation> _operations;
-        private Item _item;
         #endregion Fields
 
         #region Properties
@@ -30,11 +27,6 @@ namespace Metaforge_Marketing.Models
         {
             get { return _isConvCostingPresent; }
             set { _isConvCostingPresent = value;}
-        }
-        public bool IsConvCostingDetailsPresent
-        {
-            get { return _isConvCostingDetailsPresent; }
-            set { _isConvCostingDetailsPresent = value; }
         }
         #endregion Properties
 

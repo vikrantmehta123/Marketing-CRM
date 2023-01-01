@@ -35,9 +35,6 @@ namespace Metaforge_Marketing.Models
         private int _id, _stepNo;
         private float _costPerPiece;
         private bool _isOutsourced;
-        private Item _item;
-        private Admin _admin;
-        private Machine _machine;
         #endregion Fields
 
         #region Properties
@@ -46,10 +43,6 @@ namespace Metaforge_Marketing.Models
         public string OperationName { get { return _operationName; } set { _operationName = value; } }
         public float CostPerPiece { 
             get { 
-                if(_machine != null && _machine.CycleTime > 0)
-                {
-                    _costPerPiece = ComputeCostPerPiece();
-                }
                 return _costPerPiece; 
             } 
             set { 
@@ -57,14 +50,9 @@ namespace Metaforge_Marketing.Models
             }
         }
         public bool IsOutsourced { get { return _isOutsourced; } set { _isOutsourced = value;} }
-        public Machine Machine { get { return _machine; } set { _machine = value; } }
         #endregion Properties
 
         #region Methods
-        public float ComputeCostPerPiece()
-        {
-            return Machine.ComputeCostPerPiece();
-        }
         public override string ToString()
         {
             return OperationName;

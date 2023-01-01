@@ -16,7 +16,6 @@ namespace Metaforge_Marketing.Models
 
         #region Fields
         private int _id;
-        private float _rmCostPerPiece, _ccPerPiece, _totalCostPerPiece;
         private Item _item;
         private Admin _costingPreparedBy;
         private Remark _remark;

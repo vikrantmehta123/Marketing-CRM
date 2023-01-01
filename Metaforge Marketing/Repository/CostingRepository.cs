@@ -5,101 +5,12 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Windows;
-
 namespace Metaforge_Marketing.Repository
 {
     public class CostingRepository
     {
 
         #region Insert Queries
-        /// <summary>
-        /// Inserts the whole Costing into their respective tables
-        /// Requires that the data be valid
-        /// The Operation is atomic
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="costing"></param>
-        public static void InsertToDB(SqlConnection conn, Costing costing)
-        {
-            SqlTransaction transaction = conn.BeginTransaction();
-            try
-            {
-                int RMCostingId = InsertRMCosting(conn, costing, transaction);
-                foreach (Operation op in costing.Operations)
-                {
-                    int CCId = InsertConversionCosting(conn, op, costing, transaction);
-                }
-                InsertItemHistory(conn, costing, transaction);
-                UpdateItemStatus(conn, costing, transaction);
-                transaction.Commit();
-            }
-            catch(Exception e1) 
-            {
-                MessageBox.Show(e1.Message);
-                try
-                {
-                    transaction.Rollback(); 
-                }
-                catch(Exception e2)
-                {
-                    MessageBox.Show(e2.Message);
-                }
-            }
-            finally { transaction.Dispose(); }
-
-
-        }
-        public static int InsertRMCosting(SqlConnection conn, Costing costing, SqlTransaction transaction)
-        {
-            SqlCommand RMCostingCommand = new SqlCommand("InsertRMCosting", conn, transaction)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            // Add Parameters for the RM Costing Query
-            RMCostingCommand.Parameters.Add("@rmRate", SqlDbType.Float).Value = costing.RMCosting.RMRate;
-            RMCostingCommand.Parameters.Add("@rmAsPerDrawing", SqlDbType.Float).Value = costing.RMCosting.RMAsPerDrawing;
-            RMCostingCommand.Parameters.Add("@rmCostPerPiece", SqlDbType.Float).Value = costing.RMCosting.CostPerPiece;
-            RMCostingCommand.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)costing.Category);
-            RMCostingCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = costing.Item.Id;
-            RMCostingCommand.Parameters.Add("@rmMasterId", SqlDbType.Int).Value = costing.RMCosting.RMConsidered.Id;
-
-            // Execute the insert and clear parameters
-            int Id = Convert.ToInt32(RMCostingCommand.ExecuteScalar());
-            RMCostingCommand.Parameters.Clear();
-            return Id;
-        }
-
-        /// <summary>
-        /// Given a Costing, and the Operation, 
-        /// Inserts "ONE" operation in the database and returns the inserted row's Id
-        /// Used when inserting costings of Items
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="op"></param>
-        /// <param name="costing"></param>
-        /// <returns></returns>
-        public static int InsertConversionCosting(SqlConnection conn, Operation op, Costing costing, SqlTransaction transaction)
-        {
-            SqlCommand ConvCostingCommand = new SqlCommand("InsertConversionCosting", conn, transaction)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            // Add the paramters of the query
-            ConvCostingCommand.Parameters.Add("@ccPerPiece", SqlDbType.Float).Value = op.CostPerPiece;
-            ConvCostingCommand.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)costing.Category);
-            ConvCostingCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = costing.Item.Id;
-            ConvCostingCommand.Parameters.Add("@operationId", SqlDbType.Int).Value = op.Id;
-            ConvCostingCommand.Parameters.Add("@stepNo", SqlDbType.Int).Value = costing.Operations.IndexOf(op) + 1;
-            ConvCostingCommand.Parameters.Add("@isOutsourced", SqlDbType.Int).Value = Convert.ToInt16(op.IsOutsourced);
-            ConvCostingCommand.Parameters.Add("@adminId", SqlDbType.Int).Value = costing.CostingPreparedBy.Id;
-
-            // Execute the query and clear parameters
-            int Id = Convert.ToInt32(ConvCostingCommand.ExecuteScalar());
-            ConvCostingCommand.Parameters.Clear();
-
-            return Id;
-        }
 
         public static void InsertItemHistory(SqlConnection conn, Costing costing, SqlTransaction transaction)
         {
@@ -120,23 +31,6 @@ namespace Metaforge_Marketing.Repository
         }
 
         #endregion Insert Queries
-
-
-        // Summary:
-        //      Updates an Item's status in the database
-        public static void UpdateItemStatus(SqlConnection conn, Costing costing, SqlTransaction transaction)
-        {
-            SqlCommand UpdateItemStatusCommand = new SqlCommand("UpdateItemStatus", conn, transaction)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            // Add Parameters for the Update Status Command
-            UpdateItemStatusCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = costing.Item.Id;
-            UpdateItemStatusCommand.Parameters.Add("@status", SqlDbType.Int).Value = costing.ComputeItemStatus();
-
-            UpdateItemStatusCommand.ExecuteNonQuery();
-            UpdateItemStatusCommand.Parameters.Clear();
-        }
 
         #region Select Queries
         // Summary:
@@ -163,7 +57,6 @@ namespace Metaforge_Marketing.Repository
                     rmCosting.RMAsPerDrawing = reader["RMAsPerDrawing"].ToString();
                     rmCosting.CostPerPiece = (float)Convert.ToDecimal(reader["RMCostPerPiece"]);
                     rmCosting.RMRate = (float)Convert.ToDecimal(reader["RMRate"]);
-                    System.Diagnostics.Debug.Assert(rmCosting.CostPerPiece > 0);
                     rmCosting.RMConsidered = new RM()
                     {
                         Id = Convert.ToInt32(reader["RMMasterId"]),
@@ -204,6 +97,7 @@ namespace Metaforge_Marketing.Repository
                 {
                     Operation op = new Operation
                     {
+                        OperationName = reader["OperationName"].ToString(),
                         CostPerPiece = (float)Convert.ToDecimal(reader["CCPerPiece"]),
                         Id = Convert.ToInt32(reader["Id"]),
                         IsOutsourced = Convert.ToBoolean(reader["IsOutsourced"]),
@@ -214,7 +108,6 @@ namespace Metaforge_Marketing.Repository
             }
             else
             {
-                convCosting.IsConvCostingDetailsPresent = false;
                 convCosting.IsConvCostingPresent = false;
             }
             reader.Close();

@@ -67,7 +67,16 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
 
                 if (i < costings.Count - 1) {  doc = InsertPageBreak(ref doc); } // Insert a page break for all items except the last one
             }
-            return SaveQuotation(ref doc);
+            string path = "";
+            try
+            {
+                path= SaveQuotation(ref doc);
+            }
+            catch(System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message);
+            } 
+            return path;
         }
         #endregion Main Methods
 
@@ -162,7 +171,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
             int i;
             for (i = rowIndex; i < rowIndex + costing.ConvCosting.Operations.Count; i++)
             {
-                table.Cell(i, 2).Range.Text = costing.ConvCosting.Operations[looper].ComputeCostPerPiece().ToString();
+                table.Cell(i, 2).Range.Text = costing.ConvCosting.Operations[looper].CostPerPiece.ToString();
                 looper++;
             }
             return rowIndex + looper;
@@ -173,7 +182,11 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
             int currRow = rowIndex;
             table.Cell(currRow, 2).Range.Text = (costing.RMCosting.CostPerPiece + costing.ConvCosting.TotalCostPerPiece).ToString() ; currRow++;
             table.Cell(currRow, 2).Range.Text = costing.AddProfit().ToString(); currRow++;
-            table.Cell(currRow, 2).Range.Text = costing.ComputeTotalCost().ToString(); currRow++;
+
+            Cell totalCell = table.Cell(currRow, 2);
+            totalCell.Range.Text = costing.ComputeTotalCost().ToString();
+            AddHeaderFormatting(ref totalCell);
+            currRow++;
             return currRow;
         }
 

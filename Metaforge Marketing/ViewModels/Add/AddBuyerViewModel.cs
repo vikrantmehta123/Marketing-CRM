@@ -79,7 +79,7 @@ namespace Metaforge_Marketing.ViewModels.Add
 
         public AddBuyerViewModel()
         {
-            SelectedCustomer = null;
+            SelectedCustomer = null; // Remove previous selection if any
             BuyerToAdd = new Buyer();
         }
         #region Command Functions

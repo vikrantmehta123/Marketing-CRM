@@ -215,7 +215,6 @@
     <Compile Include="HelperClasses\Converters\OrderTypeConverter.cs" />
     <Compile Include="HelperClasses\Converters\RMCategoryConverter.cs" />
     <Compile Include="HelperClasses\Email.cs" />
-    <Compile Include="HelperClasses\HTMLQuotationCreater.cs" />
     <Compile Include="HelperClasses\Quotation\BajajQuotationCreator.cs" />
     <Compile Include="HelperClasses\Quotation\LongQuotationCreator.cs" />
     <Compile Include="HelperClasses\Quotation\PDFQuotationCreator.cs" />

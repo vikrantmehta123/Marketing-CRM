@@ -9,7 +9,7 @@ namespace Metaforge_Marketing.Models
         private int _id;
         private string _rmAsPerDrawing;
         private float _rmRate, _scrapRate, _scrapRecovery, _cuttingAllowance, _itemLength, _costPerPiece;
-        private bool _isRMManuallySet, _isRMCostingPresent, _isRMCostingDetailsPresent;
+        private bool _isRMCostingPresent, _isRMCostingDetailsPresent;
         private RM _rmConsidered = new RM();
         private Admin _costingPreparedBy;
         #endregion Fields
@@ -19,7 +19,6 @@ namespace Metaforge_Marketing.Models
         public string RMAsPerDrawing { get { return _rmAsPerDrawing; } set { _rmAsPerDrawing = value;} }
 
         public bool IsRMCostingPresent { get { return _isRMCostingPresent; } set { _isRMCostingPresent= value; } }
-        public bool IsRMCostingDetailsPresent { get { return _isRMCostingDetailsPresent; } set { _isRMCostingDetailsPresent= value; } }
 
         public Admin CostingPreparedBy
         {
