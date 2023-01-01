@@ -48,7 +48,6 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Customer Name" DisplayMemberBinding="{Binding Path=CustomerName}"/>
-                    <GridViewColumn Header="Customer Code" DisplayMemberBinding="{Binding Path=CustCode}"/>
                     <GridViewColumn Header="City" DisplayMemberBinding="{Binding Path=City}"/>
                     <GridViewColumn Header="Address" DisplayMemberBinding="{Binding Path=Address}"/>
                     <GridViewColumn Header="Pincode" DisplayMemberBinding="{Binding Path=Pincode}"/>

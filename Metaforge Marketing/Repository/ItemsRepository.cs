@@ -6,9 +6,6 @@ using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using static System.Net.Mime.MediaTypeNames;
-using System.Windows.Controls.Primitives;
-using System.Windows.Controls;
 using System.Data;
 
 namespace Metaforge_Marketing.Repository

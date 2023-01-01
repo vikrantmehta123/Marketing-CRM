@@ -53,7 +53,7 @@
 
         <DockPanel Grid.Row="3" LastChildFill="False" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Button Content="First" Command="{Binding PaginationCommands.FirstPageCommand}"/>
-            <Button Content="Prev" Command="{Binding PaginationCommands.PrevPageCommands}"/>
+            <Button Content="Prev" Command="{Binding PaginationCommands.PrevPageCommand}"/>
             <Button Content="Next" Command="{Binding PaginationCommands.NextPageCommand}"/>
             <Button Content="Last" Command="{Binding PaginationCommands.LastPageCommand}"/>
         </DockPanel>

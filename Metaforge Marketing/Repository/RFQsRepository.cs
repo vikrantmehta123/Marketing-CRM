@@ -10,19 +10,13 @@ namespace Metaforge_Marketing.Repository
 {
     public class RFQsRepository
     {
-        /// <summary>
-        /// TODO: Check with Rahul Fua about the correctness of joins
-        /// TODO: Change CustId column to BuyerId
-        /// Used for pagination
-        /// Fetches the RFQs by their status- fetches RFQs and not the individual items
-        /// Will look for inidividual items, and check if there are any items of the given status. 
-        /// If there are > 0 such items, the function will add those RFQs to the list
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <param name="itemStatus"></param>
-        /// <param name="offsetIndex"></param>
-        /// <param name="entriesPerPage"></param>
-        /// <returns>A list of RFQs that have at least one item of that status</returns>
+        // TODO: Check with Rahul Fua about the correctness of joins
+        // TODO: Change CustId column to BuyerId
+
+        // Summary:
+        //      Used for pagination
+        //      Fetches a list of RFQs based on the status of their items
+        //      i.e. If there is at least one item of that status, the RFQ will be in the returned list
         public static IEnumerable<RFQ> FetchRFQs(SqlConnection connection, int itemStatus, int offsetIndex, int entriesPerPage)
         {
             List<RFQ> rfqs = new List<RFQ>();
@@ -127,83 +121,98 @@ namespace Metaforge_Marketing.Repository
         }
 
 
+        #region Insert Queries
+
+        private static int InsertRFQ(SqlConnection conn, SqlTransaction transaction, RFQ rfq)
+        {
+            // Add the RFQ Insert Command
+            SqlCommand RFQCommand = new SqlCommand("InsertRFQ", conn, transaction)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+            RFQCommand.Parameters.Add("@projectName", System.Data.SqlDbType.VarChar).Value = rfq.ProjectName;
+            RFQCommand.Parameters.Add("@enquiryDate", System.Data.SqlDbType.Date).Value = rfq.EnquiryDate.Date;
+            RFQCommand.Parameters.Add("@buyerId", System.Data.SqlDbType.Int).Value = rfq.Buyer.Id;
+            RFQCommand.Parameters.Add("@adminId", System.Data.SqlDbType.Int).Value = rfq.RFQBroughtBy.Id;
+            if (!String.IsNullOrEmpty(rfq.ReferredBy)) { RFQCommand.Parameters.Add("@referredBy", System.Data.SqlDbType.VarChar).Value = rfq.ReferredBy; }
+            else { RFQCommand.Parameters.Add("@referredBy", System.Data.SqlDbType.VarChar).Value = DBNull.Value; }
+
+            return Convert.ToInt32(RFQCommand.ExecuteScalar());
+        }
+
+        private static int InsertItem(SqlConnection conn, SqlTransaction transaction, Item item, RFQ rfq)
+        {
+            SqlCommand ItemCommand = new SqlCommand("InsertItem", conn, transaction)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+
+            // Add parameters of the command
+            ItemCommand.Parameters.Add("@itemName", System.Data.SqlDbType.VarChar).Value = item.ItemName;
+            ItemCommand.Parameters.Add("@itemCode", System.Data.SqlDbType.VarChar).Value = item.ItemCode;
+            ItemCommand.Parameters.Add("@grossWeight", System.Data.SqlDbType.Decimal).Value = item.GrossWeight;
+            ItemCommand.Parameters.Add("@netWeight", System.Data.SqlDbType.Decimal).Value = item.NetWeight;
+            ItemCommand.Parameters.Add("@qty", System.Data.SqlDbType.Int).Value = item.Qty;
+            ItemCommand.Parameters.Add("@status", System.Data.SqlDbType.Int).Value = 0;
+            ItemCommand.Parameters.Add("@priority", System.Data.SqlDbType.Int).Value = ((int)item.Priority);
+            ItemCommand.Parameters.Add("@orderType", System.Data.SqlDbType.Int).Value = ((int)item.OrderType);
+            ItemCommand.Parameters.Add("@adminId", System.Data.SqlDbType.Int).Value = item.QuotationHandledBy.Id;
+            ItemCommand.Parameters.Add("@rfqId", System.Data.SqlDbType.Int).Value = rfq.Id;
+            int Id = Convert.ToInt32(ItemCommand.ExecuteScalar());
+            ItemCommand.Parameters.Clear();
+            return Id;
+        }
+
+        private static void InsertItemHistory(SqlConnection conn, SqlTransaction transaction, Item item, RFQ rfq, string note)
+        {
+            SqlCommand ItemHistoryInsertCommand = new SqlCommand("InsertItemHistory", conn, transaction)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+            ItemHistoryInsertCommand.Parameters.Add("@itemId", System.Data.SqlDbType.Int).Value = item.Id;
+            ItemHistoryInsertCommand.Parameters.Add("@oldStatus", System.Data.SqlDbType.Int).Value = -1; // As -1 means that there is no item history before this point
+            ItemHistoryInsertCommand.Parameters.Add("@newStatus", System.Data.SqlDbType.Int).Value = 0; // As 0 is status of pending item
+            ItemHistoryInsertCommand.Parameters.Add("@date", System.Data.SqlDbType.Date).Value = rfq.EnquiryDate.Date;
+            ItemHistoryInsertCommand.Parameters.Add("@note", System.Data.SqlDbType.VarChar).Value = note;
+
+            ItemHistoryInsertCommand.ExecuteNonQuery();
+            ItemHistoryInsertCommand.Parameters.Clear(); // Clear params for next query
+        }
+
+
         // Summary:
         //      Inserts an RFQ to RFQs table, then inserts the Items in the items table (along with an insert in the ItemHistory table)
         // Parameters:
         //      RFQ- the RFQ that needs to be inserted
         public static void InsertToDB(SqlConnection connection, RFQ rfq)
         {
+            SqlTransaction transaction = connection.BeginTransaction();
 
-            SqlCommand ItemHistoryInsertCommand = new SqlCommand("InsertItemHistory", connection);
-            ItemHistoryInsertCommand.CommandType = System.Data.CommandType.StoredProcedure;
-
-            using (SqlCommand cmd = connection.CreateCommand())
+            try
             {
-                cmd.CommandText = "INSERT INTO RFQs (EnquiryDate, ProjectName, ReferredBy, AdminId, BuyerId) " +
-                    "VALUES (@enquiryDate, @projectName, @referredBy, @adminId, @buyerId) SELECT SCOPE_IDENTITY()";
-                cmd.Parameters.Add("@enquiryDate", System.Data.SqlDbType.Date).Value = rfq.EnquiryDate.Date;
-                cmd.Parameters.Add("@projectName", System.Data.SqlDbType.VarChar).Value = rfq.ProjectName;
-                cmd.Parameters.Add("@buyerId", System.Data.SqlDbType.Int).Value = rfq.Buyer.Id;
-                cmd.Parameters.Add("@adminId", System.Data.SqlDbType.Int).Value = rfq.RFQBroughtBy.Id;
-                if (!String.IsNullOrEmpty(rfq.ReferredBy)) { cmd.Parameters.Add("@referredBy", System.Data.SqlDbType.VarChar).Value = rfq.ReferredBy; }
-                else { cmd.Parameters.Add("@referredBy", System.Data.SqlDbType.VarChar).Value = DBNull.Value; }
-
-                SqlTransaction transaction = connection.BeginTransaction();
-                cmd.Transaction = transaction;
-                cmd.Connection = connection;
-                ItemHistoryInsertCommand.Transaction = transaction; 
-
-                try
-                { 
-                    int RFQId = Convert.ToInt32(cmd.ExecuteScalar());
-                    cmd.Parameters.Clear();
-
-                    cmd.CommandText = "INSERT INTO Items " +
-                        "(ItemName, ItemCode, GrossWeight, NetWeight, Status, Priority, Qty, OrderType, AdminId, RFQId) " +
-                        "VALUES (@itemName, @itemCode, @grossWt, @netWt, @status, @priority, @qty, @orderType, @adminId, @rfqId) SELECT SCOPE_IDENTITY()";
-                    foreach (Item item in rfq.Items)
-                    {
-                        cmd.Parameters.Add("@itemName", System.Data.SqlDbType.VarChar).Value = item.ItemName;
-                        cmd.Parameters.Add("@itemCode", System.Data.SqlDbType.VarChar).Value = item.ItemCode;
-                        cmd.Parameters.Add("@grossWt", System.Data.SqlDbType.VarChar).Value = item.GrossWeight;
-                        cmd.Parameters.Add("@netWt", System.Data.SqlDbType.VarChar).Value = item.NetWeight;
-                        cmd.Parameters.Add("@qty", System.Data.SqlDbType.Int).Value = item.Qty;
-                        cmd.Parameters.Add("@status", System.Data.SqlDbType.Int).Value = 0;
-                        cmd.Parameters.Add("@priority", System.Data.SqlDbType.Int).Value = ((int)item.Priority);
-                        cmd.Parameters.Add("@orderType", System.Data.SqlDbType.Int).Value = ((int)item.OrderType);
-                        cmd.Parameters.Add("@adminId", System.Data.SqlDbType.Int).Value = item.QuotationHandledBy.Id;
-                        cmd.Parameters.Add("@rfqId", System.Data.SqlDbType.Int).Value = RFQId;
-
-                        int ItemId = Convert.ToInt32(cmd.ExecuteScalar());
-                        cmd.Parameters.Clear();
-
-                        ItemHistoryInsertCommand.Parameters.Add("@itemId", System.Data.SqlDbType.Int).Value = ItemId;
-                        ItemHistoryInsertCommand.Parameters.Add("@oldStatus", System.Data.SqlDbType.Int).Value = -1; // As -1 means that there is no item history before this point
-                        ItemHistoryInsertCommand.Parameters.Add("@newStatus", System.Data.SqlDbType.Int).Value = 0; // As 0 is status of pending item
-                        ItemHistoryInsertCommand.Parameters.Add("@date", System.Data.SqlDbType.Date).Value = rfq.EnquiryDate.Date;
-                        ItemHistoryInsertCommand.Parameters.Add("@note", System.Data.SqlDbType.VarChar).Value = "Enquiry for the item was received";
-
-                        ItemHistoryInsertCommand.ExecuteNonQuery();
-                        ItemHistoryInsertCommand.Parameters.Clear();
-                    }
-
-                    transaction.Commit();
-                }
-                catch(Exception e1)
+                rfq.Id = InsertRFQ(connection, transaction, rfq);
+                foreach (Item item in rfq.Items)
                 {
-                    MessageBox.Show(e1.Message);
-                    try
-                    {
-                        transaction.Rollback();
-                    }
-                    catch(Exception e2)
-                    {
-                        MessageBox.Show(e2.Message);
-                    }
+                    item.Id = InsertItem(connection, transaction, item, rfq);
+                    InsertItemHistory(connection, transaction, item, rfq, "Enquiry for the item was recd");
                 }
-                finally { transaction.Dispose(); }
+                transaction.Commit();
             }
-
+            catch (Exception e1)
+            {
+                MessageBox.Show(e1.Message);
+                try
+                {
+                    transaction.Rollback();
+                }
+                catch (Exception e2)
+                {
+                    MessageBox.Show(e2.Message);
+                }
+            }
+            finally { transaction.Dispose(); }
         }
+
+        #endregion Insert Queries
     }
 }

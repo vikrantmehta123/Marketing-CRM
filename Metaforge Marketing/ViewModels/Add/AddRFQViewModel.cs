@@ -114,11 +114,13 @@ namespace Metaforge_Marketing.ViewModels.Add
                 {
                     SQLWrapper<RFQ>.InsertWrapper(RFQsRepository.InsertToDB, RFQToAdd);
                     RFQItem = new Item();
-                    RFQToAdd = new RFQ();
+                    RFQToAdd = new RFQ() { Customer = new Customer()};
                     RFQToAdd.Items.Clear();
                     OnPropertyChanged(nameof(RFQToAdd));
                     OnPropertyChanged(nameof(RFQItem));
-                    MessageBox.Show("Succeffully Added");
+                    OnPropertyChanged(nameof(SelectedCustomer));
+                    OnPropertyChanged(nameof(SelectedBuyer));
+                    MessageBox.Show("Successfully Added");
                 }
                 catch(Exception e)
                 {
@@ -126,7 +128,12 @@ namespace Metaforge_Marketing.ViewModels.Add
                 }
             }
         }
-        private void Clear() { SelectedRFQ = null; }
+        private void Clear() { 
+            RFQToAdd = new RFQ(); 
+            RFQItem = new Item();
+            SelectedCustomer = null;
+            SelectedBuyer = null;
+        }
 
         #endregion Methods
         public AddRFQViewModel() 
