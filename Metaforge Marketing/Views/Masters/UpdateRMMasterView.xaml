@@ -23,7 +23,7 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="1" >
             <StackPanel HorizontalAlignment="Left">
-                <DataGrid Grid.Row="1" ItemsSource="{Binding RMMasterData}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True">
+                <DataGrid Grid.Row="1" ItemsSource="{Binding RMMasterData}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                         <DataGridComboBoxColumn Header="Category" ItemsSource="{Binding Source={StaticResource RM}, Path=RMCategories}" TextBinding="{Binding Category, Converter={StaticResource RMCategoryonverter}}"/>

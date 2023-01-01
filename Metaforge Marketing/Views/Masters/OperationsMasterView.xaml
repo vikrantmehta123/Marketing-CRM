@@ -17,7 +17,7 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="1">
             <StackPanel Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <DataGrid Grid.Row="1" ItemsSource="{Binding OperationMasterTable}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True" >
+                <DataGrid Grid.Row="1" ItemsSource="{Binding OperationMasterTable}" AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="False" >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>

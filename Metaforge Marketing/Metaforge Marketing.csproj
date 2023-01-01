@@ -210,6 +210,7 @@
     </ApplicationDefinition>
     <Compile Include="HelperClasses\Commands\PaginationCommands.cs" />
     <Compile Include="HelperClasses\Converters\CostingCategoryConverter.cs" />
+    <Compile Include="HelperClasses\Converters\CustomerCategoryConverter.cs" />
     <Compile Include="HelperClasses\Converters\IntegerToYesNoConverter.cs" />
     <Compile Include="HelperClasses\Converters\ItemStatusConverter.cs" />
     <Compile Include="HelperClasses\Converters\OrderTypeConverter.cs" />
@@ -235,7 +236,6 @@
     <Compile Include="Models\Enums\QuotationFormatEnum.cs" />
     <Compile Include="Models\Enums\RMCategoryEnum.cs" />
     <Compile Include="Models\Item.cs" />
-    <Compile Include="Models\Machine.cs" />
     <Compile Include="Models\ModelsBase.cs" />
     <Compile Include="Models\Operation.cs" />
     <Compile Include="Models\PO.cs" />
@@ -308,6 +308,15 @@
     </Compile>
     <Compile Include="Views\Masters\AdminMasterView.xaml.cs">
       <DependentUpon>AdminMasterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Masters\BuyerMasterView.xaml.cs">
+      <DependentUpon>BuyerMasterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Masters\CustomerMasterView.xaml.cs">
+      <DependentUpon>CustomerMasterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Masters\ItemMasterView.xaml.cs">
+      <DependentUpon>ItemMasterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Masters\OperationsMasterView.xaml.cs">
       <DependentUpon>OperationsMasterView.xaml</DependentUpon>
@@ -397,6 +406,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Masters\AdminMasterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Masters\BuyerMasterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Masters\CustomerMasterView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Masters\ItemMasterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
