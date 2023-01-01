@@ -15,7 +15,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         private Item _item = new Item() { Id = 3, Status = ItemStatusEnum.Pending };
         private RMCosting _rmCosting = new RMCosting() { RMConsidered = new RM() };
         private DataTable _convCosting = new DataTable();
-        private ICommand _updateCommand;
+        private ICommand _updateCommand, _selectItemCommand;
         private CostingCategoryEnum _costingCategory;
         private string conn_string = Properties.Settings.Default.conn_string;
         #endregion Fields
@@ -76,6 +76,18 @@ namespace Metaforge_Marketing.ViewModels.RFQs
             }
         }
 
+
+        public ICommand SelectItemCommand
+        {
+            get
+            {
+                if(_selectItemCommand== null)
+                {
+                    _selectItemCommand = new Command(p => new PopupWindowViewModel().Show(new SelectItemViewModel()));
+                }
+                return _selectItemCommand;
+            }
+        }
         public ICommand UpdateCommand
         {
             get

@@ -79,10 +79,13 @@ namespace Metaforge_Marketing.Repository
         public static IEnumerable<Admin> FetchPerformanceReview(SqlConnection conn, DateTime startDate, DateTime endDate)
         {
             List<Admin> list = new List<Admin>();
-            SqlCommand cmd = new SqlCommand("FetchPerformanceReport", conn)
+            SqlCommand cmd = new SqlCommand("PerformanceReport_CostingsCount", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
+            cmd.Parameters.Add("@startDate", SqlDbType.Date).Value = startDate;
+            cmd.Parameters.Add("@endDate", SqlDbType.Date).Value = endDate;
+
             SqlDataReader reader= cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -90,7 +93,7 @@ namespace Metaforge_Marketing.Repository
                 {
                     Id = Convert.ToInt32(reader["Id"]),
                     Name = reader["Name"].ToString(),
-                    RFQCount = Convert.ToInt32(reader["RFQCount"]),
+                    //RFQCount = Convert.ToInt32(reader["RFQCount"]),
                 };
 
                 if (reader["CostingPreparedCount"] != DBNull.Value) { admin.PreparedCostingsCount = Convert.ToInt16(reader["CostingPreparedCount"]); }
@@ -99,11 +102,11 @@ namespace Metaforge_Marketing.Repository
                 if (reader["ConvertedItemsCount"] != DBNull.Value) { admin.ConvertedQuotationsCount = Convert.ToInt16(reader["ConvertedItemsCount"]); }
                 else { admin.ConvertedQuotationsCount = 0; }
 
-                if (reader["AvgResponseTime"] != DBNull.Value) { admin.AvgResponseTime = (float)Convert.ToDecimal(reader["AvgResponseTime"]); }
-                else { admin.AvgResponseTime = -1; }
+                //if (reader["AvgResponseTime"] != DBNull.Value) { admin.AvgResponseTime = (float)Convert.ToDecimal(reader["AvgResponseTime"]); }
+                //else { admin.AvgResponseTime = -1; }
 
-                if (reader["TotalBusinessRecd"] != DBNull.Value) { admin.TotalBusinessBrought = (float)Convert.ToDecimal(reader["TotalBusinessRecd"]); }
-                else { admin.TotalBusinessBrought = 0; }
+                //if (reader["TotalBusinessRecd"] != DBNull.Value) { admin.TotalBusinessBrought = (float)Convert.ToDecimal(reader["TotalBusinessRecd"]); }
+                //else { admin.TotalBusinessBrought = 0; }
 
                 list.Add(admin);
             }

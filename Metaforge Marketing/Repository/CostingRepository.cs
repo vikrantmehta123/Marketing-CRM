@@ -173,10 +173,8 @@ namespace Metaforge_Marketing.Repository
                         CurrentRate = (float)Convert.ToDecimal(reader["CurrentRate"])
                     };
                 }
-                
-                reader.Close();
             }
-            
+            reader.Close();
             return rmCosting;
         }
 
@@ -210,28 +208,16 @@ namespace Metaforge_Marketing.Repository
                         Id = Convert.ToInt32(reader["Id"]),
                         IsOutsourced = Convert.ToBoolean(reader["IsOutsourced"]),
                         StepNo = Convert.ToInt32(reader["StepNo"]),
-                        Machine = new Machine ()
                     };
-                    // If there Conversion Costing Details such as machine description present, assign them
-                    if (reader["MachineDescription"] != DBNull.Value) 
-                    { 
-                        op.Machine.MachineDescription = reader["MachineDescription"].ToString();
-                        if (! convCosting.IsConvCostingDetailsPresent) { convCosting.IsConvCostingDetailsPresent = true; }
-                    };
-                    if (reader["MachineName"] != DBNull.Value) { op.Machine.MachineName = reader["MachineName"].ToString(); }
-                    if (reader["Efficiency"] != DBNull.Value) { op.Machine.Efficiency = (float)Convert.ToDecimal(reader["Efficiency"]); }
-                    if (reader["CycleTime"] != DBNull.Value) { op.Machine.CycleTime = Convert.ToInt16(reader["CycleTime"]); }
-                    if (reader["MCHr"] != DBNull.Value) { op.Machine.MCHr = (float)Convert.ToDecimal(reader["MCHr"]); }
-
                     operations.Add(op);
                 }
-                reader.Close();
             }
             else
             {
                 convCosting.IsConvCostingDetailsPresent = false;
                 convCosting.IsConvCostingPresent = false;
             }
+            reader.Close();
             convCosting.Operations = new System.Collections.ObjectModel.ObservableCollection<Operation>( operations);
             return convCosting;
         }

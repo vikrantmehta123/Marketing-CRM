@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Net;
 using System.IO;
+using System.Windows;
 
 namespace Metaforge_Marketing.HelperClasses
 {
@@ -64,6 +65,10 @@ namespace Metaforge_Marketing.HelperClasses
         {
             var client = EstablishConnection();
             try { client.Send(MailMessage); }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
             finally { MailMessage.Dispose(); }
         }
 

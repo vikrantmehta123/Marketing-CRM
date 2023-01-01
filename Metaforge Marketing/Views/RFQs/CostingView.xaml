@@ -120,13 +120,13 @@
                     <StackPanel>
                         <Label Content="Conversion Costing" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
 
-                        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Path=ConvCosting, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" 
+                        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Path=ConvCosting}" AutoGenerateColumns="False" 
                           CanUserDeleteRows="True" CanUserAddRows="True"  HorizontalAlignment="Center">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" Visibility="Visible"/>
                                 <DataGridComboBoxColumn Header="Operation Name" ItemsSource="{Binding Source={StaticResource Operation}, Path=AllOperations}"
                                                 SelectedValuePath="Id" SelectedValueBinding="{Binding OperationId}" TextBinding="{Binding Name}"/>
-                                <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding Path=CCPerPiece, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
+                                <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding Path=CCPerPiece, StringFormat=N2}"/>
                                 <DataGridTextColumn Header="Step No" Binding="{Binding StepNo}"/>
                                 <DataGridCheckBoxColumn Header="Is Outsourced" Binding="{Binding Path=IsOutsourced}"/>
                             </DataGrid.Columns>

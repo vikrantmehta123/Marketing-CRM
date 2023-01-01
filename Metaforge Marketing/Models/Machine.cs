@@ -73,7 +73,11 @@ namespace Metaforge_Marketing.Models
         public float ComputeCostPerPiece()
         {
             int SecondsInAnHour = 3600;
-            return MCHr / ((SecondsInAnHour / CycleTime) * (Efficiency / 100));
+            if (Efficiency> 0)
+            {
+                return MCHr / ((SecondsInAnHour / CycleTime) * (Efficiency / 100));
+            }
+            return CostPerPiece;
         }
     }
 }
