@@ -23,13 +23,12 @@
                FontWeight="Bold" FontSize="24"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible">
-            <DataGrid Grid.Row="1" ItemsSource="{Binding Pagination.Collection}" IsReadOnly="True" AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <DataGrid Grid.Row="1" ItemsSource="{Binding MasterData.MasterTable}" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding CustomerName}"/>
                     <DataGridTextColumn Header="Address" Binding="{Binding Address}"/>
                     <DataGridTextColumn Header="Pincode" Binding="{Binding Pincode}"/>
                     <DataGridTextColumn Header="City" Binding="{Binding City}"/>
-                    <DataGridTextColumn Header="Category" Binding="{Binding Category, Converter={StaticResource CustomerCategoryConverter}}"/>
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -37,10 +36,8 @@
 
 
         <DockPanel LastChildFill="False" Grid.Row="2" VerticalAlignment="Center">
-            <Button Content="First" Command="{Binding Pagination.FirstPageCommand}"/>
-            <Button Content="Prev" Command="{Binding Pagination.PrevPageCommand}"/>
-            <Button Content="Next" Command="{Binding Pagination.NextPageCommand}"/>
-            <Button Content="Last" Command="{Binding Pagination.LastPageCommand}"/>
+            <Button Content="Prev" Command="{Binding MasterData.PrevPageCommand}"/>
+            <Button Content="Next" Command="{Binding MasterData.NextPageCommand}"/>
         </DockPanel>
     </Grid>
 </UserControl>

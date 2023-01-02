@@ -6,6 +6,7 @@ namespace Metaforge_Marketing.Views.Masters
     {
         public CustomerMasterView()
         {
+            DataContext = new ViewModels.Masters.CustomerMasterViewModel();
             InitializeComponent();
         }
     }

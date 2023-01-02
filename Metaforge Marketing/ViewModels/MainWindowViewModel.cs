@@ -15,7 +15,7 @@ namespace Metaforge_Marketing.ViewModels
         private ICommand _prepareCostingCommand, _pendingRFQsCommand, _addPODetailsCommand;
         private ICommand _customerHistoryCommand, _costingComparisonCommand, _performanceReportCommand, _itemHistoryCommand;
         private ICommand _sendGeneralMailCommand, _sendQuotationMailCommand;
-        private ICommand _updateRMMasterCommand, _adminMasterCommand, _operationsMasterCommand;
+        private ICommand _updateRMMasterCommand, _adminMasterCommand, _operationsMasterCommand, _buyerMasterCommand, _customerMasterCommand;
         #endregion Fields
 
         public MainWindowViewModel()
@@ -218,6 +218,30 @@ namespace Metaforge_Marketing.ViewModels
                     _operationsMasterCommand = new Command(p => ChangeViewModel(new Masters.OperationsMasterViewModel()));
                 }
                 return _operationsMasterCommand;
+            }
+        }
+
+        public ICommand BuyerMasterCommand
+        {
+            get
+            {
+                if(_buyerMasterCommand == null)
+                {
+                    _buyerMasterCommand = new Command(p => ChangeViewModel(new Masters.BuyerMasterViewModel()));
+                }
+                return _buyerMasterCommand;
+            }
+        }
+
+        public ICommand CustomerMasterCommand
+        {
+            get
+            {
+                if (_customerMasterCommand == null)
+                {
+                    _customerMasterCommand = new Command(p => ChangeViewModel(new Masters.CustomerMasterViewModel()));
+                }
+                return _customerMasterCommand;
             }
         }
         #endregion Master Commands

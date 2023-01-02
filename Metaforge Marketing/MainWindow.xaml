@@ -82,6 +82,15 @@
         <DataTemplate DataType="{x:Type master_vm:OperationsMasterViewModel}">
             <master_views:OperationsMasterView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type master_vm:BuyerMasterViewModel}">
+            <master_views:BuyerMasterView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type master_vm:CustomerMasterViewModel}">
+            <master_views:CustomerMasterView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type master_vm:ItemMasterViewModel}">
+            <master_views:ItemMasterView/>
+        </DataTemplate>
         <!--#endregion Masters Section-->
         
     </Window.Resources>
@@ -138,6 +147,8 @@
                         <MenuItem Header="RM Master" Command="{Binding UpdateRMMasterCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Operations" Command="{Binding OperationsMasterCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Admins" Command="{Binding AdminMasterCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Buyers" Command="{Binding BuyerMasterCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Customers" Command="{Binding CustomerMasterCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
 

@@ -59,6 +59,19 @@ namespace Metaforge_Marketing.Models
 
 
         #region Methods
+        public string GetNote(ItemStatusEnum status)
+        {
+            if (String.IsNullOrEmpty(_note))
+            {
+                string Note;
+                if (status == ItemStatusEnum.MF_Costing_Prepared) { Note = "MF Costing prepared"; }
+                else if (status == ItemStatusEnum.Customer_Costing_Prepared) { Note = "Customer Costing prepared"; }
+                else { Note = "Approved costing entered"; }
+                return Note;
+            }
+            else { return _note; }
+        }
+        
         public bool IsFormEntryValid()
         {
             if (GrossWeight == 0) { return false; }

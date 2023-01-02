@@ -157,6 +157,23 @@ namespace Metaforge_Marketing.Repository
             }
         }
 
+        public static void InsertItemHistory(SqlConnection conn, SqlTransaction transaction, Item item, ItemStatusEnum newStatus)
+        {
+            SqlCommand ItemHistoryCommand = new SqlCommand("InsertItemHistory", conn, transaction)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            // Add Parameters to the Item History command
+            ItemHistoryCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
+            ItemHistoryCommand.Parameters.Add("@oldStatus", SqlDbType.Int).Value = ((int)item.Status);
+            ItemHistoryCommand.Parameters.Add("@newStatus", SqlDbType.Int).Value = newStatus;
+            ItemHistoryCommand.Parameters.Add("@date", SqlDbType.Date).Value = item.EventDate.Date;
+            ItemHistoryCommand.Parameters.Add("@note", SqlDbType.VarChar).Value = item.GetNote(newStatus);
+
+            // Execute the insert and clear parameters
+            ItemHistoryCommand.ExecuteNonQuery();
+            ItemHistoryCommand.Parameters.Clear();
+        }
 
         public static void InsertCosting(SqlConnection conn, DataTable convCostingTable, Item item, RMCosting costing, CostingCategoryEnum category)
         {
@@ -174,16 +191,16 @@ namespace Metaforge_Marketing.Repository
                 else { InsertRM(conn, transaction, item, costing, category); }
                 InsertCC(conn, transaction, convCostingTable, item, category);
 
-                if (status < item.Status)
+                if (status != item.Status) // Insert into Item History, only if it is a new entry
+                {
+                    InsertItemHistory(conn, transaction, item, status);
+                }
+
+                if (status > item.Status)
                 {
                     UpdateItemStatus(conn, transaction, item, status);
                 }
 
-                string ItemHistoryNote;
-                if (status == ItemStatusEnum.MF_Costing_Prepared) { ItemHistoryNote = "MF Costing prepared"; }
-                else if (status == ItemStatusEnum.Customer_Costing_Prepared) { ItemHistoryNote = "Customer Costing prepared"; }
-                else { ItemHistoryNote = "Approved costing entered"; }
-                //CostingRepository.InsertItemHistory(conn, transaction, item, ItemHistoryNote);
                 transaction.Commit();
                 MessageBox.Show("Success!");
             }
@@ -203,25 +220,6 @@ namespace Metaforge_Marketing.Repository
             {
                 transaction.Dispose();
             }
-        }
-
-
-        public static void InsertItemHistory(SqlConnection conn, Costing costing, SqlTransaction transaction)
-        {
-            SqlCommand ItemHistoryCommand = new SqlCommand("InsertItemHistory", conn, transaction)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            // Add Parameters to the Item History command
-            ItemHistoryCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = costing.Item.Id;
-            ItemHistoryCommand.Parameters.Add("@oldStatus", SqlDbType.Int).Value = ((int)costing.Item.Status);
-            ItemHistoryCommand.Parameters.Add("@newStatus", SqlDbType.Int).Value = costing.ComputeItemStatus();
-            ItemHistoryCommand.Parameters.Add("@date", SqlDbType.Int).Value = costing.Remark.EventDate;
-            ItemHistoryCommand.Parameters.Add("@note", SqlDbType.Int).Value = costing.Remark.Note;
-
-            // Execute the insert and clear parameters
-            ItemHistoryCommand.ExecuteNonQuery();
-            ItemHistoryCommand.Parameters.Clear();
         }
 
         #endregion Insert Queries
@@ -333,10 +331,10 @@ namespace Metaforge_Marketing.Repository
         // Parameters:
         //      rfq- The RFQ whose items will be fetched, and the items' costings will be returned
         //      category- The category of the costing
-        public static IEnumerable<Costing> FetchCostings(SqlConnection conn, RFQ rfq, CostingCategoryEnum category)
+        public static IEnumerable<Costing> FetchCostings(SqlConnection conn, IEnumerable<Item> items, CostingCategoryEnum category)
         {
             List<Costing> results = new List<Costing>();
-            foreach (Item item in rfq.Items)
+            foreach (Item item in items)
             {
                 Costing costing = FetchCosting(conn, item, category);
                 results.Add(costing);

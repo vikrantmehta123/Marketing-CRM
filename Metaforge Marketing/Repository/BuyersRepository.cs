@@ -2,9 +2,7 @@
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 using System.Windows;
 
 namespace Metaforge_Marketing.Repository
@@ -115,6 +113,37 @@ namespace Metaforge_Marketing.Repository
         {
             SqlCommand cmd = new SqlCommand("SELECT COUNT(Id) FROM Buyers", conn);
             return Convert.ToInt32(cmd.ExecuteScalar());
+        }
+
+
+        public static DataTable FetchBuyersIntoDatatable(SqlConnection conn, int offsetIndex, int entriesPerPage)
+        {
+            DataTable table = new DataTable();
+            SqlCommand cmd = new SqlCommand("FetchBuyers", conn)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add("@offsetIndex", SqlDbType.Int).Value = offsetIndex;
+            cmd.Parameters.Add("@entriesPerPage", SqlDbType.Int).Value = entriesPerPage;
+
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(table);
+            return table;
+        }
+
+        public static void UpdateDB(SqlConnection conn, DataTable table)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            SqlCommand UpdateCommand = new SqlCommand("UpdateBuyer", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            }; 
+            UpdateCommand.Parameters.Add("@id", SqlDbType.Int, 32, "Id");
+            UpdateCommand.Parameters.Add("@name", SqlDbType.VarChar, 32, "BuyerName");
+            UpdateCommand.Parameters.Add("@phone", SqlDbType.VarChar, 32, "Phone");
+            UpdateCommand.Parameters.Add("@email", SqlDbType.VarChar, 32, "Email");
+            adapter.UpdateCommand = UpdateCommand;
+            adapter.Update(table);
         }
         #endregion Select Queries
     }

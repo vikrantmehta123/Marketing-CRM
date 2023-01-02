@@ -1,8 +1,12 @@
 ﻿using Metaforge_Marketing.HelperClasses;
 using Metaforge_Marketing.Models;
+using Metaforge_Marketing.Models.Enums;
+using Metaforge_Marketing.Repository;
 using Metaforge_Marketing.ViewModels.Shared;
 using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Metaforge_Marketing.ViewModels.RFQs
@@ -10,28 +14,11 @@ namespace Metaforge_Marketing.ViewModels.RFQs
     internal class DetailedRFQViewModel : PopupCloseMarker
     {
         #region Fields
-        private ICommand _selectionDoneCommand, _addCostingCommand, _saveCommand;
+        private ICommand _selectionDoneCommand, _saveCommand;
         private ObservableCollection<Item> _items;
         #endregion Fields
 
         #region Properties
-
-        public ICommand AddCostingCommand
-        {
-            get
-            {
-                if (_addCostingCommand == null)
-                {
-                    _addCostingCommand = new Command(p =>
-                    {
-                        ChangeViewModel(new CostingViewModel());
-                        Close(p);
-                    });
-                }
-                return _addCostingCommand;
-            }
-        }
-
         public ICommand SaveCommand
         {
             get
@@ -73,14 +60,36 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         {
             foreach (Item item in _items)
             {
-                if (item.Status != Models.Enums.ItemStatusEnum.Regretted && item.IsRegretted)
+                if (item.Status != ItemStatusEnum.Regretted && item.IsRegretted)
                 {
                     using(SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
                     {
                         conn.Open();
-                        // TestRepository.UpdateDatabase(conn, item, ItemStatusEnum.Regretted);
-                        // InsertItemHistory(conn, item, DateTime.Today.Date, Item.Note);
-                        conn.Close();
+                        SqlTransaction transaction = conn.BeginTransaction();
+                        try
+                        {
+                            CostingRepository.InsertItemHistory(conn, transaction, item, ItemStatusEnum.Regretted);
+                            CostingRepository.UpdateItemStatus(conn, transaction, item, ItemStatusEnum.Regretted);
+                            transaction.Commit();
+                            MessageBox.Show("Success");
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                            try
+                            {
+                                transaction.Rollback();
+                            }
+                            catch(SqlException ex2)
+                            {
+                                MessageBox.Show(ex2.Message);
+                            }
+                        }
+                        finally
+                        {
+                            transaction.Dispose();
+                            conn.Close();
+                        }
                     }
                 }
             }

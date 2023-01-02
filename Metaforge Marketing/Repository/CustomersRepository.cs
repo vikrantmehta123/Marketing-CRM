@@ -4,6 +4,7 @@ using Metaforge_Marketing.Models;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows;
 
@@ -183,7 +184,27 @@ namespace Metaforge_Marketing.Repository
             return customers;
         }
 
-        #endregion SelectQueries
-    }
 
+        public static DataTable FetchCustomersIntoDataTable(SqlConnection connection, int offsetIndex, int entriesPerPage)
+        {
+            DataTable customers = new DataTable();
+            SqlCommand cmd = new SqlCommand("FetchCustomers", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add("@offsetIndex", SqlDbType.Int).Value = offsetIndex;
+            cmd.Parameters.Add("@entriesPerPage", SqlDbType.Int).Value = entriesPerPage;
+
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(customers);
+            return customers;
+        }
+        #endregion SelectQueries
+
+
+        public static void UpdateDB(SqlConnection conn, DataTable table)
+        {
+
+        }
+    }
 }

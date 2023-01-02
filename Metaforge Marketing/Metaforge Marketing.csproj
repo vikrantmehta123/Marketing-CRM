@@ -216,6 +216,7 @@
     <Compile Include="HelperClasses\Converters\OrderTypeConverter.cs" />
     <Compile Include="HelperClasses\Converters\RMCategoryConverter.cs" />
     <Compile Include="HelperClasses\Email.cs" />
+    <Compile Include="HelperClasses\MasterDataPagination.cs" />
     <Compile Include="HelperClasses\Quotation\BajajQuotationCreator.cs" />
     <Compile Include="HelperClasses\Quotation\LongQuotationCreator.cs" />
     <Compile Include="HelperClasses\Quotation\PDFQuotationCreator.cs" />
@@ -262,6 +263,9 @@
     <Compile Include="ViewModels\Add\AddRemarkViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRFQViewModel.cs" />
     <Compile Include="ViewModels\Masters\AdminMasterViewModel.cs" />
+    <Compile Include="ViewModels\Masters\BuyerMasterViewModel.cs" />
+    <Compile Include="ViewModels\Masters\CustomerMasterViewModel.cs" />
+    <Compile Include="ViewModels\Masters\ItemMasterViewModel.cs" />
     <Compile Include="ViewModels\Masters\OperationsMasterViewModel.cs" />
     <Compile Include="ViewModels\Reports\ItemHistoryReportViewModel.cs" />
     <Compile Include="ViewModels\RFQs\AddPODetailsViewModel.cs" />

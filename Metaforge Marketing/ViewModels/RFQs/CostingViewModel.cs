@@ -6,7 +6,6 @@ using Metaforge_Marketing.ViewModels.Shared;
 using Microsoft.Data.SqlClient;
 using System.ComponentModel;
 using System.Data;
-using System.Windows;
 using System.Windows.Input;
 
 namespace Metaforge_Marketing.ViewModels.RFQs
@@ -138,7 +137,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                             conn.Open();
                             try
                             {
-                                TestRepository.InsertCosting(conn, _convCosting, SelectedItem, _rmCosting, CostingCategory);
+                                CostingRepository.InsertCosting(conn, _convCosting, SelectedItem, _rmCosting, CostingCategory);
                             }
                             finally
                             {

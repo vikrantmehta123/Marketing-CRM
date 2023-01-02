@@ -18,21 +18,24 @@
                FontWeight="Bold" FontSize="24"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible">
-            <DataGrid ItemsSource="{Binding Pagination.Collection}" IsReadOnly="True" AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <DataGrid ItemsSource="{Binding MasterData.MasterTable}" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                    <DataGridTextColumn Header="Address" Binding="{Binding Email}"/>
-                    <DataGridTextColumn Header="Project Name" Binding="{Binding Phone}"/>
-                    <DataGridTextColumn Header="Priority" Binding="{Binding Customer.CustomerName}"/>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" Visibility="Collapsed"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding BuyerName}"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
+                    <DataGridTextColumn Header="Phone" Binding="{Binding Phone}"/>
+                    <DataGridTextColumn Header="Customer Name" Binding="{Binding CustomerName}" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
         </ScrollViewer>
 
-        <DockPanel LastChildFill="False" Grid.Row="2" VerticalAlignment="Center">
-            <Button Content="First" Command="{Binding Pagination.FirstPageCommand}"/>
-            <Button Content="Prev" Command="{Binding Pagination.PrevPageCommand}"/>
-            <Button Content="Next" Command="{Binding Pagination.NextPageCommand}"/>
-            <Button Content="Last" Command="{Binding Pagination.LastPageCommand}"/>
-        </DockPanel>        
+        <StackPanel Grid.Row="2" HorizontalAlignment="Left">
+            <DockPanel LastChildFill="False" Grid.Row="2" VerticalAlignment="Center">
+                <Button Content="Prev" Command="{Binding MasterData.PrevPageCommand}"/>
+                <Button Content="Next" Command="{Binding MasterData.NextPageCommand}"/>
+            </DockPanel>
+            <Button Content="Update" Command="{Binding MasterData.UpdateCommand}"/>
+        </StackPanel>
+    
     </Grid>
 </UserControl>
