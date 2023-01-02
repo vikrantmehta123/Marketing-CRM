@@ -16,6 +16,7 @@
         <converters:CostingCategoryConverter x:Key="CostingCategoryConverter"/>
         <converters:IntegerToYesNoConverter x:Key="YesToNoConverter"/>
         <converters:RMCategoryConverter x:Key="RMCategoryConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
 
     <Grid>
@@ -89,11 +90,11 @@
                             <DockPanel>
                                 <Label Content="Material Considered:" FontWeight="DemiBold"/>
                                 <ComboBox ItemsSource="{Binding Source={StaticResource RMMasterData}, Path=RMMaster}" 
-                                      SelectedItem="{Binding RMCosting.RMConsidered, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" />
+                                      SelectedItem="{Binding RMCosting.RMConsidered}"/>
                             </DockPanel>
                             <DockPanel>
                                 <Label Content="Selected RM:" FontWeight="DemiBold"/>
-                                <Label Content="{Binding RMCosting.RMConsidered}"/>
+                                <Label Content="{Binding RMCosting.RMConsidered, UpdateSourceTrigger=PropertyChanged}"/>
                             </DockPanel>
                             <DockPanel>
                                 <Label Content="Current RM Rate:" FontWeight="DemiBold"/>
@@ -131,7 +132,7 @@
 
                 <!--#region MF Costing Details-->
                 
-                <StackPanel Orientation="Vertical" CanVerticallyScroll="True" IsEnabled="False" Visibility="Visible">
+                <StackPanel Orientation="Vertical" CanVerticallyScroll="True" IsEnabled="False" Visibility="{Binding ShowMFCosting, Converter={StaticResource BoolToVisibilityConverter}}">
                     <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="250">
 
                         <StackPanel >

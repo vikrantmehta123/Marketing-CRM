@@ -13,8 +13,6 @@
         xmlns:SendMail_views="clr-namespace:Metaforge_Marketing.Views.Mails"
         xmlns:master_vm="clr-namespace:Metaforge_Marketing.ViewModels.Masters"
         xmlns:master_views="clr-namespace:Metaforge_Marketing.Views.Masters"
-        xmlns:test_vm="clr-namespace:Metaforge_Marketing.ViewModels.Test"
-        xmlns:test_views="clr-namespace:Metaforge_Marketing.Views.Test"
         xmlns:local="clr-namespace:Metaforge_Marketing"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="720" Width="1280">
@@ -85,10 +83,6 @@
             <master_views:OperationsMasterView/>
         </DataTemplate>
         <!--#endregion Masters Section-->
-
-        <DataTemplate DataType="{x:Type test_vm:TestCostingViewModel}">
-            <test_views:TestCostingView/>
-        </DataTemplate>
         
     </Window.Resources>
     
@@ -144,12 +138,6 @@
                         <MenuItem Header="RM Master" Command="{Binding UpdateRMMasterCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Operations" Command="{Binding OperationsMasterCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Admins" Command="{Binding AdminMasterCommand}" CommandParameter="{Binding}"/>
-                    </MenuItem>
-                </Menu>
-
-                <Menu FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Background="AliceBlue">
-                    <MenuItem Header="Test">
-                        <MenuItem Header="Costing" Command="{Binding TestCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
 

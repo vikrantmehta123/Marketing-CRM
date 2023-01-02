@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace Metaforge_Marketing.Models
 {
-    public class RM 
+    public class RM : ModelsBase
     {
         public IEnumerable<RMCategoryEnum> RMCategories { get; } = Enum.GetValues(typeof(RMCategoryEnum)).Cast<RMCategoryEnum>();
 
@@ -31,6 +31,7 @@ namespace Metaforge_Marketing.Models
             set { 
                 if(_currentRate != value )
                 {
+                    OnPropertyChanged(nameof(CurrentRate));
                     _currentRate = value;
                 }
             }

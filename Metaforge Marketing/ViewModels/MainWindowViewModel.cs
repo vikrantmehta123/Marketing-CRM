@@ -16,7 +16,6 @@ namespace Metaforge_Marketing.ViewModels
         private ICommand _customerHistoryCommand, _costingComparisonCommand, _performanceReportCommand, _itemHistoryCommand;
         private ICommand _sendGeneralMailCommand, _sendQuotationMailCommand;
         private ICommand _updateRMMasterCommand, _adminMasterCommand, _operationsMasterCommand;
-        private ICommand _testCommand;
         #endregion Fields
 
         public MainWindowViewModel()
@@ -223,19 +222,6 @@ namespace Metaforge_Marketing.ViewModels
         }
         #endregion Master Commands
 
-        #region Test Commands
-        public ICommand TestCommand
-        {
-            get
-            {
-                if (_testCommand == null)
-                {
-                    _testCommand = new Command( p => ChangeViewModel(new Test.TestCostingViewModel()));
-                }
-                return _testCommand;
-            }
-        }
-        #endregion Test Commands
         #endregion Commands
     }
 }

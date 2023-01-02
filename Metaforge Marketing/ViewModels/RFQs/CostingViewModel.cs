@@ -6,7 +6,7 @@ using Metaforge_Marketing.ViewModels.Shared;
 using Microsoft.Data.SqlClient;
 using System.ComponentModel;
 using System.Data;
-using System.Windows.Controls;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Metaforge_Marketing.ViewModels.RFQs
@@ -14,12 +14,12 @@ namespace Metaforge_Marketing.ViewModels.RFQs
     public class CostingViewModel : SharedViewModelBase
     {
         #region Fields
-        private RMCosting _rmCosting = new RMCosting() { RMConsidered = new RM() }, _mfRMCosting;
+        private readonly string conn_string = Properties.Settings.Default.conn_string;
+        private RMCosting _rmCosting, _mfRMCosting;
         private DataTable _convCosting = new DataTable(), _mfConvCosting;
         private ICommand _updateCommand, _selectItemCommand, _showMFCostingCommand;
         private CostingCategoryEnum _costingCategory;
-        private string conn_string = Properties.Settings.Default.conn_string;
-        private bool _canShowMFCosting;
+        private bool _canShowMFCosting, _showMFCosting;
         #endregion Fields
 
         #region Properties
@@ -41,7 +41,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                     _costingCategory = value;
                     if(SelectedItem != null)
                     {
-                        OnPropertyChanged(nameof(RMCosting));
+                        RMCosting = GetRMCosting(_rmCosting);
                         OnPropertyChanged(nameof(ConvCosting));
                         OnPropertyChanged(nameof(CanShowMFCosting));
                     }
@@ -53,16 +53,6 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         {
             get
             {
-                if (SelectedItem != null && CostingCategory != CostingCategoryEnum.None)
-                {
-                    using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
-                    {
-                        conn.Open();
-                        _rmCosting = CostingRepository.FetchRMCosting(conn, SelectedItem, CostingCategory, new RMCosting());
-                        conn.Close();
-
-                    }
-                }
                 return _rmCosting;
             }
             set
@@ -70,6 +60,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                 if (_rmCosting != value)
                 {
                     _rmCosting = value;
+                    OnPropertyChanged(nameof(RMCosting));
                 }
             }
         }
@@ -89,6 +80,12 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                 }
                 return _convCosting.DefaultView;
             }
+        }
+
+        public bool ShowMFCosting
+        {
+            get { return _showMFCosting; }
+            set { _showMFCosting = value; }
         }
         public DataTable MFConvCosting
         {
@@ -175,6 +172,21 @@ namespace Metaforge_Marketing.ViewModels.RFQs
             {
                 if (_showMFCostingCommand == null)
                 {
+                    _showMFCostingCommand = new Command(p => 
+                    {
+                        if (!_showMFCosting)
+                        {
+                            _showMFCosting = true;
+                            OnPropertyChanged(nameof(ShowMFCosting));
+                            OnPropertyChanged(nameof(MFConvCosting));
+                            OnPropertyChanged(nameof(MFRMCosting));
+                        }
+                        else
+                        {
+                            _showMFCosting = false;
+                            OnPropertyChanged(nameof(ShowMFCosting));
+                        }
+                    });
                 }
                 return _showMFCostingCommand;
             }
@@ -184,25 +196,32 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         #region Constructor
         public CostingViewModel()
         {
-            StaticPropertyChanged += ItemSelectionHandler;
             SelectedItem = null;
+            _rmCosting = new RMCosting() { RMConsidered = new RM()};
+            _rmCosting.PropertyChanged += RMCosting_PropertyChanged;
         }
-        #endregion Constructor
 
+        #endregion Constructor
         #region Methods
-        private void ItemSelectionHandler(object sender, PropertyChangedEventArgs e)
+        private void RMCosting_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName== nameof(SelectedItem))
+            OnPropertyChanged(nameof(RMCosting));
+        }
+
+
+        private RMCosting GetRMCosting( RMCosting rmCosting)
+        {
+            if (SelectedItem != null && CostingCategory != CostingCategoryEnum.None)
             {
-                if (CostingCategory !=  CostingCategoryEnum.None)
+                using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
                 {
-                    OnPropertyChanged(nameof(ConvCosting));
-                    OnPropertyChanged(nameof(RMCosting));
-                    OnPropertyChanged(nameof(CanShowMFCosting));
+                    conn.Open();
+                    rmCosting = CostingRepository.FetchRMCosting(conn, SelectedItem, CostingCategory, rmCosting);
+                    conn.Close();
                 }
             }
+            return rmCosting;
         }
-
         #endregion Methods
     }
 }

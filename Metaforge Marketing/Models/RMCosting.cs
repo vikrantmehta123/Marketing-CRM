@@ -16,7 +16,14 @@ namespace Metaforge_Marketing.Models
 
         #region Properties
         public int Id { get { return _id; } set { _id = value; } }
-        public string RMAsPerDrawing { get { return _rmAsPerDrawing; } set { _rmAsPerDrawing = value;} }
+        public string RMAsPerDrawing 
+        { 
+            get { return _rmAsPerDrawing; } 
+            set { 
+                _rmAsPerDrawing = value;
+                OnPropertyChanged(nameof(RMAsPerDrawing));
+            }
+        }
         public bool IsRMCostingPresent { get { return _isRMCostingPresent; } set { _isRMCostingPresent= value; } }
         public Admin CostingPreparedBy
         {
@@ -41,6 +48,7 @@ namespace Metaforge_Marketing.Models
                 if(_rmRate != value)
                 {
                     _rmRate = value;
+                    OnPropertyChanged(nameof(RMRate));  
                 }
             } 
         }
@@ -53,6 +61,11 @@ namespace Metaforge_Marketing.Models
         #endregion Properties
 
 
+        public RMCosting()
+        {
+            RMConsidered.PropertyChanged += RMConsidered_PropertyChanged;
+        }
+
         #region Methods
         public bool IsDataValid()
         {
@@ -64,6 +77,11 @@ namespace Metaforge_Marketing.Models
         public float ComputeRMCost(Item item)
         {
             return (float)(item.GrossWeight * RMRate / 1000);
+        }
+
+        private void RMConsidered_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(RMConsidered));
         }
         #endregion Methods
     }
