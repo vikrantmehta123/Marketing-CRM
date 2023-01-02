@@ -15,9 +15,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.75*"/>
+            <RowDefinition Height="4.5*"/>
         </Grid.RowDefinitions>
 
         <Label Content="Item History" HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -26,21 +25,32 @@
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <StackPanel>
                 <Button Content="Select Item" Command="{Binding SelectItemCommand}"/>
-                <Label Content="{Binding SelectedItem.ItemName}"/>
+                <DockPanel LastChildFill="False">
+                    <Label Content="Item Name:" FontWeight="DemiBold"/>
+                    <Label Content="{Binding SelectedItem.ItemName}"/>
+                </DockPanel>
+                <DockPanel LastChildFill="False">
+                    <Label Content="Item Code:" FontWeight="DemiBold"/>
+                    <Label Content="{Binding SelectedItem.ItemCode}"/>
+                </DockPanel>
             </StackPanel>
+            <Separator/>
         </StackPanel>
-        
-        <DataGrid Grid.Row="2" ItemsSource="{Binding ItemHistory}" 
-                  AutoGenerateColumns="False" CanUserAddRows="False" 
-                  CanUserDeleteRows="False" Background="White">
 
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat={}{0:dd-MM-yyyy}}"/>
-                <DataGridTextColumn Header="Old Status" Binding="{Binding OldStatus, Converter={StaticResource ItemStatusConverter}}"/>
-                <DataGridTextColumn Header="New Status" Binding="{Binding NewStatus, Converter={StaticResource ItemStatusConverter}}"/>
-                <DataGridTextColumn Header="Remark" Binding="{Binding Note}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="2" >
+            <DataGrid Grid.Row="2" ItemsSource="{Binding ItemHistory}" 
+                  AutoGenerateColumns="False" CanUserAddRows="False" 
+                  CanUserDeleteRows="False" Background="White" IsReadOnly="True" HorizontalAlignment="Left">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Date" Binding="{Binding Date, StringFormat={}{0:dd-MM-yyyy}}"/>
+                    <DataGridTextColumn Header="Old Status" Binding="{Binding OldStatus, Converter={StaticResource ItemStatusConverter}}"/>
+                    <DataGridTextColumn Header="New Status" Binding="{Binding NewStatus, Converter={StaticResource ItemStatusConverter}}"/>
+                    <DataGridTextColumn Header="Remark" Binding="{Binding Note}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
+
 
     </Grid>
 </UserControl>

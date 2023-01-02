@@ -24,10 +24,11 @@ namespace Metaforge_Marketing.HelperClasses.Converters
                 case 4:
                     return "Quotation Sent";
                 case 5:
-                    return "PO Received";
+                    return "Regret Mail Sent";
                 case 6:
+                    return "PO Received";
+                case 7:
                     return "Rejected By Customer";
-
                 default: return "Pending";
             }
             
@@ -40,11 +41,12 @@ namespace Metaforge_Marketing.HelperClasses.Converters
                 case "None": return -1;
                 case "Pending": return 0;
                 case "Regretted": return 1;
-                case "Rejected By Customer": return 2;
-                case "MF Costing Prepared": return 3;
-                case "Customer Costing Prepared": return 4;
-                case "Quotation Sent": return 5;
+                case "MF Costing Prepared": return 2;
+                case "Customer Costing Prepared": return 3;
+                case "Quotation Sent": return 4;
+                case "Regret Mail Sent": return 5;
                 case "PO Received": return 6;
+                case "Rejected By Customer": return 7;
                 default: return 0;
             }
         }

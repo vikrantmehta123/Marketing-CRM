@@ -36,7 +36,10 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         {
             get
             {
-
+                if (_saveCommand == null)
+                {
+                    _saveCommand = new Command(p => Save());
+                }
                 return _saveCommand;
             }
         }
@@ -60,6 +63,8 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         }
         #endregion Properties
 
+
+        #region Methods
         public override void ClearSelection() { SelectedItem = null; }
 
         public override bool IsSelectionDone() { return SelectedItem != null; }
@@ -73,13 +78,13 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                     using(SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
                     {
                         conn.Open();
-                        // TestRepository.UpdateItemStatus(conn, item, ItemStatusEnum.Regretted);
-                        // InsertItemHistory(conn, item, DateTime.Today.Date, "Item regretted");
+                        // TestRepository.UpdateDatabase(conn, item, ItemStatusEnum.Regretted);
+                        // InsertItemHistory(conn, item, DateTime.Today.Date, Item.Note);
                         conn.Close();
                     }
                 }
             }
         }
-
+        #endregion Methods
     }
 }

@@ -282,7 +282,6 @@
     <Compile Include="ViewModels\Shared\SelectCustomerViewModel.cs" />
     <Compile Include="ViewModels\Shared\SelectItemViewModel.cs" />
     <Compile Include="ViewModels\Shared\SharedViewModelBase.cs" />
-    <Compile Include="ViewModels\Test\TestCostingViewModel.cs" />
     <Compile Include="ViewModels\Masters\UpdateRMMasterViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\Add\AddBuyerView.xaml.cs">
@@ -353,9 +352,6 @@
     </Compile>
     <Compile Include="Views\Shared\SelectItemView.xaml.cs">
       <DependentUpon>SelectItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Test\TestCostingView.xaml.cs">
-      <DependentUpon>TestCostingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Masters\UpdateRMMasterView.xaml.cs">
       <DependentUpon>UpdateRMMasterView.xaml</DependentUpon>
@@ -469,10 +465,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Test\TestCostingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Masters\UpdateRMMasterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -507,6 +499,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="HelperClasses\Interfaces\" />
+    <Folder Include="ViewModels\Test\" />
+    <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Database\MarketingDatabase.mdf">

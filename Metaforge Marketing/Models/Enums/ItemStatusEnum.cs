@@ -9,6 +9,7 @@ namespace Metaforge_Marketing.Models.Enums
         MF_Costing_Prepared, 
         Customer_Costing_Prepared,
         QuotationSent, 
+        RegretMailSent,
         POReceived, 
         RejectedByCustomer
     }

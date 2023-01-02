@@ -81,7 +81,6 @@ namespace Metaforge_Marketing.Repository
                         OrderType = (OrderTypeEnum)(Convert.ToInt16(reader["OrderType"])),
                         Priority = (PriorityEnum)(Convert.ToInt16(reader["Priority"]))
                     };
-                    item.InitIndicatorVariables();
                     items.Add(item);
                 }
                 reader.Close();
@@ -122,7 +121,8 @@ namespace Metaforge_Marketing.Repository
                             ItemCode = reader["ItemCode"].ToString(),
                             Qty = Convert.ToInt32(reader["Qty"]),
                             OrderType = (OrderTypeEnum)(Convert.ToInt16(reader["OrderType"])),
-                            Priority = (PriorityEnum)(Convert.ToInt16(reader["Priority"]))
+                            Priority = (PriorityEnum)(Convert.ToInt16(reader["Priority"])),
+                            GrossWeight = (float)Convert.ToDecimal(reader["GrossWeight"])
                         };
                         item.Customer.CustomerName = reader["CustomerName"].ToString();
                         item.Customer.City = reader["City"].ToString();
@@ -191,8 +191,6 @@ namespace Metaforge_Marketing.Repository
             return items;
         }
 
-        #endregion Select Queries
-
         // Summary:
         //      Given an item, fetches all its item history and fills a datatable from that
         //      Used in generating reports of Item history
@@ -213,6 +211,23 @@ namespace Metaforge_Marketing.Repository
 
             return table;
         }
+
+        #endregion Select Queries
+
+        #region Update Queries
+
+        // Summary:
+        //      Sets the status of the item in the database.
+        //      Used when the status of the item is already set. For example, after mailing quotation, regret, etc.
+        public static void UpdateItemStatus(SqlConnection conn, Item item)
+        {
+            SqlCommand cmd = new SqlCommand("UpdateItemStatus", conn);
+            cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
+            cmd.Parameters.Add("@status", SqlDbType.Int).Value = item.Status;
+
+            cmd.ExecuteNonQuery();
+        }
+        #endregion Update Queries
 
     }
 }

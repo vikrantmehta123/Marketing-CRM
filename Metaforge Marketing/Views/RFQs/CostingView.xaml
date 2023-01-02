@@ -44,26 +44,21 @@
                 </DockPanel>
 
                 <DockPanel>
-                    <Label Content="Item Code:"/>
-
+                    <Label Content="Item Code:" FontWeight="DemiBold"/>
+                    <Label Content="{Binding SelectedItem.ItemCode}"/>
                 </DockPanel>
 
                 <DockPanel>
-                    <Label Content="Customer Name:"/>
-
+                    <Label Content="Customer Name:" FontWeight="DemiBold"/>
+                    <Label Content="{Binding SelectedItem.Customer.CustomerName}"/>
                 </DockPanel>
 
             </StackPanel>
 
             <StackPanel>
                 <DockPanel>
-                    <Label Content="Gross Weight:"/>
-
-                </DockPanel>
-
-                <DockPanel>
-                    <Label Content="Net Weight:"/>
-
+                    <Label Content="Gross Weight:" FontWeight="DemiBold"/>
+                    <Label Content="{Binding SelectedItem.GrossWeight}"/>
                 </DockPanel>
 
                 <DockPanel>
@@ -71,13 +66,16 @@
                     <ComboBox ItemsSource="{Binding Source={StaticResource CostingModel}, Path=CostingCategories}" SelectedItem="{Binding CostingCategory}" VerticalContentAlignment="Center"/>
                 </DockPanel>
 
+                <Button Content="Show MF Costing" IsEnabled="{Binding CanShowMFCosting}" Command="{Binding ShowMFCostingCommand}"/>
             </StackPanel>
         </StackPanel>
         <!--#endregion Dashboard -->
 
         <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Visible">
-            <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" CanVerticallyScroll="True">
-                <StackPanel Orientation="Horizontal">
+            
+            <!--#region Costing Form-->
+            <StackPanel Orientation="Horizontal" CanVerticallyScroll="True">
+                <StackPanel Orientation="Vertical">
                     <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="250">
 
                         <StackPanel >
@@ -111,17 +109,13 @@
 
                     </StackPanel>
 
-                </StackPanel>
-
-
-                <StackPanel Orientation="Horizontal">
                     <StackPanel>
                         <Label Content="Conversion Costing" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
 
                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Path=ConvCosting, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" 
                           CanUserDeleteRows="True" CanUserAddRows="True"  HorizontalAlignment="Center">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" Visibility="Visible"/>
+                                <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" Visibility="Collapsed"/>
                                 <DataGridComboBoxColumn Header="Operation Name" ItemsSource="{Binding Source={StaticResource Operation}, Path=AllOperations}"
                                                 SelectedValuePath="Id" SelectedValueBinding="{Binding OperationId}" TextBinding="{Binding Name}"/>
                                 <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding Path=CCPerPiece, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
@@ -130,10 +124,62 @@
                             </DataGrid.Columns>
                         </DataGrid>
                     </StackPanel>
-
                 </StackPanel>
+                <!--#endregion Costing Form-->
 
+                <Separator Margin="10, 0, 10, 0"/>
+
+                <!--#region MF Costing Details-->
+                
+                <StackPanel Orientation="Vertical" CanVerticallyScroll="True" IsEnabled="False" Visibility="Visible">
+                    <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="250">
+
+                        <StackPanel >
+                            <Label Content="RM Specifications" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+                            <DockPanel>
+                                <Label Content="Material As Per Drawing" FontWeight="DemiBold"/>
+                                <TextBox Text="{Binding MFRMCosting.RMAsPerDrawing, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" />
+                            </DockPanel>
+
+                            <DockPanel>
+                                <Label Content="Selected RM:" FontWeight="DemiBold"/>
+                                <Label Content="{Binding MFRMCosting.RMConsidered}"/>
+                            </DockPanel>
+                            <DockPanel>
+                                <Label Content="Current RM Rate:" FontWeight="DemiBold"/>
+                                <Label Content="{Binding MFRMCosting.RMConsidered.CurrentRate, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DockPanel>
+
+                            <DockPanel>
+                                <Label Content="Raw Material Rate" FontWeight="DemiBold"/>
+                                <TextBox Text="{Binding MFRMCosting.RMRate, Mode=OneWay}" VerticalContentAlignment="Center" />
+                            </DockPanel>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <StackPanel>
+                        <Label Content="Conversion Costing" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+
+                        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Path=MFConvCosting, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" 
+                          CanUserDeleteRows="True" CanUserAddRows="True"  HorizontalAlignment="Center">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" Visibility="Collapsed"/>
+                                <DataGridComboBoxColumn Header="Operation Name" ItemsSource="{Binding Source={StaticResource Operation}, Path=AllOperations}"
+                                                SelectedValuePath="Id" SelectedValueBinding="{Binding OperationId}" TextBinding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Cost Per Piece" Binding="{Binding Path=CCPerPiece, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}"/>
+                                <DataGridTextColumn Header="Step No" Binding="{Binding StepNo}"/>
+                                <DataGridCheckBoxColumn Header="Is Outsourced" Binding="{Binding Path=IsOutsourced}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
+
+            <!--#endregion MF Costing Details-->
+            
         </ScrollViewer>
 
         <DockPanel LastChildFill="False" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3">

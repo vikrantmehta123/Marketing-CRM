@@ -72,13 +72,11 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn>
+                    <GridViewColumn Header="Reason">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button IsEnabled="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" 
-                                        Content="Add Costing" 
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.AddCostingCommand}"
-                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                <TextBox IsEnabled="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" 
+                                        MinWidth="100" Text="{Binding Path=Note}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

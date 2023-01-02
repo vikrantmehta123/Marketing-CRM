@@ -80,37 +80,72 @@ namespace Metaforge_Marketing.ViewModels.Send
         private void SendQuotation()
         {
             IEnumerable<Item> RegrettedItems;
-            IEnumerable<Costing> CostingPreparedItems;
+            IEnumerable<Costing> PreparedCostings;
             string path = "";
             using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
             {
                 conn.Open();
                 SelectedRFQ.Items = new List<Item>(ItemsRepository.FetchItems(conn, SelectedRFQ));
                 RegrettedItems = ItemsRepository.FetchItems(conn, SelectedRFQ, ItemStatusEnum.Regretted);
-                CostingPreparedItems = CostingRepository.FetchCostings(conn, SelectedRFQ, CostingCategoryEnum.CustomerQuoted); //:=> A query to fetch all items with their costings, whose status = CustomerCostingPrepared
+                PreparedCostings = CostingRepository.FetchCostings(conn, SelectedRFQ, CostingCategoryEnum.CustomerQuoted); //:=> A query to fetch all items with their costings, whose status = CustomerCostingPrepared
                 conn.Close();
             }
-            if (CostingPreparedItems.Count() > 0)
+            if (PreparedCostings.Count() > 0)
             {
                 if (SelectedQuotationFormat == QuotationFormatEnum.Short)
                 {
-                    MessageBox.Show(CostingPreparedItems.ToList()[0].RMCosting.CostPerPiece + "");
+                    MessageBox.Show(PreparedCostings.ToList()[0].RMCosting.CostPerPiece + "");
                     try
                     {
-                        path = ShortQuotationCreator.CreateQuotation(CostingPreparedItems);
+                        path = ShortQuotationCreator.CreateQuotation(PreparedCostings);
                     }
                     catch(Exception ex) { MessageBox.Show(ex.Message); }
                     
                 }
                 else if (SelectedQuotationFormat == QuotationFormatEnum.Long)
                 {
-                    path = LongQuotationCreator.CreateQuotation(CostingPreparedItems.ToList());
+                    path = LongQuotationCreator.CreateQuotation(PreparedCostings.ToList());
                 }
             }
 
-            //QuotationSender.SendQuotation(path, RegrettedItems, new List<Buyer> { SelectedRFQ.Buyer });
+            try
+            {
+                // TODO: Uncomment the below block once the rest of the code is tested.
+                //QuotationSender.SendQuotation(path, RegrettedItems, new List<Buyer> { SelectedRFQ.Buyer });
 
-            //TODO: Update the status of the Items as Mail sent
+                var CostingPreparedItems = new List<Item>();
+                RegrettedItems.ToList().ForEach(item => item.Status = ItemStatusEnum.RegretMailSent); // Mark the status of the the regretted items as regret mail sent
+                CostingPreparedItems.ForEach(item => item.Status = ItemStatusEnum.QuotationSent); // Mark the status of the Quotation items as Quotation sent
+                UpdateDatabase(RegrettedItems);
+                
+                PreparedCostings.ToList().ForEach(costing => CostingPreparedItems.Add(costing.Item));
+
+                //TODO: Make sure that you include the Insert Item History Function too
+
+                UpdateDatabase(CostingPreparedItems);
+            }
+            catch (Exception e) { System.Windows.MessageBox.Show(e.Message); }
+        }
+
+        private void UpdateDatabase(IEnumerable<Item> items)
+        {
+            using(SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
+            {
+                conn.Open();
+                try
+                {
+                    foreach (var item in items)
+                    {
+                        ItemsRepository.UpdateItemStatus(conn, item);
+                    }
+                }
+                finally
+                {
+                    conn.Close();
+                }
+                
+            }
+
         }
         #endregion Methods
     }
