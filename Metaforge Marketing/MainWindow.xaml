@@ -149,6 +149,7 @@
                         <MenuItem Header="Admins" Command="{Binding AdminMasterCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Buyers" Command="{Binding BuyerMasterCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Customers" Command="{Binding CustomerMasterCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Items" Command="{Binding ItemMasterCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
 

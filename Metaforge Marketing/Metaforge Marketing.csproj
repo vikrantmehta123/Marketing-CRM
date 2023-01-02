@@ -212,6 +212,7 @@
     <Compile Include="HelperClasses\Converters\CostingCategoryConverter.cs" />
     <Compile Include="HelperClasses\Converters\CustomerCategoryConverter.cs" />
     <Compile Include="HelperClasses\Converters\IntegerToYesNoConverter.cs" />
+    <Compile Include="HelperClasses\Converters\ItemPriorityConverter.cs" />
     <Compile Include="HelperClasses\Converters\ItemStatusConverter.cs" />
     <Compile Include="HelperClasses\Converters\OrderTypeConverter.cs" />
     <Compile Include="HelperClasses\Converters\RMCategoryConverter.cs" />

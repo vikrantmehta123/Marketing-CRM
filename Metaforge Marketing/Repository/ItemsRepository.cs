@@ -212,6 +212,21 @@ namespace Metaforge_Marketing.Repository
             return table;
         }
 
+        public static DataTable FetchItemsIntoDataTable(SqlConnection conn, int offsetIndex, int entriesPerPage)
+        {
+            DataTable table = new DataTable();
+            SqlCommand cmd = new SqlCommand("FetchItems", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add("@offsetIndex", SqlDbType.Int).Value = offsetIndex;
+            cmd.Parameters.Add("@entriesPerPage", SqlDbType.Int).Value = entriesPerPage;
+
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(table);
+            return table;
+        }
+
         #endregion Select Queries
 
         #region Update Queries
@@ -226,6 +241,24 @@ namespace Metaforge_Marketing.Repository
             cmd.Parameters.Add("@status", SqlDbType.Int).Value = item.Status;
 
             cmd.ExecuteNonQuery();
+        }
+
+        public static void UpdateDB(SqlConnection conn, DataTable table)
+        {
+            SqlCommand cmd = new SqlCommand("UpdateItem", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+            cmd.Parameters.Add("@id", SqlDbType.Int, 32, "ItemId");
+            cmd.Parameters.Add("@itemName", SqlDbType.VarChar, 32, "ItemName");
+            cmd.Parameters.Add("@itemCode", SqlDbType.VarChar, 32, "ItemCode");
+            cmd.Parameters.Add("@priority", SqlDbType.Int, 32, "Priority");
+            cmd.Parameters.Add("@qty", SqlDbType.Int, 32, "Qty");
+
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            adapter.UpdateCommand = cmd;
+
+            adapter.Update(table);
         }
         #endregion Update Queries
 

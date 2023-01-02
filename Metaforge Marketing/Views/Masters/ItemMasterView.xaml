@@ -9,7 +9,7 @@
              Background="White"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <converters:ItemStatusConverter x:Key="ItemStatusConverter"/>
+        <converters:ItemPriorityConverter x:Key="ItemPriorityConverter"/>
     </UserControl.Resources>
     
     <Grid>
@@ -23,24 +23,26 @@
                FontWeight="Bold" FontSize="24"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible">
-            <DataGrid ItemsSource="{Binding Pagination.Collection}" IsReadOnly="True" AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <DataGrid ItemsSource="{Binding MasterData.MasterTable}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding ItemId}" Visibility="Collapsed"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding ItemName}"/>
-                    <DataGridTextColumn Header="Address" Binding="{Binding ItemCode}"/>
-                    <DataGridTextColumn Header="Project Name" Binding="{Binding RFQ.ProjectName}"/>
-                    <DataGridTextColumn Header="Status" Binding="{Binding Status, Converter={StaticResource ItemStatusConverter}}"/>
-                    <DataGridTextColumn Header="Priority" Binding="{Binding Priority}"/>
+                    <DataGridTextColumn Header="Code" Binding="{Binding ItemCode}"/>
+                    <DataGridTextColumn Header="Project Name" Binding="{Binding ProjectName}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Priority" Binding="{Binding Priority, Converter={StaticResource ItemPriorityConverter}}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Quantity" Binding="{Binding Qty}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </ScrollViewer>
 
 
-        <DockPanel LastChildFill="False" Grid.Row="2" VerticalAlignment="Center">
-            <Button Content="First" Command="{Binding Pagination.FirstPageCommand}"/>
-            <Button Content="Prev" Command="{Binding Pagination.PrevPageCommand}"/>
-            <Button Content="Next" Command="{Binding Pagination.NextPageCommand}"/>
-            <Button Content="Last" Command="{Binding Pagination.LastPageCommand}"/>
-        </DockPanel>
+        <StackPanel HorizontalAlignment="Left" Grid.Row="2">
+            <DockPanel LastChildFill="False" Grid.Row="2" VerticalAlignment="Center">
+                <Button Content="Prev" Command="{Binding MasterData.PrevPageCommand}"/>
+                <Button Content="Next" Command="{Binding MasterData.NextPageCommand}"/>
+            </DockPanel>
+            <Button Content="Update" Command="{Binding MasterData.UpdateCommand}"/>
+        </StackPanel>
+
     </Grid>
 </UserControl>
