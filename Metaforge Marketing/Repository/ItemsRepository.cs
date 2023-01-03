@@ -25,6 +25,16 @@ namespace Metaforge_Marketing.Repository
             }
         }
 
+        public static int CountItems(SqlConnection conn, int status)
+        {
+            using (SqlCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "SELECT COUNT(Id) FROM Items WHERE Status = @status";
+                cmd.Parameters.Add("@status", SqlDbType.Int).Value  = status;
+                return Convert.ToInt32(cmd.ExecuteScalar());
+            }
+        }
+
         // Summary:
         //      Fetches items of a particular RFQ and of a particular Status
         //      Mostly used in sending Quotations
@@ -58,6 +68,42 @@ namespace Metaforge_Marketing.Repository
                 reader.Close();
             }
 
+            return items;
+        }
+
+        public static IEnumerable<Item> FetchItems(SqlConnection conn, int offsetIndex, int entriesPerPage, int status)
+        {
+            List<Item> items = new List<Item>();
+
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = 
+                "SELECT * FROM Items " +
+                "JOIN RFQs ON RFQs.Id = Items.RFQId " +
+                "WHERE Status = @status " +
+                "ORDER BY EnquiryDate DESC " +
+                "OFFSET @offsetIndex ROWS FETCH NEXT @entriesPerPage ROWS ONLY";
+            cmd.Parameters.Add("@offsetIndex", SqlDbType.Int).Value =offsetIndex;
+            cmd.Parameters.Add("@entriesPerPage", SqlDbType.Int).Value=entriesPerPage;
+            cmd.Parameters.Add("@status", SqlDbType.Int).Value = status;
+
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                Item item = new Item
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    ItemName = reader["ItemName"].ToString(),
+                    ItemCode = reader["ItemCode"].ToString(),
+                    GrossWeight = (float)Convert.ToDecimal(reader["GrossWeight"]),
+                    NetWeight = (float)Convert.ToDecimal(reader["NetWeight"]), 
+                    Qty = Convert.ToInt32(reader["Qty"]),
+                    OrderType = (OrderTypeEnum)Convert.ToInt16(reader["OrderType"]),
+                    Priority = (PriorityEnum)(Convert.ToInt16(reader["Priority"]))
+                };
+
+                items.Add(item);
+            }
+            reader.Close();
             return items;
         }
 

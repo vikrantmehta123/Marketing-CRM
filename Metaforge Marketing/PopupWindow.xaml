@@ -7,6 +7,7 @@
         xmlns:shared_views="clr-namespace:Metaforge_Marketing.Views.Shared"
         xmlns:rfq_vm ="clr-namespace:Metaforge_Marketing.ViewModels.RFQs"
         xmlns:rfq_views="clr-namespace:Metaforge_Marketing.Views.RFQs"
+        xmlns:po_vm="clr-namespace:Metaforge_Marketing.ViewModels.RFQs.POViewModels"
         xmlns:mail_vm="clr-namespace:Metaforge_Marketing.ViewModels.Send"
         xmlns:mail_views="clr-namespace:Metaforge_Marketing.Views.Mails"
         xmlns:local="clr-namespace:Metaforge_Marketing"
@@ -29,8 +30,11 @@
 
         <DataTemplate DataType="{x:Type mail_vm:SelectRecipientsViewModel}">
             <mail_views:SelectRecipientsView/>
-        </DataTemplate> 
-        
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type po_vm:SelectPOItemViewModel}">
+            <rfq_views:SelectPOItemView/>
+        </DataTemplate>
     </Window.Resources>
     
     <Grid>

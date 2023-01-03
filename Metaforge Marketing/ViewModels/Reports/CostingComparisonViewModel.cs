@@ -151,7 +151,7 @@ namespace Metaforge_Marketing.ViewModels.Reports
         public CostingComparisonViewModel()
         {
             SelectedItem = null; // Clear selections on load
-            //StaticPropertyChanged += ItemSelectionHandler;
+            StaticPropertyChanged += ItemSelectionHandler;
         }
 
         #region Methods

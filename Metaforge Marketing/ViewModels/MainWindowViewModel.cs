@@ -80,7 +80,7 @@ namespace Metaforge_Marketing.ViewModels
             {
                 if (_addPODetailsCommand == null)
                 {
-                    _addPODetailsCommand = new Command(p => ChangeViewModel(new AddPODetailsViewModel()));
+                    _addPODetailsCommand = new Command(p => ChangeViewModel(new RFQs.POViewModels.AddPODetailsViewModel()));
                 }
                 return _addPODetailsCommand;
             }

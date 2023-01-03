@@ -7,6 +7,7 @@
         xmlns:add_views="clr-namespace:Metaforge_Marketing.Views.Add"
         xmlns:rfq_vm="clr-namespace:Metaforge_Marketing.ViewModels.RFQs"
         xmlns:rfq_views="clr-namespace:Metaforge_Marketing.Views.RFQs"
+        xmlns:po_vm="clr-namespace:Metaforge_Marketing.ViewModels.RFQs.POViewModels"
         xmlns:reports_vm="clr-namespace:Metaforge_Marketing.ViewModels.Reports"
         xmlns:reports_views="clr-namespace:Metaforge_Marketing.Views.Reports"
         xmlns:SendMail_vm="clr-namespace:Metaforge_Marketing.ViewModels.Send"
@@ -51,11 +52,11 @@
         <DataTemplate DataType="{x:Type rfq_vm:PendingRFQViewModel}">
             <rfq_views:PendingRFQView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type rfq_vm:AddPODetailsViewModel}">
+        <!--#endregion RFQ Section-->
+
+        <DataTemplate DataType="{x:Type po_vm:AddPODetailsViewModel}">
             <rfq_views:AddPODetailsView/>
         </DataTemplate>
-        <!--#endregion Mailing Section-->
-        
         
         <!--#region Reports Section-->
         <DataTemplate DataType="{x:Type reports_vm:CustomerHistoryViewModel}">

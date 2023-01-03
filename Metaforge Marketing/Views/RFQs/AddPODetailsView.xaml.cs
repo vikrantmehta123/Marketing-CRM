@@ -7,7 +7,7 @@ namespace Metaforge_Marketing.Views.RFQs
     {
         public AddPODetailsView()
         {
-            DataContext = new ViewModels.RFQs.AddPODetailsViewModel();
+            DataContext = new ViewModels.RFQs.POViewModels.AddPODetailsViewModel();
             InitializeComponent();
         }
     }

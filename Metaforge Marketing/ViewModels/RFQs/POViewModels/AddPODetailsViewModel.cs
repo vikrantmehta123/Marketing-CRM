@@ -2,9 +2,10 @@
 
 using Metaforge_Marketing.HelperClasses;
 using Metaforge_Marketing.Models;
+using Metaforge_Marketing.ViewModels.Shared;
 using System.Windows.Input;
 
-namespace Metaforge_Marketing.ViewModels.RFQs
+namespace Metaforge_Marketing.ViewModels.RFQs.POViewModels
 {
     public class AddPODetailsViewModel : ViewModelBase
     {
@@ -13,6 +14,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         private PO _poToAdd = new PO();
         #endregion Fields
 
+        #region Properties
         public PO POToAdd
         {
             get { return _poToAdd; }
@@ -23,6 +25,10 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         {
             get
             {
+                if (_selectItemCommand == null)
+                {
+                    _selectItemCommand = new Command(p => new PopupWindowViewModel().Show(new POViewModels.SelectPOItemViewModel()));
+                }
                 return _selectItemCommand;
             }
         }
@@ -37,6 +43,9 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                 return _saveCommand;
             }
         }
+        #endregion Properties
+
+        #region Methods
 
         private void Save()
         {
@@ -49,5 +58,6 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         {
             return POToAdd.IsFormDataValid();
         }
+        #endregion Methods
     }
 }
