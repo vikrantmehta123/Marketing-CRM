@@ -218,6 +218,9 @@
     <Compile Include="HelperClasses\Converters\RMCategoryConverter.cs" />
     <Compile Include="HelperClasses\Email.cs" />
     <Compile Include="HelperClasses\MasterDataPagination.cs" />
+    <Compile Include="HelperClasses\Pagination\MasterPagination.cs" />
+    <Compile Include="HelperClasses\Pagination\NormalPagination.cs" />
+    <Compile Include="HelperClasses\Pagination\PaginationBase.cs" />
     <Compile Include="HelperClasses\Quotation\BajajQuotationCreator.cs" />
     <Compile Include="HelperClasses\Quotation\LongQuotationCreator.cs" />
     <Compile Include="HelperClasses\Quotation\PDFQuotationCreator.cs" />
