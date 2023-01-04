@@ -11,7 +11,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
         // Summary:
         //      Defines methods to create and send a quotation in its short format
 
-        public static string CreateQuotation(IEnumerable<Costing> costings)
+        public static string CreateQuotation(IEnumerable<Models.Quotation> costings)
         {
             Application app = CreateApplication(); // Open Application
             Document quote = AddDocument(ref app); // Add Document to that app
@@ -33,7 +33,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
             }
         }
 
-        private static Document AddShortQuotationTable(ref Document doc, IEnumerable<Costing> costings)
+        private static Document AddShortQuotationTable(ref Document doc, IEnumerable<Models.Quotation> costings)
         {
             // TODO: Depending on the number of costings, create additional tables
             //       For example, if the number of costings is > 7, then create two tables, with the first table having 5 costings, and the tables below having the remaining entries
@@ -89,7 +89,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
         /// <param name="table"></param>
         /// <param name="costings"></param>
         /// <returns>Returns the table which was updated</returns>
-        private static Table AddShortQuotationCostingTotals(ref Table table, List<Costing> costings)
+        private static Table AddShortQuotationCostingTotals(ref Table table, List<Models.Quotation> costings)
         {
             for (int i = 2; i <= table.Columns.Count; i++)
             {

@@ -227,7 +227,7 @@
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Buyer.cs" />
     <Compile Include="Models\ConversionCosting.cs" />
-    <Compile Include="Models\Costing.cs" />
+    <Compile Include="Models\Quotation.cs" />
     <Compile Include="Models\Enums\CostingCategoryEnum.cs" />
     <Compile Include="Models\Enums\CostingFormatEnum.cs" />
     <Compile Include="Models\Enums\CustomerCategoryEnum.cs" />
@@ -255,6 +255,7 @@
     <Compile Include="Repository\CustomersRepository.cs" />
     <Compile Include="Repository\ItemsRepository.cs" />
     <Compile Include="Repository\OperationsRepository.cs" />
+    <Compile Include="Repository\QuotationRepository.cs" />
     <Compile Include="Repository\RemarksRepository.cs" />
     <Compile Include="Repository\RFQsRepository.cs" />
     <Compile Include="Repository\RMRepository.cs" />
@@ -512,7 +513,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="HelperClasses\Interfaces\" />
     <Folder Include="ViewModels\Test\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>

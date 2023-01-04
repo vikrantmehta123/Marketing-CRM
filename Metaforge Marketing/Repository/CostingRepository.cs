@@ -83,7 +83,7 @@ namespace Metaforge_Marketing.Repository
             InsertCommand.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)category);
             InsertCommand.Parameters.Add("@rmCostPerPiece", SqlDbType.Decimal).Value = costing.ComputeRMCost(item);
             InsertCommand.Parameters.Add("@rmAsPerDrawing", SqlDbType.VarChar).Value = costing.RMAsPerDrawing;
-            InsertCommand.Parameters.Add("@rmRate", SqlDbType.Decimal).Value = costing.RMRate;
+            InsertCommand.Parameters.Add("@rmRate", SqlDbType.Decimal).Value = costing.QuotedRMRate;
             InsertCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
 
             try
@@ -109,7 +109,7 @@ namespace Metaforge_Marketing.Repository
             UpdateCommand.Parameters.Add("@id", SqlDbType.Int).Value = costing.Id;
             UpdateCommand.Parameters.Add("@rmMasterId", SqlDbType.Int).Value = costing.RMConsidered.Id;
             UpdateCommand.Parameters.Add("@rmCostPerPiece", SqlDbType.Decimal).Value = costing.CostPerPiece;
-            UpdateCommand.Parameters.Add("@rmRate", SqlDbType.Decimal).Value = costing.RMRate;
+            UpdateCommand.Parameters.Add("@rmRate", SqlDbType.Decimal).Value = costing.QuotedRMRate;
             UpdateCommand.Parameters.Add("@whoseCosting", SqlDbType.Int).Value = ((int)category);
             UpdateCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
             UpdateCommand.Parameters.Add("@rmAsPerDrawing", SqlDbType.VarChar).Value = costing.RMAsPerDrawing;
@@ -179,7 +179,7 @@ namespace Metaforge_Marketing.Repository
         {
             ItemStatusEnum status;
             if (category == CostingCategoryEnum.Metaforge) { status = ItemStatusEnum.MF_Costing_Prepared; }
-            else if (category == CostingCategoryEnum.CustomerQuoted) { status = ItemStatusEnum.Customer_Costing_Prepared; }
+            else if (category == CostingCategoryEnum.Customer) { status = ItemStatusEnum.Customer_Costing_Prepared; }
             else { status = ItemStatusEnum.POReceived; }
             SqlTransaction transaction = conn.BeginTransaction();
 
@@ -248,7 +248,7 @@ namespace Metaforge_Marketing.Repository
                     rmCosting.Id = Convert.ToInt32(reader["Id"]);
                     rmCosting.RMAsPerDrawing = reader["RMAsPerDrawing"].ToString();
                     rmCosting.CostPerPiece = (float)Convert.ToDecimal(reader["RMCostPerPiece"]);
-                    rmCosting.RMRate = (float)Convert.ToDecimal(reader["RMRate"]);
+                    rmCosting.QuotedRMRate = (float)Convert.ToDecimal(reader["RMRate"]);
                     rmCosting.RMConsidered = new RM()
                     {
                         Id = Convert.ToInt32(reader["RMMasterId"]),
@@ -269,7 +269,7 @@ namespace Metaforge_Marketing.Repository
         //      Returns an empty instance if no result is present in the database for given params
         // Parameters:
         //      Item- The Item whose Conversion Costings need to be fetched
-        //      CostingCategory- Which Costing to Fetch? Customer's, Metaforge's, or Customer's Approved
+        //      CostingCategory- Which Quotation to Fetch? Customer's, Metaforge's, or Customer's Approved
         public static ConversionCosting FetchConversionCosting(SqlConnection conn, Item selectedItem, CostingCategoryEnum category)
         {
             ConversionCosting convCosting = new ConversionCosting();
@@ -309,13 +309,13 @@ namespace Metaforge_Marketing.Repository
 
 
         // Summary:
-        //      Fetches the Raw Material and The Conversion Costing of an Item
+        //      Fetches the Raw Material and The Conversion Quotation of an Item
         // Parameters:
         //      item- The Item whose costing needs to be fetched
         //      category- the Category of the costing: Customer's, Metaforge's, or Customer's Approved costing
-        public static Costing FetchCosting(SqlConnection conn, Item item, CostingCategoryEnum category)
+        public static Quotation FetchCosting(SqlConnection conn, Item item, CostingCategoryEnum category)
         {
-            Costing costing = new Costing
+            Quotation costing = new Quotation
             {
                 
                 RMCosting = FetchRMCosting(conn, item, category, new RMCosting()),
@@ -331,12 +331,12 @@ namespace Metaforge_Marketing.Repository
         // Parameters:
         //      rfq- The RFQ whose items will be fetched, and the items' costings will be returned
         //      category- The category of the costing
-        public static IEnumerable<Costing> FetchCostings(SqlConnection conn, IEnumerable<Item> items, CostingCategoryEnum category)
+        public static IEnumerable<Quotation> FetchCostings(SqlConnection conn, IEnumerable<Item> items, CostingCategoryEnum category)
         {
-            List<Costing> results = new List<Costing>();
+            List<Quotation> results = new List<Quotation>();
             foreach (Item item in items)
             {
-                Costing costing = FetchCosting(conn, item, category);
+                Quotation costing = FetchCosting(conn, item, category);
                 results.Add(costing);
             }
             return results;
@@ -345,7 +345,7 @@ namespace Metaforge_Marketing.Repository
 
         // Summary:
         //      Fetches Raw Material costings of an Item into a Datatable. 
-        //      Used in Costing Comparison Reports
+        //      Used in Quotation Comparison Reports
         public static DataTable FetchRMCostingsIntoDatatable(SqlConnection conn, Item item)
         {
             DataTable table = new DataTable();
@@ -358,7 +358,7 @@ namespace Metaforge_Marketing.Repository
 
         // Summary:
         //      Fetches the Conversion Costings into a table based on the item and the category
-        //      Used in Costing Comparison
+        //      Used in Quotation Comparison
         public static DataTable FetchCCIntoDatatable(SqlConnection conn, Item item, CostingCategoryEnum category)
         {
             DataTable table = new DataTable();

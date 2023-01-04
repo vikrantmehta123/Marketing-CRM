@@ -50,7 +50,7 @@ namespace Metaforge_Marketing.ViewModels.Reports
         }
 
         // Summary:
-        //      Fetch Metaforge's Conversion Costing
+        //      Fetch Metaforge's Conversion Quotation
         public DataTable MetaforgeCC
         {
             get
@@ -70,27 +70,7 @@ namespace Metaforge_Marketing.ViewModels.Reports
         }
 
         // Summary:
-        //      Fetch the customer Approved Conversion Costing
-        public DataTable CustomerApprovedCC
-        {
-            get
-            {
-                if (SelectedItem != null)
-                {
-                    using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
-                    {
-                        conn.Open();
-                        _customerApprovedCC = CostingRepository.FetchCCIntoDatatable(conn, SelectedItem, Models.Enums.CostingCategoryEnum.CustomerApproved);
-                        conn.Close();
-                    }
-                    OnPropertyChanged(nameof(ShowCustomerApprovedCC));
-                }
-                return _customerApprovedCC;
-            }
-        }
-
-        // Summary:
-        //      Fetch the Customer Quoted Conversion Costing
+        //      Fetch the Customer Quoted Conversion Quotation
         public DataTable CustomerQuotedCC
         {
             get
@@ -100,7 +80,7 @@ namespace Metaforge_Marketing.ViewModels.Reports
                     using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
                     {
                         conn.Open();
-                        _customerQuotedCC = CostingRepository.FetchCCIntoDatatable(conn, SelectedItem, Models.Enums.CostingCategoryEnum.CustomerQuoted);
+                        _customerQuotedCC = CostingRepository.FetchCCIntoDatatable(conn, SelectedItem, Models.Enums.CostingCategoryEnum.Customer);
                         conn.Close();
                     }
                     OnPropertyChanged(nameof(ShowCustomerQuotedCC));
@@ -161,7 +141,6 @@ namespace Metaforge_Marketing.ViewModels.Reports
             {
                 OnPropertyChanged(nameof(RMCostings));
                 OnPropertyChanged(nameof(MetaforgeCC));
-                OnPropertyChanged(nameof(CustomerApprovedCC));
                 OnPropertyChanged(nameof(CustomerQuotedCC));
             }
         }

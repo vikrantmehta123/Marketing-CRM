@@ -6,7 +6,6 @@ namespace Metaforge_Marketing.Models.Enums
     {
         None = 0,
         Metaforge, 
-        CustomerQuoted, 
-        CustomerApproved
+        Customer
     }
 }

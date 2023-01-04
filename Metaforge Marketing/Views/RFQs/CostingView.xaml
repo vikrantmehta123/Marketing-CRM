@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <models:Operation x:Key="Operation"/>
         <models:RM x:Key="RMMasterData"/>
-        <models:Costing x:Key="CostingModel"/>
+        <models:Quotation x:Key="QuotationModel"/>
         <converters:CostingCategoryConverter x:Key="CostingCategoryConverter"/>
         <converters:IntegerToYesNoConverter x:Key="YesToNoConverter"/>
         <converters:RMCategoryConverter x:Key="RMCategoryConverter"/>
@@ -64,7 +64,7 @@
 
                 <DockPanel>
                     <Label Content="Choose Category:" FontWeight="DemiBold"/>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource CostingModel}, Path=CostingCategories}" SelectedItem="{Binding CostingCategory}" VerticalContentAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource QuotationModel}, Path=CostingCategories}" SelectedItem="{Binding CostingCategory}" VerticalContentAlignment="Center"/>
                 </DockPanel>
 
                 <Button Content="Show MF Costing" IsEnabled="{Binding CanShowMFCosting}" Command="{Binding ShowMFCostingCommand}"/>
@@ -103,7 +103,7 @@
 
                             <DockPanel>
                                 <Label Content="Raw Material Rate" FontWeight="DemiBold"/>
-                                <TextBox Text="{Binding RMCosting.RMRate, Mode=TwoWay}" VerticalContentAlignment="Center" />
+                                <TextBox Text="{Binding RMCosting.QuotedRMRate, Mode=TwoWay}" VerticalContentAlignment="Center" />
                             </DockPanel>
 
                         </StackPanel>
@@ -154,7 +154,7 @@
 
                             <DockPanel>
                                 <Label Content="Raw Material Rate" FontWeight="DemiBold"/>
-                                <TextBox Text="{Binding MFRMCosting.RMRate, Mode=OneWay}" VerticalContentAlignment="Center" />
+                                <TextBox Text="{Binding MFRMCosting.QuotedRMRate, Mode=OneWay}" VerticalContentAlignment="Center" />
                             </DockPanel>
 
                         </StackPanel>
@@ -184,7 +184,8 @@
         </ScrollViewer>
 
         <DockPanel LastChildFill="False" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3">
-            <Button Content="Update" Command="{Binding UpdateCommand}"/>
+            <Button Content="Save Draft" Command="{Binding SaveDraftCommand}"/>
+            <Button Content="Save Version" Command="{Binding SaveVersionCommand}"/>
         </DockPanel>
 
     </Grid>

@@ -81,7 +81,7 @@ namespace Metaforge_Marketing.ViewModels.Send
         {
             IEnumerable<Item> RegrettedItems;
             IEnumerable<Item> CostingPreparedItems;
-            IEnumerable<Costing> PreparedCostings;
+            IEnumerable<Quotation> PreparedCostings;
             string path = "";
             using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
             {
@@ -89,7 +89,7 @@ namespace Metaforge_Marketing.ViewModels.Send
                 SelectedRFQ.Items = new List<Item>(ItemsRepository.FetchItems(conn, SelectedRFQ));
                 RegrettedItems = ItemsRepository.FetchItems(conn, SelectedRFQ, ItemStatusEnum.Regretted);
                 CostingPreparedItems = ItemsRepository.FetchItems(conn, SelectedRFQ, ItemStatusEnum.Customer_Costing_Prepared);
-                PreparedCostings = CostingRepository.FetchCostings(conn, CostingPreparedItems, CostingCategoryEnum.CustomerQuoted); //:=> A query to fetch all items with their costings, whose status = CustomerCostingPrepared
+                PreparedCostings = CostingRepository.FetchCostings(conn, CostingPreparedItems, CostingCategoryEnum.Customer); //:=> A query to fetch all items with their costings, whose status = CustomerCostingPrepared
                 conn.Close();
             }
             if (PreparedCostings.Count() > 0)

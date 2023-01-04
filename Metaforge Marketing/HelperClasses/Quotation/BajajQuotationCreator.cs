@@ -11,7 +11,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
 {
     public class BajajQuotationCreator :PDFQuotationCreator
     {
-        private static void AddHeader(ref Document doc, Costing costing)
+        private static void AddHeader(ref Document doc, Models.Quotation costing)
         {
             Paragraph header = doc.Paragraphs.Add();
             header.Range.Text = $"Item Name: {costing.Item.ItemName}\n" +
@@ -19,7 +19,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
             header.Range.Font.Bold = 1;
         } 
 
-        private static void AddItemSpecs(ref Document doc, Costing costing)
+        private static void AddItemSpecs(ref Document doc, Models.Quotation costing)
         {
             Paragraph ItemSpecs = doc.Paragraphs.Add();
             ItemSpecs.Range.Text = "A) Item Specs";

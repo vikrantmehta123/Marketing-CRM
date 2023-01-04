@@ -10,7 +10,7 @@ namespace Metaforge_Marketing.Repository
         #region Select Queries
 
         // Summary:
-        //      Fetches a Conversion Costing record into a Datatable based on the Category
+        //      Fetches a Conversion Quotation record into a Datatable based on the Category
         //      Used in inserting/ updating costing
         public static DataTable FetchConvCosting(SqlConnection conn, Item item, CostingCategoryEnum category)
         {

@@ -10,7 +10,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
         #region Helper Methods
         // Summary:
         //      Inserts a table in the document
-        private static Table AddTableToDocument(ref Document doc, Costing costing)
+        private static Table AddTableToDocument(ref Document doc, Models.Quotation costing)
         {
             Table QuotationTable;
             Range range = doc.Bookmarks.get_Item(ref oEndOfDoc).Range;
@@ -30,7 +30,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
 
         // Summary:
         //      Fills the table with the headers and values from the costing
-        private static Table AddQuotationTable(ref Table table, Costing costing)
+        private static Table AddQuotationTable(ref Table table, Models.Quotation costing)
         {
             int currRow = 1;
 
@@ -54,7 +54,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
         //      Creates a quotation document from the given list of costings
         // Returns:
         //      string- The filepath of the document saved
-        public static string CreateQuotation(List<Costing> costings)
+        public static string CreateQuotation(List<Models.Quotation> costings)
         {
             Application app = CreateApplication();
             Document doc = AddDocument(ref app);
@@ -102,7 +102,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
         }
 
         // Summary:
-        //      Adds the Conversion Costing headers- OperationNames are considered as headers
+        //      Adds the Conversion Quotation headers- OperationNames are considered as headers
         private static int AddConversionCostingHeaders(ref Table table, ConversionCosting convCosting, int index)
         {
             int looper = 0;
@@ -155,17 +155,17 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
 
         #region Adding Costing Values
 
-        private static int AddRMValues(ref Table table, Costing costing, int index)
+        private static int AddRMValues(ref Table table, Models.Quotation costing, int index)
         {
             int currRow = index;
             table.Cell(currRow, 2).Range.Text = costing.RMCosting.RMConsidered.ToString(); currRow++;
             table.Cell(currRow, 2).Range.Text = costing.Item.GrossWeight.ToString(); currRow++;
-            table.Cell(currRow, 2).Range.Text = costing.RMCosting.RMRate.ToString(); currRow++;
+            table.Cell(currRow, 2).Range.Text = costing.RMCosting.QuotedRMRate.ToString(); currRow++;
             table.Cell(currRow, 2).Range.Text = costing.RMCosting.CostPerPiece.ToString(); currRow++;
             return currRow;
         }
 
-        private static int AddCCValues(ref Table table, Costing costing, int rowIndex)
+        private static int AddCCValues(ref Table table, Models.Quotation costing, int rowIndex)
         {
             int looper = 0;
             int i;
@@ -177,7 +177,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
             return rowIndex + looper;
         }
 
-        private static int AddSummaryValues(ref Table table, Costing costing, int rowIndex)
+        private static int AddSummaryValues(ref Table table, Models.Quotation costing, int rowIndex)
         {
             int currRow = rowIndex;
             table.Cell(currRow, 2).Range.Text = (costing.RMCosting.CostPerPiece + costing.ConvCosting.TotalCostPerPiece).ToString() ; currRow++;
@@ -190,7 +190,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
             return currRow;
         }
 
-        private static int AddItemValues(ref Table table, Costing costing, int rowIndex)
+        private static int AddItemValues(ref Table table, Models.Quotation costing, int rowIndex)
         {
             int currRow = rowIndex;
 
