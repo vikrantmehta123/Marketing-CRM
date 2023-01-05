@@ -28,13 +28,13 @@ namespace Metaforge_Marketing.Repository
             {
                 SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
                 adapter.Update(table);
-
             }
         }
 
         #endregion Master Sheet Queries
 
-
+        // Summary:
+        //      Fetches list of all operations present in the database
         public static IEnumerable<Operation> FetchOperations (SqlConnection conn)
         {
             var operations = new List<Operation> ();
@@ -44,11 +44,12 @@ namespace Metaforge_Marketing.Repository
                 SqlDataReader reader = cmd.ExecuteReader ();
                 while (reader.Read ())
                 {
-                    operations.Add(new Operation
+                    Operation op = new Operation()
                     {
                         Id = Convert.ToInt32(reader["Id"]),
-                        OperationName = reader["Name"].ToString (),
-                    });
+                        OperationName = reader["Name"].ToString(),
+                    };
+                    operations.Add(op);
                 }
                 reader.Close();
                 return operations;

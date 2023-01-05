@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace Metaforge_Marketing.Models
 {
-    public class Admin : SharedModelsBase
+    public class Admin : ModelsBase
     {
         #region Fields
         private int _id, _rfqCount = -1, _preparedCostingsCount = -1, _convertedQuotationsCount = -1;

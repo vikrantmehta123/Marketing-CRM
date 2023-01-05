@@ -13,7 +13,7 @@ namespace Metaforge_Marketing.Models
         public static IEnumerable<CustomerCategoryEnum> Categories { get; } = Enum.GetValues(typeof(CustomerCategoryEnum)).Cast<CustomerCategoryEnum>();
 
         #region Fields
-        private int _id, _buyerCount = -1;
+        private int _id;
         private string _customerName, _city, _address, _pincode, _referredBy;
         private List<Buyer> _buyers;
         private CustomerCategoryEnum _category;
@@ -21,17 +21,6 @@ namespace Metaforge_Marketing.Models
 
         #region Proeprties
         public int Id { get { return _id; } set { _id = value; } }
-        public int BuyerCount
-        {
-            get
-            {
-                if (_buyerCount == -1)
-                {
-                    _buyerCount = SQLWrapper<Customer>.CountWrapper(Repository.CustomersRepository.CountBuyers, this);
-                }
-                return _buyerCount;
-            }
-        }
         public string CustomerName { get { return _customerName;} set { _customerName = value; } }
         public string City { get { return _city;} set { _city = value; } }
         public string Address { get { return _address;} set { _address = value; } }

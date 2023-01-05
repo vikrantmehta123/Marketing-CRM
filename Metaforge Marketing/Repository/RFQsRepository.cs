@@ -94,17 +94,18 @@ namespace Metaforge_Marketing.Repository
 
         public static int CountQuotationReadyRFQs(SqlConnection conn)
         {
-            SqlCommand cmd = new SqlCommand("CountQuotationReadyRFQs", conn);
+            SqlCommand cmd = new SqlCommand("CountQuotationReadyRFQs", conn)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
             return Convert.ToInt32(cmd.ExecuteScalar());
         }
 
 
-        /// <summary>
-        /// Given the status of an Item, fetches the count of the RFQs where there is at least one item of that status
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="itemStatus"></param>
-        /// <returns></returns>
+
+        // Summary:
+        //      Used for pagination
+        //      Fetches the count of those RFQs where there's at least one item of the given Item Status
         public static int CountRFQs(SqlConnection conn, int itemStatus)
         {
             using(SqlCommand cmd = conn.CreateCommand())
@@ -166,22 +167,6 @@ namespace Metaforge_Marketing.Repository
             return Id;
         }
 
-        private static void InsertItemHistory(SqlConnection conn, SqlTransaction transaction, Item item, DateTime date, string note)
-        {
-            SqlCommand ItemHistoryInsertCommand = new SqlCommand("InsertItemHistory", conn, transaction)
-            {
-                CommandType = System.Data.CommandType.StoredProcedure
-            };
-            ItemHistoryInsertCommand.Parameters.Add("@itemId", System.Data.SqlDbType.Int).Value = item.Id;
-            ItemHistoryInsertCommand.Parameters.Add("@oldStatus", System.Data.SqlDbType.Int).Value = -1; // As -1 means that there is no item history before this point
-            ItemHistoryInsertCommand.Parameters.Add("@newStatus", System.Data.SqlDbType.Int).Value = 0; // As 0 is status of pending item
-            ItemHistoryInsertCommand.Parameters.Add("@date", System.Data.SqlDbType.Date).Value = date;
-            ItemHistoryInsertCommand.Parameters.Add("@note", System.Data.SqlDbType.VarChar).Value = note;
-
-            ItemHistoryInsertCommand.ExecuteNonQuery();
-            ItemHistoryInsertCommand.Parameters.Clear(); // Clear params for next query
-        }
-
 
         // Summary:
         //      Inserts an RFQ to RFQs table, then inserts the Items in the items table (along with an insert in the ItemHistory table)
@@ -197,7 +182,6 @@ namespace Metaforge_Marketing.Repository
                 foreach (Item item in rfq.Items)
                 {
                     item.Id = InsertItem(connection, transaction, item, rfq);
-                    InsertItemHistory(connection, transaction, item, rfq.EnquiryDate.Date, "Enquiry for the item was recd");
                 }
                 transaction.Commit();
             }

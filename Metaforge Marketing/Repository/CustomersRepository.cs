@@ -72,13 +72,8 @@ namespace Metaforge_Marketing.Repository
 
 
         #region Select Queries
-
-        /// <summary>
-        /// Returns the total count of customers in database
-        /// Used in pagination
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <returns> int :=> count of the customers</returns>
+        // Summary:
+        //      Returns the number of customers in database
         public static int CountCustomers(SqlConnection connection)
         {
             using(SqlCommand command = connection.CreateCommand())
@@ -88,40 +83,17 @@ namespace Metaforge_Marketing.Repository
             }
         }
 
-        /// <summary>
-        /// Given a customer, counts the number of buyers it has
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="customer"></param>
-        /// <returns>Integer- number of buyers</returns>
-        public static int CountBuyers(SqlConnection conn, Customer customer)
-        {
-            using(SqlCommand cmd = conn.CreateCommand())
-            {
-                cmd.CommandText = "SELECT COUNT(Id) FROM Buyers WHERE CustId = @custId";
-                cmd.Parameters.Add("@custId", System.Data.SqlDbType.Int).Value= customer.Id;
-                return Convert.ToInt32(cmd.ExecuteScalar());
-            }
-        }
-
-        /// <summary>
-        /// Returns a list of Customers in the database
-        /// Does not fetch all rows, but takes input the Offset Index, and number of rows to fetch
-        /// Used in pagination
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <param name="offsetIndex"></param>
-        /// <param name="entriesPerPage"></param>
-        /// <returns></returns>
+        // Summary:
+        //      Fetches a list of Customers for pagination
         public static IEnumerable<Customer> FetchCustomers(SqlConnection connection, int offsetIndex, int entriesPerPage)
         {
             List<Customer> customers = new List<Customer>();
 
             using(SqlCommand cmd = new SqlCommand("FetchCustomers", connection))
             {
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.Add("@offsetIndex", System.Data.SqlDbType.Int).Value = offsetIndex;
-                cmd.Parameters.Add("@entriesPerPage", System.Data.SqlDbType.Int).Value =entriesPerPage;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@offsetIndex", SqlDbType.Int).Value = offsetIndex;
+                cmd.Parameters.Add("@entriesPerPage", SqlDbType.Int).Value =entriesPerPage;
 
                 try
                 {
@@ -149,13 +121,9 @@ namespace Metaforge_Marketing.Repository
         }
 
 
-        /// <summary>
-        /// Based on a search text for Customer's Name, searches the database and returns the results
-        /// Used mainly in pagination 
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <param name="customerName"></param>
-        /// <returns></returns>
+
+        // Summary:
+        //      Searches the database for a Customer's Name and returns the results
         public static IEnumerable<Customer> FetchCustomers(SqlConnection connection, string customerName)
         {
             List<Customer> customers = new List<Customer>();

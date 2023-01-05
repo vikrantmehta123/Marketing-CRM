@@ -249,7 +249,6 @@
     <Compile Include="Models\RFQ.cs" />
     <Compile Include="Models\RM.cs" />
     <Compile Include="Models\RMCosting.cs" />
-    <Compile Include="Models\SharedModelsBase.cs" />
     <Compile Include="PopupWindow.xaml.cs">
       <DependentUpon>PopupWindow.xaml</DependentUpon>
     </Compile>

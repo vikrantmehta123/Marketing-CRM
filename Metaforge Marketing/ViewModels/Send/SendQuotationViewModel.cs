@@ -138,7 +138,7 @@ namespace Metaforge_Marketing.ViewModels.Send
                 {
                     foreach (var item in items)
                     {
-                        ItemsRepository.UpdateItemStatus(conn, item);
+                        //ItemsRepository.UpdateItemStatus(conn, item);
                     }
                 }
                 finally

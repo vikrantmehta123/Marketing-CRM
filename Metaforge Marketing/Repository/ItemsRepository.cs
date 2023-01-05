@@ -142,13 +142,8 @@ namespace Metaforge_Marketing.Repository
         }
 
 
-        /// <summary>
-        /// Fetches a list of Items, along with its RFQ and the customer
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <param name="offsetIndex"></param>
-        /// <param name="entriesPerPage"></param>
-        /// <returns></returns>
+        // Summary:
+        //      Fetches items of all status for pagination
         public static IEnumerable<Item> FetchItems(SqlConnection connection, int offsetIndex, int entriesPerPage)
         {
             List<Item> items = new List<Item>();
@@ -258,18 +253,6 @@ namespace Metaforge_Marketing.Repository
         #endregion Select Queries
 
         #region Update Queries
-
-        // Summary:
-        //      Sets the status of the item in the database.
-        //      Used when the status of the item is already set. For example, after mailing quotation, regret, etc.
-        public static void UpdateItemStatus(SqlConnection conn, Item item)
-        {
-            SqlCommand cmd = new SqlCommand("UpdateItemStatus", conn);
-            cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
-            cmd.Parameters.Add("@status", SqlDbType.Int).Value = item.Status;
-
-            cmd.ExecuteNonQuery();
-        }
 
         public static void UpdateDB(SqlConnection conn, DataTable table)
         {

@@ -36,24 +36,6 @@ namespace Metaforge_Marketing.Repository
 
         #endregion Master Sheet Queries
 
-        #region Insert Queries
-        // Summary:
-        //     Given an Admin, inserts him in the database.
-        // Parameters:
-        //     Requires an open connection, and an instance of Admin class to insert 
-        public static void InsertToDB(SqlConnection conn, Admin admin)
-        {
-            SqlCommand cmd = new SqlCommand("InsertAdmin", conn)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            cmd.Parameters.Add("@name", SqlDbType.VarChar).Value = admin.Name;
-            cmd.ExecuteNonQuery();
-        }
-
-        #endregion Insert Queries
-
-       
         #region Select Queries
         // Summary:
         //      Fetches all the admins from the database. Returns them as IEnumerable<Item>

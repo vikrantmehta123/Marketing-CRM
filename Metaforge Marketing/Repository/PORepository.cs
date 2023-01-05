@@ -9,6 +9,8 @@ namespace Metaforge_Marketing.Repository
 {
     public class PORepository
     {
+        // Summary:
+        //      Inserts a PO in the database
         public static void Insert(SqlConnection conn, SqlTransaction transaction, PO po, Item item)
         {
             SqlCommand cmd = new SqlCommand("InsertPO", conn, transaction)
