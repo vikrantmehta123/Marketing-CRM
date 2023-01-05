@@ -259,6 +259,7 @@
     <Compile Include="Repository\CustomersRepository.cs" />
     <Compile Include="Repository\ItemsRepository.cs" />
     <Compile Include="Repository\OperationsRepository.cs" />
+    <Compile Include="Repository\PORepository.cs" />
     <Compile Include="Repository\QuotationRepository.cs" />
     <Compile Include="Repository\RemarksRepository.cs" />
     <Compile Include="Repository\RFQsRepository.cs" />

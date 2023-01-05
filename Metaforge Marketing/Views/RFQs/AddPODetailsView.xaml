@@ -24,8 +24,8 @@
 
         <StackPanel Grid.Row="2" CanVerticallyScroll="True" Grid.RowSpan="2">
             <DockPanel LastChildFill="False">
-                <Label Content="PO Number" FontWeight="DemiBold"/>
-                <TextBox Text="{Binding POToAdd.Number}"/>
+                <Label Content="PO Number:" FontWeight="DemiBold"/>
+                <TextBox Text="{Binding POToAdd.Number}" MinWidth="100" VerticalContentAlignment="Center"/>
             </DockPanel>
             <DockPanel LastChildFill="False">
                 <Label Content="Qty:" FontWeight="DemiBold"/>
@@ -37,11 +37,15 @@
             </DockPanel>
 
             <DockPanel LastChildFill="False">
-                <Label Content="Remark:" FontWeight="DemiBold"/>
-                <TextBox Text="{Binding POToAdd.Note}"
-                        AcceptsReturn="True" TextWrapping="Wrap" MaxWidth="125" MinWidth="125"/>
+                <Label Content="Quoted Rate:" FontWeight="DemiBold"/>
+                <TextBox Text="{Binding POToAdd.QuotedRate, StringFormat=N2}" MinWidth="100" VerticalContentAlignment="Center"/>
             </DockPanel>
 
+            <DockPanel LastChildFill="False">
+                <Label Content="Approved Rate:" FontWeight="DemiBold"/>
+                <TextBox Text="{Binding POToAdd.ApprovedRate, StringFormat=N2}" MinWidth="100" VerticalContentAlignment="Center"/>
+            </DockPanel>
+            
             <DockPanel LastChildFill="False">
                 <Button Content="Save" Command="{Binding SaveCommand}"/>
             </DockPanel>

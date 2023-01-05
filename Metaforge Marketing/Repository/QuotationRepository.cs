@@ -344,6 +344,9 @@ namespace Metaforge_Marketing.Repository
             return Convert.ToInt32(cmd.ExecuteScalar());
         }
 
+        // Summary:
+        //      Fetches all Quotation versions of a given item
+        //      Used in Reports Page- When one wants to see version by version Quotation
         public static IEnumerable<int> FetchVersions(SqlConnection conn, Item item)
         {
             List<int> versions = new List<int>();

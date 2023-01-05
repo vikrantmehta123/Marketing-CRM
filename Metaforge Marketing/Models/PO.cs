@@ -8,11 +8,27 @@ namespace Metaforge_Marketing.Models
     {
         #region Fields
         private int _id, _qty;
+		private float _quotedRate, _approvedRate;
 		private string _number, _note;
 		private DateTime _date = DateTime.Today;
         #endregion Fields
 
         #region Properties
+        public int Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+        public float QuotedRate
+		{
+			get { return _quotedRate; }
+			set { _quotedRate = value; }
+		}
+		public float ApprovedRate
+		{
+			get { return _approvedRate; }
+			set { _approvedRate = value; }
+		}
 		public DateTime Date
 		{
 			get { return _date; }
@@ -36,12 +52,6 @@ namespace Metaforge_Marketing.Models
 			get { return _number; }
 			set { _number = value; }
 		}
-
-		public int Id
-		{
-			get { return _id; }
-			set { _id = value; }
-		}
 		#endregion Properties
 
 		#region Methods
@@ -50,6 +60,8 @@ namespace Metaforge_Marketing.Models
 			if (Qty == 0) { return false; }
 			if(String.IsNullOrEmpty(Number)) { return false; }
 			if(Date > DateTime.Today) { return false; }
+			if(QuotedRate == 0) { return false; }
+			if(ApprovedRate == 0) { return false; }
 			return true;
 		}
         #endregion Methods
