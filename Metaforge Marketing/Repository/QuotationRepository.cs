@@ -3,22 +3,16 @@ using Metaforge_Marketing.Models.Enums;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Windows;
 
 namespace Metaforge_Marketing.Repository
 {
     public class QuotationRepository
     {
-        //
-        // if metaforge quotation:
-        //      Set version number = -1
-        // else if draft:
-        //      version number = 0
-        // else:
-        //      version number += 1
-        //
-
         // public static void Insert(SqlConnection conn, Item item, Quotation quotation, DataTable table, RMCosting rmCosting)
         // {
         //      int quotationId = InsertQuotation()
@@ -114,7 +108,7 @@ namespace Metaforge_Marketing.Repository
         }
         #endregion Insert New Version/ Quotation
 
-        #region Insert or Update Drafts/ MF Costing
+        #region Upsert Drafts/ MF Costing
         public static void UpdateRM_V(SqlConnection conn, SqlTransaction transaction, RMCosting rmCosting)
         {
             SqlCommand cmd = new SqlCommand("UpdateRM_V", conn, transaction) 
@@ -273,7 +267,50 @@ namespace Metaforge_Marketing.Repository
             adapter.Fill(table);
             return table;
         }
-
+        public static ConversionCosting FetchConvCosting(SqlConnection conn, Quotation quotation)
+        {
+            ConversionCosting ConvCosting = new ConversionCosting();
+            SqlCommand cmd = new SqlCommand("SELECT CC_V.*, Operations.* FROM CC_V JOIN Operations ON OperationId = Operations.Id WHERE QuotationId = @quotationId", conn);
+            cmd.Parameters.Add("@quotationId", SqlDbType.Int).Value =quotation.Id;
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                ConvCosting.IsConvCostingPresent = true;
+                Operation op = new Operation()
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    IsOutsourced = Convert.ToBoolean(reader["IsOutsourced"]),
+                    OperationName = reader["Name"].ToString(),
+                    StepNo = Convert.ToInt32(reader["StepNo"]), 
+                    CostPerPiece = (float)Convert.ToDecimal(reader["CCPerPiece"])
+                };
+                ConvCosting.Operations.Add(op);
+            }
+            reader.Close();
+            return ConvCosting;
+        }
+        public static IEnumerable<Quotation> FetchQuotations(SqlConnection conn, Item item)
+        {
+            List<Quotation> quotations= new List<Quotation>();
+            SqlCommand QuotationsCommand = new SqlCommand("SELECT Quotations.* FROM Quotations WHERE ItemId = @itemId", conn);
+            QuotationsCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
+            SqlDataReader reader = QuotationsCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                Quotation quotation = new Quotation()
+                {
+                    Id = Convert.ToInt32(reader["Id"]), 
+                    Date = Convert.ToDateTime(reader["Date"]),
+                    V_Number = Convert.ToInt32(reader["V_Number"]), 
+                    Q_Number = reader["Q_Number"].ToString()
+                };
+                quotation.RMCosting = FetchRM_V(conn, quotation);
+                quotation.ConvCosting = FetchConvCosting(conn, quotation);
+                quotations.Add(quotation);
+            }
+            reader.Close();
+            return quotations;
+        }
         public static Quotation FetchQuotation(SqlConnection conn, Item item, int versionNumber)
         {
             
@@ -298,9 +335,11 @@ namespace Metaforge_Marketing.Repository
             return quotation;
         }
 
+        // Summary:
+        //      Fetches the most recent version of the Quotation, excluding the Drafts, and MF Costing
         public static int FetchVersionNumber(SqlConnection conn, Item item)
         {
-            SqlCommand cmd = new SqlCommand("SELECT MAX(V_Number) FROM Quotations WHERE ItemId = @itemId", conn);
+            SqlCommand cmd = new SqlCommand("SELECT MAX(V_Number) FROM Quotations WHERE ItemId = @itemId AND V_Number > 0", conn);
             cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
             return Convert.ToInt32(cmd.ExecuteScalar());
         }

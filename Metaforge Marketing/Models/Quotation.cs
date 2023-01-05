@@ -14,12 +14,22 @@ namespace Metaforge_Marketing.Models
         private int _id, _vNumber = -2;
         private string _qNumber;
         private Item _item;
-        private Admin _costingPreparedBy;
         private RMCosting _rmCosting;
         private ConversionCosting _convCosting;
         private DateTime _date = DateTime.Now;
         private CostingCategoryEnum _costingCategory;
         #endregion Fields
+
+        #region Constructors
+        public Quotation() { }
+
+        public Quotation(Quotation quotation, int itemId)
+        {
+            _vNumber = quotation._vNumber + 1; // Increment the version Counter
+            _date = DateTime.Now;
+            _qNumber = GetQ_Number(itemId);
+        }
+        #endregion Constructors
 
         #region Properties
         public int Id { get { return _id; } set { _id = value; } }
@@ -57,7 +67,6 @@ namespace Metaforge_Marketing.Models
             }
         }
         public Item Item { get { return _item;} set { _item = value; } }
-        public Admin CostingPreparedBy { get { return _costingPreparedBy; } set { _costingPreparedBy = value; } }
         public RMCosting RMCosting  { get { return _rmCosting; } set { _rmCosting = value; } }
         public CostingCategoryEnum Category { 
             get { return _costingCategory; } 

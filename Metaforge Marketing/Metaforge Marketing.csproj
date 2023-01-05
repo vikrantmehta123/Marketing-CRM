@@ -262,7 +262,6 @@
     <Compile Include="Repository\RemarksRepository.cs" />
     <Compile Include="Repository\RFQsRepository.cs" />
     <Compile Include="Repository\RMRepository.cs" />
-    <Compile Include="Repository\TestRepository.cs" />
     <Compile Include="ViewModels\Add\AddBuyerViewModel.cs" />
     <Compile Include="ViewModels\Add\AddCustomerViewModel.cs" />
     <Compile Include="ViewModels\Add\AddRemarkViewModel.cs" />

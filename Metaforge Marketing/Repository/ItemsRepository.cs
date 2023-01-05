@@ -12,8 +12,8 @@ namespace Metaforge_Marketing.Repository
 {
     public class ItemsRepository
     {
-        #region Select Queries
 
+        #region Count Functions
         // Summary:
         //      Returns the count of all the items in the database
         public static int CountItems(SqlConnection connection)
@@ -25,15 +25,20 @@ namespace Metaforge_Marketing.Repository
             }
         }
 
+        // Summary:
+        //      Counts items of a particular status
         public static int CountItems(SqlConnection conn, int status)
         {
             using (SqlCommand cmd = conn.CreateCommand())
             {
                 cmd.CommandText = "SELECT COUNT(Id) FROM Items WHERE Status = @status";
-                cmd.Parameters.Add("@status", SqlDbType.Int).Value  = status;
+                cmd.Parameters.Add("@status", SqlDbType.Int).Value = status;
                 return Convert.ToInt32(cmd.ExecuteScalar());
             }
         }
+        #endregion Count Functions
+        
+        #region Select Queries
 
         // Summary:
         //      Fetches items of a particular RFQ and of a particular Status
@@ -188,13 +193,8 @@ namespace Metaforge_Marketing.Repository
             return items;
         }
 
-        /// <summary>
-        /// Given a search text of the item's Name, fetches the results that are like the name
-        /// Used in pagination
-        /// </summary>
-        /// <param name="connection"></param>
-        /// <param name="searchText"></param>
-        /// <returns>List of Items that are match to the Name given</returns>
+        // Summary:
+        //      Search function for the Database. Searches based on the Item's name
         public static IEnumerable<Item> FetchItems(SqlConnection connection, string searchText)
         {
             List<Item> items = new List<Item>();
@@ -205,9 +205,9 @@ namespace Metaforge_Marketing.Repository
                     "FROM Items " +
                     "LEFT JOIN RFQs ON RFQs.Id = Items.RFQId " +
                     "LEFT JOIN Customers ON Customers.Id = RFQs.CustId " +
-                    "WHERE Items.ItemName LIKE @itemId";
+                    "WHERE Items.ItemName LIKE @itemName";
 
-                cmd.Parameters.Add("@itemId", System.Data.SqlDbType.VarChar).Value = $"%{searchText}%";
+                cmd.Parameters.Add("@itemName", SqlDbType.VarChar).Value = $"%{searchText}%";
 
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -237,26 +237,6 @@ namespace Metaforge_Marketing.Repository
             return items;
         }
 
-        // Summary:
-        //      Given an item, fetches all its item history and fills a datatable from that
-        //      Used in generating reports of Item history
-        public static DataTable FetchItemHistory(SqlConnection conn, Item item)
-        {
-            SqlCommand cmd = new SqlCommand("FetchItemHistory", conn)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
-
-            DataTable table = new DataTable();
-            SqlDataAdapter adapter = new SqlDataAdapter
-            {
-                SelectCommand = cmd
-            };
-            adapter.Fill(table);
-
-            return table;
-        }
 
         public static DataTable FetchItemsIntoDataTable(SqlConnection conn, int offsetIndex, int entriesPerPage)
         {
@@ -307,6 +287,8 @@ namespace Metaforge_Marketing.Repository
             adapter.Update(table);
         }
         #endregion Update Queries
+
+
 
     }
 }

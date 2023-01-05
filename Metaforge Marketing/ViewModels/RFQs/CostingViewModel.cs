@@ -18,7 +18,6 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         #region Fields
         private readonly string conn_string = Properties.Settings.Default.conn_string;
         private int _versionNumber = -2;
-        private ObservableCollection<Operation> _operations;
         private Quotation _quotation = new Quotation();
         private RMCosting _rmCosting, _mfRMCosting;
         private DataTable _convCosting = new DataTable(), _mfConvCosting;
@@ -30,10 +29,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         #region Properties
         public int VersionNumber
         {
-            get
-            {
-                return _versionNumber;
-            }
+            get { return _versionNumber; }
         }
 
         public Quotation Quotation
@@ -253,6 +249,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                 return Math.Max(0, versionNumber); ;
             }
         }
+
         private Quotation GetQuotation()
         {
             Quotation quotation;
@@ -301,8 +298,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
 
         private void SaveVersion()
         {
-            Quotation.V_Number += 1;
-            Quotation.Q_Number = Quotation.GetQ_Number(SelectedItem.Id);
+            Quotation QuoteToInsert = new Quotation(Quotation, SelectedItem.Id);
             RMCosting.CurrentRMRate = RMCosting.RMConsidered.CurrentRate;
 
             using (SqlConnection conn = new SqlConnection(conn_string))
@@ -310,7 +306,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                 conn.Open();
                 try
                 {
-                    QuotationRepository.Insert(conn, SelectedItem, Quotation, _convCosting, RMCosting);
+                    QuotationRepository.Insert(conn, SelectedItem, QuoteToInsert, _convCosting, RMCosting);
                 }
                 finally { conn.Close(); }
             }
