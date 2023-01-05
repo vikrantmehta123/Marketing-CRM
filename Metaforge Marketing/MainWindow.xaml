@@ -68,6 +68,9 @@
         <DataTemplate DataType="{x:Type reports_vm:CostingComparisonViewModel}">
             <reports_views:CostingComparisonView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type reports_vm:QuotationHistoryViewModel}">
+            <reports_views:QuotationHistoryView/>
+        </DataTemplate>
         <!--#endregion Reports Section-->
         
         <!--#region Masters Section -->
@@ -135,7 +138,8 @@
                         <MenuItem Header="Customer History" Command="{Binding CustomerHistoryCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Costing Comparison" Command="{Binding CostingComparisonCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Performance Reports" Command="{Binding PerformanceReportCommand}" CommandParameter="{Binding}"/>
-                   </MenuItem>
+                        <MenuItem Header="Quotation History" Command="{Binding QuotationHistoryCommand}" CommandParameter="{Binding}"/>
+                    </MenuItem>
                 </Menu>
                 <Separator/>
 

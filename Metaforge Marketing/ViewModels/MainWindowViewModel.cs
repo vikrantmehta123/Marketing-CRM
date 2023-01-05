@@ -1,6 +1,7 @@
 ﻿
 using Metaforge_Marketing.HelperClasses;
 using Metaforge_Marketing.ViewModels.Add;
+using Metaforge_Marketing.ViewModels.Reports;
 using Metaforge_Marketing.ViewModels.RFQs;
 using System.Windows.Input;
 
@@ -13,7 +14,7 @@ namespace Metaforge_Marketing.ViewModels
         #region Fields
         private ICommand _addCustomerCommand, _addBuyerCommand, _addRFQCommand, _addRemarkCommand;
         private ICommand _prepareCostingCommand, _pendingRFQsCommand, _addPODetailsCommand;
-        private ICommand _customerHistoryCommand, _costingComparisonCommand, _performanceReportCommand;
+        private ICommand _customerHistoryCommand, _costingComparisonCommand, _performanceReportCommand, _quotationHistoryCommand;
         private ICommand _sendGeneralMailCommand, _sendQuotationMailCommand;
         private ICommand _updateRMMasterCommand, _adminMasterCommand, _operationsMasterCommand, _buyerMasterCommand, _customerMasterCommand, _itemMasterCommand;
         #endregion Fields
@@ -141,6 +142,18 @@ namespace Metaforge_Marketing.ViewModels
                     _customerHistoryCommand = new Command(p => ChangeViewModel(new Reports.CustomerHistoryViewModel()));
                 }
                 return _customerHistoryCommand; 
+            }
+        }
+
+        public ICommand QuotationHistoryCommand
+        {
+            get
+            {
+                if (_quotationHistoryCommand == null)
+                {
+                    _quotationHistoryCommand = new Command(p => ChangeViewModel(new QuotationHistoryViewModel()));
+                }
+                return _quotationHistoryCommand;
             }
         }
         #endregion Reports Commands

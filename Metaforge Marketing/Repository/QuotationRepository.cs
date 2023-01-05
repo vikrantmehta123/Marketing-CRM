@@ -269,7 +269,7 @@ namespace Metaforge_Marketing.Repository
         }
         public static ConversionCosting FetchConvCosting(SqlConnection conn, Quotation quotation)
         {
-            ConversionCosting ConvCosting = new ConversionCosting();
+            ConversionCosting ConvCosting = new ConversionCosting() {Operations = new ObservableCollection<Operation>() };
             SqlCommand cmd = new SqlCommand("SELECT CC_V.*, Operations.* FROM CC_V JOIN Operations ON OperationId = Operations.Id WHERE QuotationId = @quotationId", conn);
             cmd.Parameters.Add("@quotationId", SqlDbType.Int).Value =quotation.Id;
             SqlDataReader reader = cmd.ExecuteReader();
@@ -327,7 +327,7 @@ namespace Metaforge_Marketing.Repository
                 count++;
                 quotation.Id = Convert.ToInt32(reader["Id"]);
                 quotation.Date = Convert.ToDateTime(reader["Date"]);
-                quotation.Q_Number = reader["V_Number"].ToString();
+                quotation.Q_Number = reader["Q_Number"].ToString();
                 quotation.V_Number = Convert.ToInt32(reader["V_Number"]);
             }
             if (count > 1) { throw new Exception("More than one rows fetched"); }
@@ -342,6 +342,20 @@ namespace Metaforge_Marketing.Repository
             SqlCommand cmd = new SqlCommand("SELECT MAX(V_Number) FROM Quotations WHERE ItemId = @itemId AND V_Number > 0", conn);
             cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
             return Convert.ToInt32(cmd.ExecuteScalar());
+        }
+
+        public static IEnumerable<int> FetchVersions(SqlConnection conn, Item item)
+        {
+            List<int> versions = new List<int>();
+            SqlCommand cmd = new SqlCommand("SELECT V_Number FROM Quotations WHERE ItemId = @itemId ORDER BY V_Number DESC", conn);
+            cmd.Parameters.Add("@itemId", SqlDbType.Int).Value =item.Id;
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                versions.Add(Convert.ToInt32(reader["V_Number"]));
+            }
+            reader.Close();
+            return versions;
         }
         #endregion
     }

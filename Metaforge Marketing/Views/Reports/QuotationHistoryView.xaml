@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="Metaforge_Marketing.Views.Reports.QuotationHistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Metaforge_Marketing.Views.Reports"
+             xmlns:converters="clr-namespace:Metaforge_Marketing.HelperClasses.Converters"
+             mc:Ignorable="d" 
+             Background="White"
+             d:DesignHeight="720" d:DesignWidth="1280">
+    <UserControl.Resources>
+        <converters:QuotationVersionConverter x:Key="VersionConverter"/>
+    </UserControl.Resources>
+    
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="4*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <StackPanel>
+                <Label Content="Select Item" FontWeight="DemiBold"/>
+                <Button Content="Select" Command="{Binding SelectItemCommand}"/>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Choose Version" FontWeight="DemiBold"/>
+                <ComboBox ItemsSource="{Binding Versions}" SelectedItem="{Binding SelectedVersion}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource VersionConverter}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel>
+                <DockPanel>
+                    <Label Content="Quotation Number:" FontWeight="DemiBold"/>
+                    <Label Content="{Binding Quotation.Q_Number}"/>
+                </DockPanel>
+                <DockPanel>
+                    <Label Content="Date" FontWeight="DemiBold"/>
+                    <Label Content="{Binding Quotation.Date, StringFormat={}{0:dd/MM/yyyy}}"/>
+                </DockPanel>
+            </StackPanel>
+            
+        </StackPanel>
+
+        <ScrollViewer VerticalScrollBarVisibility="Visible" Grid.Row="2">
+            <StackPanel>
+                <StackPanel HorizontalAlignment="Left">
+                    <DockPanel>
+                        <Label Content="RM Considered:" FontWeight="DemiBold"/>
+                        <Label Content="{Binding Quotation.RMCosting.RMConsidered}"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <Label Content="Quoted RM Rate:" FontWeight="DemiBold"/>
+                        <Label Content="{Binding Quotation.RMCosting.QuotedRMRate}"/>
+                    </DockPanel>
+                    <DockPanel>
+                        <Label Content="Actual RM Rate When Quoting:" FontWeight="DemiBold"/>
+                        <Label Content="{Binding Quotation.RMCosting.CurrentRMRate}"/>
+                    </DockPanel>
+                </StackPanel>
+                <StackPanel>
+                    <DataGrid ItemsSource="{Binding Quotation.ConvCosting.Operations}" 
+                              AutoGenerateColumns="False" IsReadOnly="True" HorizontalAlignment="Left">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Operation" Binding="{Binding OperationName}"/>
+                            <DataGridTextColumn Header="Step No" Binding="{Binding StepNo}"/>
+                            <DataGridTextColumn Header="Cost/ Piece" Binding="{Binding CostPerPiece}"/>
+                            <DataGridCheckBoxColumn Header="Is Outsourced" Binding="{Binding IsOutsourced}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </StackPanel>
+
+        </ScrollViewer>
+        
+    </Grid>
+</UserControl>

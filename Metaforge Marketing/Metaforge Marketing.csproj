@@ -215,6 +215,7 @@
     <Compile Include="HelperClasses\Converters\ItemPriorityConverter.cs" />
     <Compile Include="HelperClasses\Converters\ItemStatusConverter.cs" />
     <Compile Include="HelperClasses\Converters\OrderTypeConverter.cs" />
+    <Compile Include="HelperClasses\Converters\QuotationVersionConverter.cs" />
     <Compile Include="HelperClasses\Converters\RMCategoryConverter.cs" />
     <Compile Include="HelperClasses\Email.cs" />
     <Compile Include="HelperClasses\MasterDataPagination.cs" />
@@ -271,7 +272,7 @@
     <Compile Include="ViewModels\Masters\CustomerMasterViewModel.cs" />
     <Compile Include="ViewModels\Masters\ItemMasterViewModel.cs" />
     <Compile Include="ViewModels\Masters\OperationsMasterViewModel.cs" />
-    <Compile Include="ViewModels\Reports\ItemHistoryReportViewModel.cs" />
+    <Compile Include="ViewModels\Reports\QuotationHistoryViewModel.cs" />
     <Compile Include="ViewModels\RFQs\POViewModels\AddPODetailsViewModel.cs" />
     <Compile Include="ViewModels\RFQs\CostingViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
@@ -333,8 +334,8 @@
     <Compile Include="Views\Reports\CostingComparisonView.xaml.cs">
       <DependentUpon>CostingComparisonView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Reports\ItemHistoryReportView.xaml.cs">
-      <DependentUpon>ItemHistoryReportView.xaml</DependentUpon>
+    <Compile Include="Views\Reports\QuotationHistoryView.xaml.cs">
+      <DependentUpon>QuotationHistoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RFQs\AddPODetailsView.xaml.cs">
       <DependentUpon>AddPODetailsView.xaml</DependentUpon>
@@ -438,7 +439,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Reports\ItemHistoryReportView.xaml">
+    <Page Include="Views\Reports\QuotationHistoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
