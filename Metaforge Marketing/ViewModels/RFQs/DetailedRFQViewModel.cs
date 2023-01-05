@@ -68,7 +68,6 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                         SqlTransaction transaction = conn.BeginTransaction();
                         try
                         {
-                            CostingRepository.InsertItemHistory(conn, transaction, item, ItemStatusEnum.Regretted);
                             CostingRepository.UpdateItemStatus(conn, transaction, item, ItemStatusEnum.Regretted);
                             transaction.Commit();
                             MessageBox.Show("Success");

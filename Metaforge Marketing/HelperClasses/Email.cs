@@ -5,19 +5,35 @@ using System.Net.Mail;
 using System.Net;
 using System.IO;
 using System.Windows;
+using System.Linq;
 
 namespace Metaforge_Marketing.HelperClasses
 {
-    public class Email
+    public class Email : ModelsBase
     {
         #region Fields
         private readonly string Username = Environment.GetEnvironmentVariable("My_email");
         private readonly string Password = Environment.GetEnvironmentVariable("My_email_password");
+
+        private string _selectedBlueprint;
         #endregion Fields
 
         #region Properties
         public MailMessage MailMessage { get; set; }
-        public string SelectedBlueprint { get; set; }
+        public string SelectedBlueprint
+        {
+            get { return _selectedBlueprint; }
+            set 
+            { 
+                _selectedBlueprint = value;
+                if (_selectedBlueprint != null)
+                {
+                    MailMessage.Body = GetBlueprintText(_selectedBlueprint);
+                    OnPropertyChanged(nameof(MailMessage.Body));
+                }
+            }
+        }
+
         public List<string> Blueprints { get; } = new List<string> { "Introductory", "Achievement" };
         #endregion Proeprties
 
@@ -29,23 +45,9 @@ namespace Metaforge_Marketing.HelperClasses
             };
         }
 
-
-        /// <summary>
-        /// Adds a list of buyers as mail recipients
-        /// </summary>
-        /// <param name="buyerList"></param>
-        public void AddRecipients(IEnumerable<Buyer> buyerList)
-        {
-            foreach (Buyer buyer in buyerList)
-            {
-                if (String.IsNullOrEmpty(buyer.Email)) { continue; }
-                else { MailMessage.To.Add(new MailAddress(buyer.Email)); }
-            }
-        }
-        /// <summary>
-        /// Logs into the account
-        /// </summary>
-        /// <returns>Email client</returns>
+        #region Methods
+        // Summary:
+        //      Logs into account and returns the Email Client
         private SmtpClient EstablishConnection()
         {
             var client = new SmtpClient("smtp.gmail.com", 587)
@@ -58,9 +60,9 @@ namespace Metaforge_Marketing.HelperClasses
             return client;
         }
 
-        /// <summary>
-        /// Sends the mail
-        /// </summary>
+
+        // Summary:
+        //      Sends the mail
         public void Send()
         {
             var client = EstablishConnection();
@@ -72,28 +74,69 @@ namespace Metaforge_Marketing.HelperClasses
             finally { MailMessage.Dispose(); }
         }
 
-        /// <summary>
-        /// Reads the blueprint file
-        /// </summary>
-        /// <param name="blueprint"></param>
-        /// <returns>Note of the file</returns>
+        // Summary:
+        //      Reads the blueprint .txt file and returns the text in it
         private string GetBlueprintText(string blueprint)
         {
-            string PathToBlueprintFolder = @"D:\Metaforge\Metaforge\Mail Blueprints";
+            string PathToBlueprintFolder = @"D:\Metaforge\Metaforge Marketing\Metaforge Marketing\MailBlueprints";
             string path = Path.Combine(PathToBlueprintFolder, blueprint + ".txt");
             string text = File.ReadAllText(path);
             return text;
         }
 
-        /// <summary>
-        /// Basic validation
-        /// </summary>
-        /// <returns></returns>
+
+        // Summary: 
+        //      Basic Validation
         public bool IsDataValid()
         {
             if (String.IsNullOrEmpty(MailMessage.Body)) { return false; }
             if (String.IsNullOrEmpty(MailMessage.Subject)) { return false; }
             return true;
         }
+
+
+        public string GetQuotationMailText(IEnumerable<Item> regrettedItems, IEnumerable<Item> preparedItems)
+        {
+            string PathToBlueprintFolder = @"D:\Metaforge\Metaforge Marketing\Metaforge Marketing\MailBlueprints";
+            string text;
+            if (regrettedItems.Count() == 0)
+            {
+                text = File.ReadAllText(Path.Combine(PathToBlueprintFolder, "QuoteAllMail.txt"));
+            }
+            else if(preparedItems.Count() == 0)
+            {
+                text = File.ReadAllText(Path.Combine(PathToBlueprintFolder, "RegretAllMail.txt"));
+            }
+            else
+            {
+                string regret = WriteItems(regrettedItems.ToList());
+                string prepared = WriteItems(preparedItems.ToList());
+
+                string path = Path.Combine(PathToBlueprintFolder, "QuotationMail.txt");
+                text = File.ReadAllText(path);
+                text.Replace("{Regretted}", regret);
+                text.Replace("{Prepared}", prepared);
+            }
+            return text;
+        }
+
+        private string WriteItems(List<Item> items)
+        {
+            ;
+            string text = "";
+            for (int i = 0; i < items.Count(); i++)
+            {
+                if(i < items.Count() - 1)
+                {
+                    text += items[i].ItemName + ", ";
+                }
+                else
+                {
+                    text += items[i].ItemName;
+                }
+            }
+            return text;
+        }
+        #endregion Methods
     }
 }

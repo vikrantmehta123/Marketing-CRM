@@ -104,10 +104,10 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
                 // Fill table
                 ItemNameHeader.Range.Text = costings[index].Item.ItemName;
                 ItemCodeHeader.Range.Text = costings[index].Item.ItemCode;
-                table.Cell(3, i).Range.Text = costings[index].RMCosting.CostPerPiece.ToString();
-                table.Cell(4, i).Range.Text = costings[index].ConvCosting.TotalCostPerPiece.ToString();
-                table.Cell(5, i).Range.Text = costings[index].AddProfit().ToString();
-                table.Cell(6, i).Range.Text = costings[index].ComputeTotalCost().ToString();
+                table.Cell(3, i).Range.Text = costings[index].RMCosting.CostPerPiece.ToString("N2");
+                table.Cell(4, i).Range.Text = costings[index].ConvCosting.TotalCostPerPiece.ToString("N2");
+                table.Cell(5, i).Range.Text = costings[index].AddProfit().ToString("N2");
+                table.Cell(6, i).Range.Text = costings[index].ComputeTotalCost().ToString("N2");
             }
             return table;
         }

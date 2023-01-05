@@ -10,7 +10,13 @@ namespace Metaforge_Marketing.ViewModels.Send
     {
         private static List<Buyer> _visitedRecipients;
         private static int _totalPages;
-        public static Email Email { get; set; } = new Email();
+        private static List<Buyer> _recipients = new List<Buyer>();
+
+        protected static List<Buyer> Recipients
+        {
+            get { return _recipients; }
+            set { _recipients = value; }
+        }
 
         protected static int _entriesPerPage = 4;
         protected static int TotalPages

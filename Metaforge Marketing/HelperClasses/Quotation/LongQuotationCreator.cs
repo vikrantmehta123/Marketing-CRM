@@ -159,9 +159,9 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
         {
             int currRow = index;
             table.Cell(currRow, 2).Range.Text = costing.RMCosting.RMConsidered.ToString(); currRow++;
-            table.Cell(currRow, 2).Range.Text = costing.Item.GrossWeight.ToString(); currRow++;
-            table.Cell(currRow, 2).Range.Text = costing.RMCosting.QuotedRMRate.ToString(); currRow++;
-            table.Cell(currRow, 2).Range.Text = costing.RMCosting.CostPerPiece.ToString(); currRow++;
+            table.Cell(currRow, 2).Range.Text = costing.Item.GrossWeight.ToString("N2"); currRow++;
+            table.Cell(currRow, 2).Range.Text = costing.RMCosting.QuotedRMRate.ToString("N2"); currRow++;
+            table.Cell(currRow, 2).Range.Text = costing.RMCosting.CostPerPiece.ToString("N2"); currRow++;
             return currRow;
         }
 
@@ -171,7 +171,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
             int i;
             for (i = rowIndex; i < rowIndex + costing.ConvCosting.Operations.Count; i++)
             {
-                table.Cell(i, 2).Range.Text = costing.ConvCosting.Operations[looper].CostPerPiece.ToString();
+                table.Cell(i, 2).Range.Text = costing.ConvCosting.Operations[looper].CostPerPiece.ToString("N2");
                 looper++;
             }
             return rowIndex + looper;
@@ -180,11 +180,11 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
         private static int AddSummaryValues(ref Table table, Models.Quotation costing, int rowIndex)
         {
             int currRow = rowIndex;
-            table.Cell(currRow, 2).Range.Text = (costing.RMCosting.CostPerPiece + costing.ConvCosting.TotalCostPerPiece).ToString() ; currRow++;
-            table.Cell(currRow, 2).Range.Text = costing.AddProfit().ToString(); currRow++;
+            table.Cell(currRow, 2).Range.Text = (costing.RMCosting.CostPerPiece + costing.ConvCosting.TotalCostPerPiece).ToString("N2") ; currRow++;
+            table.Cell(currRow, 2).Range.Text = costing.AddProfit().ToString("N2"); currRow++;
 
             Cell totalCell = table.Cell(currRow, 2);
-            totalCell.Range.Text = costing.ComputeTotalCost().ToString();
+            totalCell.Range.Text = costing.ComputeTotalCost().ToString("N2");
             AddHeaderFormatting(ref totalCell);
             currRow++;
             return currRow;

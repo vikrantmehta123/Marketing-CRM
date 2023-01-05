@@ -46,7 +46,7 @@
             
             
             <Label Content="Content" FontWeight="DemiBold"/>
-            <TextBox Text="{Binding Path=Email.MailMessage.Body, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="150" MaxHeight="150"
+            <TextBox Text="{Binding Email.MailMessage.Body, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="150" MaxHeight="150"
                      Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" VerticalScrollBarVisibility="Visible"/>
 
             <DockPanel HorizontalAlignment="Right" VerticalAlignment="Center">

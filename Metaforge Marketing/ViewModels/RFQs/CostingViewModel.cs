@@ -243,7 +243,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                 using (SqlConnection conn = new SqlConnection(conn_string))
                 {
                     conn.Open();
-                    versionNumber = QuotationRepository.FetchVersionNumber(conn, SelectedItem);
+                    versionNumber = QuotationRepository.FetchLatestVersionNumber(conn, SelectedItem);
                     conn.Close();
                 }
                 return Math.Max(0, versionNumber); ;

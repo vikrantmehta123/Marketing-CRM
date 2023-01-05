@@ -35,7 +35,7 @@ namespace Metaforge_Marketing.ViewModels.Send
 
         public ICommand DoneCommand => new Command(p =>
                                                     {
-                                                        AddRecipients();
+                                                        Done();
                                                         Window.GetWindow((UserControl)p).Close();
                                                     });
 
@@ -124,17 +124,20 @@ namespace Metaforge_Marketing.ViewModels.Send
             return false;
         }
 
-        private void AddRecipients()
+        private void Done()
         {
             foreach (Buyer buyer in VisitedRecipients)
             {
-                if (buyer.IsChecked && buyer.Email != null)
+                if (buyer.IsChecked)
                 {
-                    Email.MailMessage.To.Add(buyer.Email);
+                    Recipients.Add(buyer);
+                }
+                else if (!buyer.IsChecked && Recipients.Contains(buyer))
+                {
+                    Recipients.Remove(buyer);
                 }
             }
         }
-
         #endregion Methods
     }
 }

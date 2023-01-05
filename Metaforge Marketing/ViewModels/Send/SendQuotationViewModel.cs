@@ -81,7 +81,7 @@ namespace Metaforge_Marketing.ViewModels.Send
         {
             IEnumerable<Item> RegrettedItems;
             IEnumerable<Item> CostingPreparedItems;
-            IEnumerable<Quotation> PreparedCostings;
+            List<Quotation> PreparedCostings = new List<Quotation>();
             string path = "";
             using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
             {
@@ -89,7 +89,10 @@ namespace Metaforge_Marketing.ViewModels.Send
                 SelectedRFQ.Items = new List<Item>(ItemsRepository.FetchItems(conn, SelectedRFQ));
                 RegrettedItems = ItemsRepository.FetchItems(conn, SelectedRFQ, ItemStatusEnum.Regretted);
                 CostingPreparedItems = ItemsRepository.FetchItems(conn, SelectedRFQ, ItemStatusEnum.Customer_Costing_Prepared);
-                PreparedCostings = CostingRepository.FetchCostings(conn, CostingPreparedItems, CostingCategoryEnum.Customer); //:=> A query to fetch all items with their costings, whose status = CustomerCostingPrepared
+                foreach (Item item in CostingPreparedItems)
+                {
+                    PreparedCostings.Add(QuotationRepository.FetchLatestQuotation(conn, item));
+                }
                 conn.Close();
             }
             if (PreparedCostings.Count() > 0)
@@ -108,18 +111,20 @@ namespace Metaforge_Marketing.ViewModels.Send
                     path = LongQuotationCreator.CreateQuotation(PreparedCostings.ToList());
                 }
             }
-
+            System.Diagnostics.Debug.Assert(RegrettedItems.Count() == 0, "Regret items not zero");
+            System.Diagnostics.Debug.Assert(CostingPreparedItems.Count() > 0, "Prepared Costings zero");
+            System.Diagnostics.Debug.Assert(!String.IsNullOrEmpty(path), "Path empty");
             try
             {
                 // TODO: Uncomment the below block once the rest of the code is tested.
-                //QuotationSender.SendQuotation(path, RegrettedItems, new List<Buyer> { SelectedRFQ.Buyer });
+                QuotationSender.SendQuotation(path, CostingPreparedItems, RegrettedItems, new List<Buyer> { SelectedRFQ.Buyer });
                 RegrettedItems.ToList().ForEach(item => item.Status = ItemStatusEnum.RegretMailSent); // Mark the status of the the regretted items as regret mail sent
                 CostingPreparedItems.ToList().ForEach(item => item.Status = ItemStatusEnum.QuotationSent); // Mark the status of the Quotation items as Quotation sent
-                UpdateDatabase(RegrettedItems);
+                //UpdateDatabase(RegrettedItems);
 
                 //TODO: Make sure that you include the Insert Item History Function too
 
-                UpdateDatabase(CostingPreparedItems);
+                //UpdateDatabase(CostingPreparedItems);
             }
             catch (Exception e) { MessageBox.Show(e.Message); }
         }

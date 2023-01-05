@@ -289,31 +289,10 @@ namespace Metaforge_Marketing.Repository
             reader.Close();
             return ConvCosting;
         }
-        public static IEnumerable<Quotation> FetchQuotations(SqlConnection conn, Item item)
-        {
-            List<Quotation> quotations= new List<Quotation>();
-            SqlCommand QuotationsCommand = new SqlCommand("SELECT Quotations.* FROM Quotations WHERE ItemId = @itemId", conn);
-            QuotationsCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
-            SqlDataReader reader = QuotationsCommand.ExecuteReader();
-            while (reader.Read())
-            {
-                Quotation quotation = new Quotation()
-                {
-                    Id = Convert.ToInt32(reader["Id"]), 
-                    Date = Convert.ToDateTime(reader["Date"]),
-                    V_Number = Convert.ToInt32(reader["V_Number"]), 
-                    Q_Number = reader["Q_Number"].ToString()
-                };
-                quotation.RMCosting = FetchRM_V(conn, quotation);
-                quotation.ConvCosting = FetchConvCosting(conn, quotation);
-                quotations.Add(quotation);
-            }
-            reader.Close();
-            return quotations;
-        }
+
+
         public static Quotation FetchQuotation(SqlConnection conn, Item item, int versionNumber)
         {
-            
             SqlCommand cmd = new SqlCommand("SELECT * FROM Quotations WHERE ItemId = @itemId AND V_Number = @versionNumber", conn);
             cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;
             cmd.Parameters.Add("@versionNumber", SqlDbType.Int).Value = versionNumber;
@@ -335,9 +314,21 @@ namespace Metaforge_Marketing.Repository
             return quotation;
         }
 
+        public static Quotation FetchLatestQuotation(SqlConnection conn, Item item)
+        {
+            int versionNumber = FetchLatestVersionNumber(conn, item); // Get the most recent Version Number Greater than 0 (i.e. excluding draft, and MF)
+            Quotation quotation = FetchQuotation(conn, item, versionNumber); // Get the quotation
+            quotation.RMCosting = FetchRM_V(conn, quotation); // Get the RM Costings for the quotation
+            quotation.ConvCosting = FetchConvCosting(conn, quotation); // Get the ConvCosting for the quotation
+            quotation.Item = item;
+            quotation.RMCosting.CostPerPiece = quotation.RMCosting.ComputeRMCost(item);
+
+            return quotation;
+        }
+
         // Summary:
         //      Fetches the most recent version of the Quotation, excluding the Drafts, and MF Costing
-        public static int FetchVersionNumber(SqlConnection conn, Item item)
+        public static int FetchLatestVersionNumber(SqlConnection conn, Item item)
         {
             SqlCommand cmd = new SqlCommand("SELECT MAX(V_Number) FROM Quotations WHERE ItemId = @itemId AND V_Number > 0", conn);
             cmd.Parameters.Add("@itemId", SqlDbType.Int).Value = item.Id;

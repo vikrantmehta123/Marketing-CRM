@@ -11,7 +11,6 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
     public class QuotationSender
     {
         #region Fields
-        private const string _file = "some path to the file";
         private const string PATH_TO_TERMS_AND_CONDITIONS = "SOME PATH";
         #endregion Methods
 
@@ -22,23 +21,19 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
         // Parameters:
         //      List- Regretted Items list
         //      path- The path of the Quotation document
-        public static void SendQuotation(string path, IEnumerable<Item> regrettedItems, IEnumerable<Buyer> recipients)
+        public static void SendQuotation(string path, IEnumerable<Item> preparedItems, IEnumerable<Item> regrettedItems, IEnumerable<Buyer> recipients)
         {
             Email email = new Email();
             recipients.ToList().ForEach( buyer => email.MailMessage.To.Add(buyer.Email)); // Add the recipients to the list
 
             // TODO: Add the body to the email
-            email.MailMessage.Body = "";
+            email.MailMessage.Body = email.GetQuotationMailText(regrettedItems, preparedItems);
 
-            if (!String.IsNullOrEmpty(path))
+            if (preparedItems.Count()> 0 && !String.IsNullOrEmpty(path))
             {
                 email.MailMessage.Attachments.Add(new System.Net.Mail.Attachment(path));
             }
-            if(regrettedItems.Count() > 0)
-            {
-                regrettedItems.ToList().ForEach(item => email.MailMessage.Body += item.ItemName + ", ");
-            }
-            email.MailMessage.Attachments.Add(new System.Net.Mail.Attachment(PATH_TO_TERMS_AND_CONDITIONS)); // Add the terms and conditions document
+            //email.MailMessage.Attachments.Add(new System.Net.Mail.Attachment(PATH_TO_TERMS_AND_CONDITIONS)); // Add the terms and conditions document
             email.Send();
         }
 

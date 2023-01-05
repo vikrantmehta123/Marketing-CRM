@@ -7,6 +7,7 @@ namespace Metaforge_Marketing.Views.Mails
     {
         public GeneralMailView()
         {
+            DataContext = new ViewModels.Send.SendGeneralMailViewModel();
             InitializeComponent();
         }
     }

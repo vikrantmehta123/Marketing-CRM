@@ -66,7 +66,9 @@ namespace Metaforge_Marketing.Repository
                         ItemCode = reader["ItemCode"].ToString(),
                         Qty = Convert.ToInt32(reader["Qty"]),
                         OrderType = (OrderTypeEnum)(Convert.ToInt16(reader["OrderType"])),
-                        Priority = (PriorityEnum)(Convert.ToInt16(reader["Priority"]))
+                        Priority = (PriorityEnum)(Convert.ToInt16(reader["Priority"])),
+                        GrossWeight = (float)Convert.ToDecimal(reader["GrossWeight"]),
+                        NetWeight = (float)Convert.ToDecimal(reader["NetWeight"])
                     };
                     items.Add(item);
                 }
