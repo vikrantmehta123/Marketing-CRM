@@ -1,12 +1,10 @@
 ﻿using Metaforge_Marketing.HelperClasses;
-using Metaforge_Marketing.HelperClasses.Commands;
-using Metaforge_Marketing.HelperClasses.Converters;
+using Metaforge_Marketing.HelperClasses.Pagination;
 using Metaforge_Marketing.Models;
 using Metaforge_Marketing.Models.Enums;
 using Metaforge_Marketing.Repository;
 using Metaforge_Marketing.ViewModels.Shared;
 using Microsoft.Data.SqlClient;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -17,10 +15,10 @@ namespace Metaforge_Marketing.ViewModels.RFQs
     {
         #region Fields
         private ICommand _showDetailsCommand;
-        private PaginationCommands<RFQ> _paginationCommands;
+        private NormalPagination<RFQ> _paginationCommands;
         #endregion Fields
 
-        public PaginationCommands<RFQ> PaginationCommands
+        public NormalPagination<RFQ> PaginationCommands
         {
             get { return _paginationCommands; }
             private set { _paginationCommands = value; }
@@ -45,21 +43,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
         #region Constructors
         public PendingRFQViewModel()
         {
-            // Populate the collection and instantiate the Pagination instance
-            PaginationCommands= new PaginationCommands<RFQ>();
-            int count;
-            IEnumerable<RFQ> rfqs;
-            int pendingItemStatus = ((int)ItemStatusEnum.Pending);
-            int entriesPerPage = PaginationCommands.EntriesPerPage;
-            int offsetIndex = 0;
-            using(SqlConnection connection = new SqlConnection(Properties.Settings.Default.conn_string))
-            {
-                connection.Open();
-                rfqs = RFQsRepository.FetchRFQs(connection, pendingItemStatus, offsetIndex, entriesPerPage);
-                count = RFQsRepository.CountRFQs(connection, pendingItemStatus);
-                connection.Close();
-            }
-            PaginationCommands = new PaginationCommands<RFQ>(rfqs, count, filter);
+            PaginationCommands= new NormalPagination<RFQ>(RFQsRepository.FetchPendingRFQs, RFQsRepository.CountPendingRFQs, filter);
         }
         #endregion Constructors
 

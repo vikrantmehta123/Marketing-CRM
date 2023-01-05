@@ -13,7 +13,8 @@ namespace Metaforge_Marketing.HelperClasses.Pagination
         private string _pageSearchText;
         private Func<SqlConnection, int, int, IEnumerable<T>> _fetchFunction;
         private Predicate<object> _filterFunction;
-        private ICommand _nextPageCommand, _prevPageCommand, _lastPageCommand, _firstPageCommand;
+        private Func<SqlConnection, string, IEnumerable<T>> _searchFunction;
+        private ICommand _nextPageCommand, _prevPageCommand, _lastPageCommand, _firstPageCommand, _searchDatabaseCommand;
         private ObservableCollection<T> _collection;
         #endregion Fields
 
@@ -62,9 +63,27 @@ namespace Metaforge_Marketing.HelperClasses.Pagination
                 return _firstPageCommand;
             }
         }
+
+        public ICommand SearchDatabaseCommand
+        {
+            get
+            {
+                if (_searchDatabaseCommand == null)
+                {
+                    _searchDatabaseCommand = new Command(p => {
+                        _collection = new ObservableCollection<T>(SQLWrapper<T>.SearchWrapper(_searchFunction, DBSearchText));
+                        OnPropertyChanged(nameof(Collection));
+                        CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(_collection);
+                        view.Filter = _filterFunction;
+                    });
+                }
+                return _searchDatabaseCommand;
+            }
+        }
         #endregion Commands
 
         #region Properties
+        public string DBSearchText { get; set; }
         public ObservableCollection<T> Collection
         {
             get { return _collection; }
@@ -96,9 +115,10 @@ namespace Metaforge_Marketing.HelperClasses.Pagination
             view.Filter = _filterFunction;
         }
 
-        public NormalPagination(int count, ObservableCollection<T> collection) : base(count)
+        public NormalPagination(Func<SqlConnection, int, int, IEnumerable<T>> fetchFunction, Func<SqlConnection, int> countFunction,
+            Func<SqlConnection, string, IEnumerable<T>> searchFunction, Predicate<object> filterFunction) : this(fetchFunction, countFunction, filterFunction)
         {
-            _collection = collection;
+            _searchFunction = searchFunction;
         }
         #endregion Constructors
 

@@ -12,22 +12,17 @@ namespace Metaforge_Marketing.Repository
     {
 
         #region Select Queries
-        // TODO: Check with Rahul Fua about the correctness of joins
-        // TODO: Change CustId column to BuyerId
-
         // Summary:
         //      Used for pagination
-        //      Fetches a list of RFQs based on the status of their items
-        //      i.e. If there is at least one item of that status, the RFQ will be in the returned list
-        public static IEnumerable<RFQ> FetchRFQs(SqlConnection connection, int itemStatus, int offsetIndex, int entriesPerPage)
+        //      Fetches RFQs whose Customer Costing is yet to be prepared
+        public static IEnumerable<RFQ> FetchPendingRFQs(SqlConnection connection, int offsetIndex, int entriesPerPage)
         {
             List<RFQ> rfqs = new List<RFQ>();
-            using(SqlCommand cmd = new SqlCommand("FetchRFQs", connection))
+            using(SqlCommand cmd = new SqlCommand("FetchPendingRFQs", connection))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.Add("@offsetIndex", System.Data.SqlDbType.Int).Value = offsetIndex;
                 cmd.Parameters.Add("@entriesPerPage", System.Data.SqlDbType.Int).Value = entriesPerPage;
-                cmd.Parameters.Add("@status", System.Data.SqlDbType.Int).Value = itemStatus;
 
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -106,7 +101,7 @@ namespace Metaforge_Marketing.Repository
         // Summary:
         //      Used for pagination
         //      Fetches the count of those RFQs where there's at least one item of the given Item Status
-        public static int CountRFQs(SqlConnection conn, int itemStatus)
+        public static int CountPendingRFQs(SqlConnection conn)
         {
             using(SqlCommand cmd = conn.CreateCommand())
             {
@@ -114,11 +109,10 @@ namespace Metaforge_Marketing.Repository
                     "SELECT COUNT(t.RFQId) FROM (" +
 		            "SELECT RFQId " + 
 		            "FROM Items " +
-		            "WHERE Status = @status " +
+		            "WHERE Status < 3 AND Status != 1 " +
                     "GROUP BY RFQId " +
 		            "HAVING COUNT(*) > 0" +
 		            ") t ";
-                cmd.Parameters.Add("@status", System.Data.SqlDbType.Int).Value = itemStatus;
                 return Convert.ToInt32(cmd.ExecuteScalar());
             }
         }

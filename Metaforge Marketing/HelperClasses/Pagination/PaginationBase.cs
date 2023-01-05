@@ -7,11 +7,12 @@ namespace Metaforge_Marketing.HelperClasses.Pagination
 {
     public class PaginationBase<T> : ViewModelBase
     {
-        #region Fields
-        private int _currentPage, _totalPages, _entriesPerPage = 2, _offsetIndex;
-        private Func<SqlConnection, int> _countFunction;
-
+        public const int _entriesPerPage = 2;
         protected readonly string conn_string = Properties.Settings.Default.conn_string;
+
+        #region Fields
+        private int _currentPage = 1, _totalPages, _offsetIndex;
+        private Func<SqlConnection, int> _countFunction;
         #endregion Fields
 
         #region Constructors
@@ -20,11 +21,6 @@ namespace Metaforge_Marketing.HelperClasses.Pagination
             _countFunction= countFunction;
             _totalPages = ComputeTotalPages(SQLWrapper<T>.CountWrapper(countFunction), _entriesPerPage);
             _offsetIndex = (_currentPage - 1) * _entriesPerPage;
-        }
-
-        public PaginationBase(int count)
-        {
-            _totalPages = ComputeTotalPages(count, _entriesPerPage);
         }
         #endregion Constructors
 
@@ -43,7 +39,6 @@ namespace Metaforge_Marketing.HelperClasses.Pagination
         public int EntriesPerPage
         {
             get { return _entriesPerPage; }
-            set { _entriesPerPage = value; }
         }
         protected int OffsetIndex
         {

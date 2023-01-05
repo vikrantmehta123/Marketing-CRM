@@ -33,5 +33,17 @@ namespace Metaforge_Marketing.Models
             _items = new List<Item>();
             _enquiryDate = DateTime.Today.Date;
         }
+
+        #region Methods
+        // Summary:
+        //      Basic validation
+        public bool IsFormDataValid()
+        {
+            if (String.IsNullOrEmpty(_projectName)) { return false; }
+            if(EnquiryDate > DateTime.Today.Date) { return false;}
+            if (RFQBroughtBy == null) { return false; }
+            return true;
+        }
+        #endregion Methods
     }
 }

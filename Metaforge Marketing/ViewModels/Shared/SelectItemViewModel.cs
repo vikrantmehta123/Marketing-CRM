@@ -1,8 +1,8 @@
 ﻿using Metaforge_Marketing.HelperClasses;
-using Metaforge_Marketing.HelperClasses.Commands;
 using Metaforge_Marketing.Models;
 using System.Windows.Input;
 using Metaforge_Marketing.Repository;
+using Metaforge_Marketing.HelperClasses.Pagination;
 
 namespace Metaforge_Marketing.ViewModels.Shared
 {
@@ -12,7 +12,13 @@ namespace Metaforge_Marketing.ViewModels.Shared
         private ICommand _selectionDoneCommand;
         #endregion Fields
 
-        public PaginationCommands<Item> PaginationCommands { get; private set; }
+        public SelectItemViewModel()
+        {
+            PaginationCommands = new NormalPagination<Item>(ItemsRepository.FetchItems, ItemsRepository.CountItems, ItemsRepository.FetchItems, filter);
+        }
+
+        #region Properties
+        public NormalPagination<Item> PaginationCommands { get; private set; }
 
         public override ICommand SelectionDoneCommand
         {
@@ -25,7 +31,9 @@ namespace Metaforge_Marketing.ViewModels.Shared
                 return _selectionDoneCommand;
             }
         }
+        #endregion Properties
 
+        #region Methods
         public override void ClearSelection() { SelectedItem = null; }
         public override bool IsSelectionDone() { return SelectedItem != null; }
         private bool filter(object o)
@@ -41,12 +49,6 @@ namespace Metaforge_Marketing.ViewModels.Shared
             }
             else { return true; }
         }
-
-
-        public SelectItemViewModel()
-        {
-            PaginationCommands = new PaginationCommands<Item>(ItemsRepository.FetchItems, ItemsRepository.CountItems, ItemsRepository.FetchItems, filter);
-        }
-
+        #endregion Methods
     }
 }
