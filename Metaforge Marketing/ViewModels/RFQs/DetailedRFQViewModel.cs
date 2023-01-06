@@ -62,12 +62,14 @@ namespace Metaforge_Marketing.ViewModels.RFQs
             {
                 if (item.Status != ItemStatusEnum.Regretted && item.IsRegretted)
                 {
+                    item.RejectRegret = RejectRegretEnum.Regret;
                     using(SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
                     {
                         conn.Open();
                         SqlTransaction transaction = conn.BeginTransaction();
                         try
                         {
+                            RejectRegretRepository.Insert(conn, transaction, item);
                             CostingRepository.UpdateItemStatus(conn, transaction, item, ItemStatusEnum.Regretted);
                             transaction.Commit();
                             MessageBox.Show("Success");

@@ -14,12 +14,13 @@ namespace Metaforge_Marketing.Models
 
         #region Fields
         private int _id, _qty;
-        private string _itemName, _itemCode, _note;
+        private string _itemName, _itemCode, _note, _reason;
         private float _grossWeight, _netWeight;
         private bool _isRegretted;
         private Admin _quotationHandledBy;
         private RFQ _rfq;
         private Customer _customer;
+        private RejectRegretEnum _rejectRegret;
         private PriorityEnum _priority;
         private OrderTypeEnum _orderType;
         private ItemStatusEnum _itemStatus;
@@ -40,6 +41,11 @@ namespace Metaforge_Marketing.Models
             get { return _note; }
             set { _note = value; }
         }
+        public string Reason
+        {
+            get { return _reason; }
+            set { _reason = value; }
+        }
         public DateTime EventDate
         {
             get { return _eventDate; }
@@ -54,6 +60,12 @@ namespace Metaforge_Marketing.Models
             set { _quotationHandledBy = value; }
         }
         public RFQ RFQ { get { return _rfq; } set { _rfq = value;}}
+
+        public RejectRegretEnum RejectRegret
+        {
+            get { return _rejectRegret; }
+            set { _rejectRegret = value; }
+        }
         #endregion Properties
 
 

@@ -32,7 +32,7 @@
                 </DockPanel>
                 <DockPanel>
                     <Label Content="Enquiry Date:" FontWeight="DemiBold"/>
-                    <Label Content="{Binding SelectedRFQ.EnquiryDate}"/>
+                    <Label Content="{Binding SelectedRFQ.EnquiryDate, StringFormat={}{0:dd-MM-yyyy}}"/>
                 </DockPanel>
             </StackPanel>
         </StackPanel>
@@ -48,7 +48,7 @@
                             <Setter Property="Background"
                                     Value="#FFCCCB" />
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Status}" Value="5">
+                        <DataTrigger Binding="{Binding Status}" Value="3">
                             <Setter Property="Background" Value="#ABF7B1"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -61,13 +61,13 @@
                     <GridViewColumn Header="Priority" DisplayMemberBinding="{Binding Path=Priority}"/>
                     <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Path=Qty}"/>
                     <GridViewColumn Header="Order Type" DisplayMemberBinding="{Binding Path=OrderType,Converter={StaticResource OrderTypeConverter}}"/>
-                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Path=Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ItemStatusConverter}}"/>
+                    <GridViewColumn Header="Status" DisplayMemberBinding="{Binding Path=Status, Converter={StaticResource ItemStatusConverter}}"/>
 
                     <GridViewColumn Header="Regret">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsEnabled="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" 
-                                        Content="Regret" IsChecked="{Binding Path=IsRegretted}"/>
+                                        Content="Regret" IsChecked="{Binding IsRegretted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -76,7 +76,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBox IsEnabled="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}" 
-                                        MinWidth="100" Text="{Binding Path=Note}"/>
+                                        MinWidth="100" Text="{Binding Reason, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

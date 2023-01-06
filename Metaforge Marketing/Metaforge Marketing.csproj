@@ -231,6 +231,7 @@
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Buyer.cs" />
     <Compile Include="Models\ConversionCosting.cs" />
+    <Compile Include="Models\Enums\RejectRegretEnum.cs" />
     <Compile Include="Models\Quotation.cs" />
     <Compile Include="Models\Enums\CostingCategoryEnum.cs" />
     <Compile Include="Models\Enums\CostingFormatEnum.cs" />
@@ -260,6 +261,7 @@
     <Compile Include="Repository\OperationsRepository.cs" />
     <Compile Include="Repository\PORepository.cs" />
     <Compile Include="Repository\QuotationRepository.cs" />
+    <Compile Include="Repository\RejectRegretRepository.cs" />
     <Compile Include="Repository\RemarksRepository.cs" />
     <Compile Include="Repository\RFQsRepository.cs" />
     <Compile Include="Repository\RMRepository.cs" />
