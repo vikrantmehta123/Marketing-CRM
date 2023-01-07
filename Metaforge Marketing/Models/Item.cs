@@ -16,7 +16,7 @@ namespace Metaforge_Marketing.Models
         private int _id, _qty;
         private string _itemName, _itemCode, _note, _reason;
         private float _grossWeight, _netWeight;
-        private bool _isRegretted;
+        private bool _isRegretted, _isRejected;
         private Admin _quotationHandledBy;
         private RFQ _rfq;
         private Customer _customer;
@@ -34,6 +34,7 @@ namespace Metaforge_Marketing.Models
         public OrderTypeEnum OrderType { get { return _orderType; }  set { _orderType = value; } }
         public int Qty { get { return _qty; } set { _qty = value; } }
         public bool IsRegretted { get { return _isRegretted; } set { _isRegretted = value; } }
+        public bool IsRejected { get { return _isRejected; } set { _isRejected = value; } }
         public string ItemName { get { return _itemName;} set { _itemName = value; } }
         public string ItemCode { get { return _itemCode; } set { _itemCode = value; } }
         public string Note

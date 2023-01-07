@@ -14,7 +14,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
     internal class DetailedRFQViewModel : PopupCloseMarker
     {
         #region Fields
-        private ICommand _selectionDoneCommand, _saveCommand;
+        private ICommand _saveCommand;
         private ObservableCollection<Item> _items;
         #endregion Fields
 
@@ -30,13 +30,7 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                 return _saveCommand;
             }
         }
-        public override ICommand SelectionDoneCommand
-        {
-            get
-            {
-                return _selectionDoneCommand;
-            }
-        }
+        public override ICommand SelectionDoneCommand { get; set; }
         public ObservableCollection<Item> Items
         {
             get

@@ -13,7 +13,7 @@ namespace Metaforge_Marketing.ViewModels
 
         #region Fields
         private ICommand _addCustomerCommand, _addBuyerCommand, _addRFQCommand, _addRemarkCommand;
-        private ICommand _prepareCostingCommand, _pendingRFQsCommand, _addPODetailsCommand;
+        private ICommand _prepareCostingCommand, _pendingRFQsCommand, _addPODetailsCommand, _sentRFQsCommand;
         private ICommand _customerHistoryCommand, _costingComparisonCommand, _performanceReportCommand, _quotationHistoryCommand;
         private ICommand _sendGeneralMailCommand, _sendQuotationMailCommand;
         private ICommand _updateRMMasterCommand, _adminMasterCommand, _operationsMasterCommand, _buyerMasterCommand, _customerMasterCommand, _itemMasterCommand;
@@ -105,6 +105,17 @@ namespace Metaforge_Marketing.ViewModels
                 {
                     _pendingRFQsCommand = new Command(p => ChangeViewModel(new PendingRFQViewModel()));
                 }return _pendingRFQsCommand;
+            }
+        }
+        public ICommand SentRFQsCommand
+        {
+            get
+            {
+                if (_sentRFQsCommand == null)
+                {
+                    _sentRFQsCommand = new Command(p => ChangeViewModel(new RFQs.SentQuoteViewModels.SentQuotationsViewModel()));
+                }
+                return _sentRFQsCommand;
             }
         }
         #endregion RFQ Commands

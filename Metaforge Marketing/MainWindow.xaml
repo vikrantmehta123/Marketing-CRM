@@ -8,6 +8,8 @@
         xmlns:rfq_vm="clr-namespace:Metaforge_Marketing.ViewModels.RFQs"
         xmlns:rfq_views="clr-namespace:Metaforge_Marketing.Views.RFQs"
         xmlns:po_vm="clr-namespace:Metaforge_Marketing.ViewModels.RFQs.POViewModels"
+        xmlns:sent_vm="clr-namespace:Metaforge_Marketing.ViewModels.RFQs.SentQuoteViewModels"
+        xmlns:sent_views="clr-namespace:Metaforge_Marketing.Views.RFQs.SentQuotes"
         xmlns:reports_vm="clr-namespace:Metaforge_Marketing.ViewModels.Reports"
         xmlns:reports_views="clr-namespace:Metaforge_Marketing.Views.Reports"
         xmlns:SendMail_vm="clr-namespace:Metaforge_Marketing.ViewModels.Send"
@@ -52,11 +54,13 @@
         <DataTemplate DataType="{x:Type rfq_vm:PendingRFQViewModel}">
             <rfq_views:PendingRFQView/>
         </DataTemplate>
-        <!--#endregion RFQ Section-->
-
         <DataTemplate DataType="{x:Type po_vm:AddPODetailsViewModel}">
             <rfq_views:AddPODetailsView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type sent_vm:SentQuotationsViewModel}">
+            <sent_views:SentQuotationsView/>
+        </DataTemplate>
+        <!--#endregion RFQ Section-->
         
         <!--#region Reports Section-->
         <DataTemplate DataType="{x:Type reports_vm:CustomerHistoryViewModel}">
@@ -110,6 +114,7 @@
                     <MenuItem Header="RFQ">
                         <MenuItem Header="Costing" Command="{Binding PrepareCostingCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Pending RFQs" Command="{Binding PendingRFQsCommand}" CommandParameter="{Binding}"/>
+                        <MenuItem Header="Sent RFQs" Command="{Binding SentRFQsCommand}" CommandParameter="{Binding}"/>
                         <MenuItem Header="Add PO Details" Command="{Binding AddPODetailsCommand}" CommandParameter="{Binding}"/>
                     </MenuItem>
                 </Menu>
