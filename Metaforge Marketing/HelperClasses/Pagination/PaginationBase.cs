@@ -22,6 +22,12 @@ namespace Metaforge_Marketing.HelperClasses.Pagination
             _totalPages = ComputeTotalPages(SQLWrapper<T>.CountWrapper(countFunction), _entriesPerPage);
             _offsetIndex = (_currentPage - 1) * _entriesPerPage;
         }
+
+        public PaginationBase(Func<SqlConnection, int, int> countFunction, int status)
+        {
+            _totalPages = ComputeTotalPages(SQLWrapper<T>.CountWrapper(countFunction, status), _entriesPerPage);
+            _offsetIndex = (_currentPage - 1) * _entriesPerPage;
+        }
         #endregion Constructors
 
         #region Properties

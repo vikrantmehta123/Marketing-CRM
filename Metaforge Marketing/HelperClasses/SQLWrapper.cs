@@ -15,11 +15,8 @@ namespace Metaforge_Marketing.HelperClasses
 
 
         #region Insert Wrappers
-        /// <summary>
-        /// Provides a wrapper to insert an object into the database
-        /// </summary>
-        /// <param name="action"></param>
-        /// <param name="objToInsert"></param>
+
+        // Provides an wrapper for INSERT INTO type of queries
         public static void InsertWrapper(Action<SqlConnection, T> action, T objToInsert)
         {
             using (SqlConnection connection = new SqlConnection(conn_string))
@@ -31,7 +28,6 @@ namespace Metaforge_Marketing.HelperClasses
         }
 
         #endregion Insert Wrappers
-
 
         #region Search Wrappers
         /// <summary>
@@ -54,9 +50,10 @@ namespace Metaforge_Marketing.HelperClasses
         }
         #endregion Search Wrappers
 
-
         #region Fetch Wrappers
 
+        // Summary:
+        //      Provides wrapper for queries where foreign key is reqd
         public static IEnumerable<T> FetchWrapper<S>(Func<SqlConnection, S, IEnumerable<T>> fetchFunction, S obj)
         {
             IEnumerable<T> result;
@@ -69,14 +66,8 @@ namespace Metaforge_Marketing.HelperClasses
             return result;
         }
 
-
-        /// <summary>
-        /// Provides a wrapper for a fetch function where one needs to fetch all the records
-        /// i.e. Provides wrapper for SELECT * query
-        /// Mostly used to fill combobox options
-        /// </summary>
-        /// <param name="fetchFunction"></param>
-        /// <returns></returns>
+        // Summary:
+        //      Provides a wrapper for SELECT * type of queries
         public static IEnumerable<T> FetchWrapper(Func<SqlConnection, IEnumerable<T>> fetchFunction)
         {
             IEnumerable<T> result;
@@ -89,14 +80,8 @@ namespace Metaforge_Marketing.HelperClasses
             return result;
         }
 
-        /// <summary>
-        /// Provides a wrapper for the paginated fetch function.
-        /// Used in pagination- when want to fetch fixed number of entries from a fixed offset index
-        /// </summary>
-        /// <param name="fetchFunction"></param>
-        /// <param name="offsetIndex"></param>
-        /// <param name="entriesPerPage"></param>
-        /// <returns>IEnumerable of the fetch rows</returns>
+        // Summary:
+        //      Provides a wrapper for the SELECT-OFFSET-FETCH type of queries
         public static IEnumerable<T> FetchWrapper(Func<SqlConnection, int, int, IEnumerable<T>> fetchFunction, int offsetIndex, int entriesPerPage)
         {
             IEnumerable<T> result;

@@ -10,6 +10,7 @@ using System.Linq;
 using Metaforge_Marketing.HelperClasses;
 using Metaforge_Marketing.HelperClasses.Quotation;
 using System.Windows;
+using Metaforge_Marketing.HelperClasses.Pagination;
 
 namespace Metaforge_Marketing.ViewModels.Send
 {
@@ -28,7 +29,7 @@ namespace Metaforge_Marketing.ViewModels.Send
             get { return _selectedQuotationFormat; } 
             set { _selectedQuotationFormat = value; } 
         }
-        public PaginationCommands<RFQ> Pagination { get; set; }
+        public NormalPagination<RFQ> Pagination { get; set; }
 
         public RFQ SelectedRFQ
         {
@@ -51,14 +52,14 @@ namespace Metaforge_Marketing.ViewModels.Send
 
         public SendQuotationViewModel()
         {
-            Pagination = new PaginationCommands<RFQ>(RFQsRepository.FetchQuotationReadyRFQs,RFQsRepository.CountQuotationReadyRFQs, filter);
+            Pagination = new NormalPagination<RFQ>(RFQsRepository.FetchQuotationReadyRFQs,RFQsRepository.CountQuotationReadyRFQs, Filter);
         }
 
 
         #region Methods
         // Summary:
         //      Filters the results on the screen based on Customer's Name and Project's Name
-        private bool filter(object o)
+        private bool Filter(object o)
         {
             RFQ rfq = o as RFQ;
             if (Pagination != null)

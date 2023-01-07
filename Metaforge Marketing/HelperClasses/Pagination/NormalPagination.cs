@@ -120,6 +120,14 @@ namespace Metaforge_Marketing.HelperClasses.Pagination
         {
             _searchFunction = searchFunction;
         }
+
+        public NormalPagination(Func<SqlConnection, int, int, int, IEnumerable<T>> fetchFunction, Predicate<object> filterFunction, Func<SqlConnection, int, int> countFunction, int status) : base(countFunction, status)
+        {
+            _filterFunction = filterFunction;
+            _collection = GetCollection(fetchFunction, status);
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(_collection);
+            view.Filter = _filterFunction;
+        }
         #endregion Constructors
 
         #region Command Functions
@@ -153,5 +161,19 @@ namespace Metaforge_Marketing.HelperClasses.Pagination
         }
 
         #endregion Command Functions
+
+        #region Methods
+        private ObservableCollection<T> GetCollection(Func<SqlConnection, int, int, int, IEnumerable<T>> fetchFunction, int status)
+        {
+            ObservableCollection<T> results;
+            using(SqlConnection conn = new SqlConnection(conn_string))
+            {
+                conn.Open();
+                results = new ObservableCollection<T>(fetchFunction(conn, OffsetIndex, EntriesPerPage, status));
+                conn.Close();
+            }
+            return results;
+        }
+        #endregion Methods
     }
 }

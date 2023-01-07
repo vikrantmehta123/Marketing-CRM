@@ -208,7 +208,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="HelperClasses\Commands\PaginationCommands.cs" />
     <Compile Include="HelperClasses\Converters\CostingCategoryConverter.cs" />
     <Compile Include="HelperClasses\Converters\CustomerCategoryConverter.cs" />
     <Compile Include="HelperClasses\Converters\IntegerToYesNoConverter.cs" />
