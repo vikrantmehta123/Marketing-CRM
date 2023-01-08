@@ -82,25 +82,14 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
             };
             bool res = (bool)dialog.ShowDialog();
             string path;
-            try
+            if (res)
             {
-                if (res)
-                {
-                    path = dialog.FileName.ToString();
-                    document.ExportAsFixedFormat(path, WdExportFormat.wdExportFormatPDF);
-                }
-                else
-                {
-                    throw new Exception("Please Save the file");
-                }
+                path = dialog.FileName.ToString();
+                document.ExportAsFixedFormat(path, WdExportFormat.wdExportFormatPDF);
             }
-            finally
+            else
             {
-                object saveOption = WdSaveOptions.wdDoNotSaveChanges;
-                object originalFormat = WdOriginalFormat.wdOriginalDocumentFormat;
-                object routeDocument = false;
-                document.Close(ref saveOption, ref originalFormat, ref routeDocument);
-                document.Application.Quit();
+                throw new Exception("Please Save the file");
             }
             return path;
         }

@@ -1,5 +1,4 @@
-﻿using Metaforge_Marketing.HelperClasses.Commands;
-using Metaforge_Marketing.Models;
+﻿using Metaforge_Marketing.Models;
 using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -80,23 +79,23 @@ namespace Metaforge_Marketing.ViewModels.Send
         //      regretted items, creates a word document based on the format selected, and sends it to the buyer in question
         private void SendQuotation()
         {
-            IEnumerable<Item> RegrettedItems;
-            IEnumerable<Item> CostingPreparedItems;
+            List<Item> RegrettedItems;
+            List<Item> CostingPreparedItems;
             List<Quotation> PreparedCostings = new List<Quotation>();
             string path = "";
             using (SqlConnection conn = new SqlConnection(Properties.Settings.Default.conn_string))
             {
                 conn.Open();
                 SelectedRFQ.Items = new List<Item>(ItemsRepository.FetchItems(conn, SelectedRFQ));
-                RegrettedItems = ItemsRepository.FetchItems(conn, SelectedRFQ, ItemStatusEnum.Regretted);
-                CostingPreparedItems = ItemsRepository.FetchItems(conn, SelectedRFQ, ItemStatusEnum.Customer_Costing_Prepared);
+                RegrettedItems = (List<Item>)ItemsRepository.FetchItems(conn, SelectedRFQ, ItemStatusEnum.Regretted);
+                CostingPreparedItems = (List<Item>)ItemsRepository.FetchItems(conn, SelectedRFQ, ItemStatusEnum.Customer_Costing_Prepared);
                 foreach (Item item in CostingPreparedItems)
                 {
                     PreparedCostings.Add(QuotationRepository.FetchLatestQuotation(conn, item));
                 }
                 conn.Close();
             }
-            if (PreparedCostings.Count() > 0)
+            if (PreparedCostings.Count > 0)
             {
                 if (SelectedQuotationFormat == QuotationFormatEnum.Short)
                 {
@@ -109,15 +108,12 @@ namespace Metaforge_Marketing.ViewModels.Send
                 }
                 else if (SelectedQuotationFormat == QuotationFormatEnum.Long)
                 {
-                    path = LongQuotationCreator.CreateQuotation(PreparedCostings.ToList());
+                    path = LongQuotationCreator.CreateQuotation(PreparedCostings);
                 }
             }
-            System.Diagnostics.Debug.Assert(RegrettedItems.Count() == 0, "Regret items not zero");
-            System.Diagnostics.Debug.Assert(CostingPreparedItems.Count() > 0, "Prepared Costings zero");
-            System.Diagnostics.Debug.Assert(!String.IsNullOrEmpty(path), "Path empty");
             try
             {
-                // TODO: Uncomment the below block once the rest of the code is tested.
+                if (String.IsNullOrEmpty(path)) { throw new Exception("Quotation isn't saved"); }
                 QuotationSender.SendQuotation(path, CostingPreparedItems, RegrettedItems, new List<Buyer> { SelectedRFQ.Buyer });
                 RegrettedItems.ToList().ForEach(item => item.Status = ItemStatusEnum.RegretMailSent); // Mark the status of the the regretted items as regret mail sent
                 CostingPreparedItems.ToList().ForEach(item => item.Status = ItemStatusEnum.QuotationSent); // Mark the status of the Quotation items as Quotation sent

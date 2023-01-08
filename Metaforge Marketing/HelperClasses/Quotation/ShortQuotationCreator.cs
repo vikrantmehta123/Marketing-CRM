@@ -23,6 +23,10 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
                 path = SaveQuotation(ref quote);
                 return path;
             }
+            catch(Exception e)
+            {
+                throw;
+            }
             finally
             {
                 object saveOption = WdSaveOptions.wdDoNotSaveChanges;

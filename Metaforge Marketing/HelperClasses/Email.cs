@@ -95,38 +95,37 @@ namespace Metaforge_Marketing.HelperClasses
         }
 
 
-        public string GetQuotationMailText(IEnumerable<Item> regrettedItems, IEnumerable<Item> preparedItems)
+        public string GetQuotationMailText(List<Item> regrettedItems, List<Item> preparedItems)
         {
             string PathToBlueprintFolder = @"D:\Metaforge\Metaforge Marketing\Metaforge Marketing\MailBlueprints";
             string text;
-            if (regrettedItems.Count() == 0)
+            if (regrettedItems.Count == 0)
             {
                 text = File.ReadAllText(Path.Combine(PathToBlueprintFolder, "QuoteAllMail.txt"));
             }
-            else if(preparedItems.Count() == 0)
+            else if(preparedItems.Count == 0)
             {
                 text = File.ReadAllText(Path.Combine(PathToBlueprintFolder, "RegretAllMail.txt"));
             }
             else
             {
-                string regret = WriteItems(regrettedItems.ToList());
-                string prepared = WriteItems(preparedItems.ToList());
+                string regret = WriteItems(regrettedItems);
+                string prepared = WriteItems(preparedItems);
 
                 string path = Path.Combine(PathToBlueprintFolder, "QuotationMail.txt");
                 text = File.ReadAllText(path);
-                text.Replace("{Regretted}", regret);
-                text.Replace("{Prepared}", prepared);
+                text = text.Replace("{Regretted}", regret);
+                text = text.Replace("{Prepared}", prepared);
             }
             return text;
         }
 
         private string WriteItems(List<Item> items)
         {
-            ;
             string text = "";
-            for (int i = 0; i < items.Count(); i++)
+            for (int i = 0; i < items.Count; i++)
             {
-                if(i < items.Count() - 1)
+                if(i < items.Count - 1)
                 {
                     text += items[i].ItemName + ", ";
                 }

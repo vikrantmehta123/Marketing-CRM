@@ -30,14 +30,14 @@ namespace Metaforge_Marketing.ViewModels.RFQs
                 return _saveCommand;
             }
         }
-        public override ICommand SelectionDoneCommand { get; set; }
+        public override ICommand SelectionDoneCommand { get; }
         public ObservableCollection<Item> Items
         {
             get
             {
                 if (SelectedRFQ != null)
                 {
-                    _items = new ObservableCollection<Item>(SQLWrapper<Item>.FetchWrapper(Repository.ItemsRepository.FetchItems, SelectedRFQ));
+                    _items = new ObservableCollection<Item>(SQLWrapper<Item>.FetchWrapper(ItemsRepository.FetchItems, SelectedRFQ));
                 }
                 return _items;
             }

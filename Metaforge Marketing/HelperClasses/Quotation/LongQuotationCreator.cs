@@ -74,8 +74,16 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
             }
             catch(System.Exception e)
             {
-                System.Windows.MessageBox.Show(e.Message);
-            } 
+                throw;
+            }
+            finally
+            {
+                object saveOption = WdSaveOptions.wdDoNotSaveChanges;
+                object originalFormat = WdOriginalFormat.wdOriginalDocumentFormat;
+                object routeDocument = false;
+                quote.Close(ref saveOption, ref originalFormat, ref routeDocument);
+                app.Quit();
+            }
             return path;
         }
         #endregion Main Methods
