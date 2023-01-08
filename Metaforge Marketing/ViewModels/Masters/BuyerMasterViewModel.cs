@@ -1,23 +1,19 @@
 ﻿using Metaforge_Marketing.HelperClasses;
 using Metaforge_Marketing.Repository;
+using Metaforge_Marketing.Models;
+using Metaforge_Marketing.HelperClasses.Pagination;
 
 namespace Metaforge_Marketing.ViewModels.Masters
 {
     public class BuyerMasterViewModel : ViewModelBase
     {
-        private MasterDataPagination _masterData;
+        private MasterPagination<Buyer> _pagination;
 
-        public MasterDataPagination MasterData
-        {
-            get
-            {
-                return _masterData;
-            }
-        }
+        public MasterPagination<Buyer> Pagination { get { return _pagination; } }
 
         public BuyerMasterViewModel()
         {
-            _masterData = new MasterDataPagination(BuyersRepository.UpdateDB, BuyersRepository.FetchBuyersIntoDatatable, BuyersRepository.CountBuyers);
+            _pagination = new MasterPagination<Buyer>(BuyersRepository.CountBuyers, BuyersRepository.UpdateDB, BuyersRepository.FetchBuyersIntoDatatable);
         }
     }
 }

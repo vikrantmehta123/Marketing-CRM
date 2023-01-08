@@ -23,7 +23,7 @@
                FontWeight="Bold" FontSize="24"/>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible">
-            <DataGrid ItemsSource="{Binding MasterData.MasterTable}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <DataGrid ItemsSource="{Binding Pagination.MasterTable}" CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id" Binding="{Binding ItemId}" Visibility="Collapsed"/>
                     <DataGridTextColumn Header="Name" Binding="{Binding ItemName}"/>
@@ -38,10 +38,10 @@
 
         <StackPanel HorizontalAlignment="Left" Grid.Row="2">
             <DockPanel LastChildFill="False" Grid.Row="2" VerticalAlignment="Center">
-                <Button Content="Prev" Command="{Binding MasterData.PrevPageCommand}"/>
-                <Button Content="Next" Command="{Binding MasterData.NextPageCommand}"/>
+                <Button Content="Prev" Command="{Binding Pagination.PrevPageCommand}"/>
+                <Button Content="Next" Command="{Binding Pagination.NextPageCommand}"/>
             </DockPanel>
-            <Button Content="Update" Command="{Binding MasterData.UpdateCommand}"/>
+            <Button Content="Update" Command="{Binding Pagination.UpdateCommand}"/>
         </StackPanel>
 
     </Grid>

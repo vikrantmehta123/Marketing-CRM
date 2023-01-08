@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace Metaforge_Marketing.HelperClasses.Pagination
 {
-    internal class MasterPagination<T>:PaginationBase<T> 
+    public class MasterPagination<T>:PaginationBase<T> 
     {
         #region Fields
         private DataTable _masterTable = new DataTable();
