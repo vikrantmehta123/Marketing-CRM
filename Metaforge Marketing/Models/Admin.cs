@@ -1,7 +1,9 @@
 ﻿
+using Metaforge_Marketing.HelperClasses;
 using Metaforge_Marketing.Repository;
 using Microsoft.Data.SqlClient;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 
@@ -9,6 +11,9 @@ namespace Metaforge_Marketing.Models
 {
     public class Admin : ModelsBase
     {
+        public static IEnumerable<Admin> Admins { get; } = SQLWrapper<Admin>.FetchWrapper(AdminsRepository.FetchAdmins);
+
+
         #region Fields
         private int _id, _rfqCount = -1, _preparedCostingsCount = -1, _convertedQuotationsCount = -1;
         private float _avgResponseTime = -1, _conversionRate = -1, _totalBusinessBrought;

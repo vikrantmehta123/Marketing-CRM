@@ -3,10 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:Metaforge_Marketing.HelperClasses.Converters"
+             xmlns:models="clr-namespace:Metaforge_Marketing.Models"
              xmlns:local="clr-namespace:Metaforge_Marketing.Views.Add"
              mc:Ignorable="d" 
              Background="White"
              d:DesignHeight="720" d:DesignWidth="1280">
+    <UserControl.Resources>
+        <converters:OrderTypeConverter x:Key="OrderTypeConverter"/>
+        <models:Item x:Key="Item"/>
+        <models:Admin x:Key="Admin"/>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.75*"/>
@@ -17,7 +25,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2.5*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -54,7 +62,7 @@
 
             <DockPanel LastChildFill="False">
                 <Label Content="Choose Admin" FontWeight="DemiBold"/>
-                <ComboBox ItemsSource="{Binding Admins}" SelectedItem="{Binding RFQToAdd.RFQBroughtBy}" MinWidth="100"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource Admin}, Path=Admins}" SelectedItem="{Binding RFQToAdd.RFQBroughtBy}" MinWidth="100"/>
             </DockPanel>
 
             <DockPanel Margin="0, 10, 0, 0">
@@ -72,52 +80,24 @@
                 <TextBox VerticalContentAlignment="Center" Text="{Binding Path=RFQToAdd.ReferredBy}"/>
             </DockPanel>
 
-            <DockPanel Margin="0, 10, 0, 0">
-                <StackPanel >
-                    <Label Content="Item Name" FontWeight="DemiBold"/>
-                    <TextBox VerticalContentAlignment="Center" Text="{Binding Path=RFQItem.ItemName}"/>
-                </StackPanel>
-                <StackPanel>
-                    <Label Content="Item Code" FontWeight="DemiBold"/>
-                    <TextBox VerticalContentAlignment="Center" Text="{Binding Path=RFQItem.ItemCode}"/>
-                </StackPanel>
-            </DockPanel>
 
-            <DockPanel Margin="0, 10, 0, 0">
-                <StackPanel Grid.Column="0">
-                    <Label Content="Gross Weight" FontWeight="DemiBold"/>
-                    <TextBox Text="{Binding RFQItem.GrossWeight}" MinWidth="30"/>
-                </StackPanel>
+            <DataGrid ItemsSource="{Binding RFQToAdd.Items}" CanUserAddRows="True" 
+                      CanUserDeleteRows="True" CanUserReorderColumns="False" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Item Name" Binding="{Binding ItemName}"/>
+                    <DataGridTextColumn Header="Item Code" Binding="{Binding ItemCode}"/>
+                    <DataGridTextColumn Header="Gross Weight" Binding="{Binding GrossWeight, StringFormat=N2}"/>
+                    <DataGridTextColumn Header="Net Weight" Binding="{Binding NetWeight, StringFormat=N2}"/>
+                    <DataGridTextColumn Header="Qty" Binding="{Binding Qty}"/>
+                    <DataGridComboBoxColumn Header="Priority" ItemsSource="{Binding Source={StaticResource Item}, Path=Priorities}" SelectedItemBinding="{Binding Path=Priority}"/>
+                    <DataGridComboBoxColumn Header="Order Type" ItemsSource="{Binding Source={StaticResource Item},Path=OrderTypes}" SelectedItemBinding="{Binding OrderType}"/>
+                    <DataGridComboBoxColumn Header="Admin" ItemsSource="{Binding Source={StaticResource Admin}, Path=Admins}" SelectedItemBinding="{Binding QuotationHandledBy}"/>
+                </DataGrid.Columns>
 
-                <StackPanel Grid.Column="1" >
-                    <Label Content="Net Weight" FontWeight="DemiBold"/>
-                    <TextBox Text="{Binding RFQItem.NetWeight}" MinWidth="30" />
-                </StackPanel>
-            </DockPanel>
-
-            <DockPanel Margin="0, 10, 0, 0">
-                <Label Content="Qty:" FontWeight="DemiBold"/>
-                <TextBox VerticalContentAlignment="Center" Text="{Binding Path=RFQItem.Qty}"  />
-            </DockPanel>
-
-            <DockPanel Margin="0, 10, 0, 0">
-                <Label Content="Order Type" FontWeight="DemiBold"/>
-                <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding RFQItem.OrderTypes}"/>
-            </DockPanel>
-
-            <DockPanel Margin="0, 10, 0, 0">
-                <Label  Content="Priority" FontWeight="DemiBold" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding RFQItem.Priorities}" VerticalAlignment="Top" MinWidth="120" SelectedItem="{Binding Path=RFQItem.Priority}"/>
-            </DockPanel>
-
-            <DockPanel LastChildFill="False">
-                <Label Content="Choose Who Will Prepare Costing" FontWeight="DemiBold"/>
-                <ComboBox ItemsSource="{Binding Admins}" SelectedItem="{Binding RFQItem.QuotationHandledBy}" MinWidth="100"/>
-            </DockPanel>
+            </DataGrid>
 
             <DockPanel HorizontalAlignment="Right">
                 <Button Content="Save" Command="{Binding SaveCommand}" HorizontalAlignment="Right" />
-                <Button Content="Add Another Item" Command="{Binding Path=AddAnotherItemCommand}"/>
                 <Button Content="Clear" Command="{Binding ClearCommand}"/>
             </DockPanel>
 

@@ -81,7 +81,7 @@ namespace Metaforge_Marketing.HelperClasses.Quotation
                 object saveOption = WdSaveOptions.wdDoNotSaveChanges;
                 object originalFormat = WdOriginalFormat.wdOriginalDocumentFormat;
                 object routeDocument = false;
-                quote.Close(ref saveOption, ref originalFormat, ref routeDocument);
+                doc.Close(ref saveOption, ref originalFormat, ref routeDocument);
                 app.Quit();
             }
             return path;
